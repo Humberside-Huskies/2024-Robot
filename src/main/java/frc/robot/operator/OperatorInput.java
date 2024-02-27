@@ -8,6 +8,7 @@ import frc.robot.Constants.AutoConstants.AutoPattern;
 import frc.robot.Constants.DriveConstants.DriveMode;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.CancelCommand;
+import frc.robot.commands.shooter.ShootCommand;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 
@@ -72,11 +73,11 @@ public class OperatorInput extends SubsystemBase {
         return driveModeChooser.getSelected();
     }
 
-    public boolean getBoost() {
+    public boolean isBoost() {
         return driverController.getRightBumper();
     }
 
-    public boolean getSlow() {
+    public boolean isSlow() {
         return driverController.getLeftBumper();
     }
 
@@ -112,6 +113,13 @@ public class OperatorInput extends SubsystemBase {
         return driverController.getLeftTriggerAxis();
     }
 
+    /*
+     * Shooter
+     */
+    public boolean isShoot() {
+        return driverController.getBButton();
+    }
+
 
 
     /**
@@ -126,6 +134,9 @@ public class OperatorInput extends SubsystemBase {
         new Trigger(() -> isCancel())
             .onTrue(new CancelCommand(this, driveSubsystem, shooterSubsystem));
 
+        // Shooter button
+        new Trigger(() -> isShoot())
+            .onTrue(new ShootCommand(shooterSubsystem));
     }
 
     @Override

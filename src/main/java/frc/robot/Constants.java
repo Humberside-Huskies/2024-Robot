@@ -50,8 +50,13 @@ public final class Constants {
     }
 
     public static final class ShooterConstants {
-        public static final int SHOOTER_MOTOR_PORT = 30;
-        public static final int FEEDER_MOTOR_PORT  = 31;
+        public static final int    SHOOTER_MOTOR_PORT  = 30;
+        public static final int    FEEDER_MOTOR_PORT   = 31;
+
+        /** FIXME: Speed to set the shooter motor when shooting */
+        public static final double SHOOTER_SHOOT_SPEED = 0;
+        /** FIXME: Speed to set the feeder motor when shooting */
+        public static final double FEEDER_SHOOT_SPEED  = 0;
     }
 
     public static final class LEDConstants {

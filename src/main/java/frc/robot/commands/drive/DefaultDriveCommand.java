@@ -43,11 +43,11 @@ public class DefaultDriveCommand extends LoggingCommand {
         // Default scaling (when neither boost nor slow are pressed
         double    scalingFactor = 0.6;
 
-        if (operatorInput.getBoost()) {
+        if (operatorInput.isBoost()) {
             scalingFactor = 1.0;
         }
 
-        if (operatorInput.getSlow()) {
+        if (operatorInput.isSlow()) {
             scalingFactor = .3;
         }
 
