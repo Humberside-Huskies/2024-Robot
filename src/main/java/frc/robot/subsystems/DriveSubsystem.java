@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
 
@@ -20,6 +21,8 @@ public class DriveSubsystem extends SubsystemBase {
     // Motor speeds
     private double            leftSpeed          = 0;
     private double            rightSpeed         = 0;
+
+    private IdleMode          idleMode           = null;
 
     /** Creates a new DriveSubsystem. */
     public DriveSubsystem() {
@@ -44,6 +47,7 @@ public class DriveSubsystem extends SubsystemBase {
 
         // rightFollowerMotor.follow(rightPrimaryMotor);
 
+        setIdleMode(IdleMode.kBrake);
     }
 
     /**
@@ -53,6 +57,8 @@ public class DriveSubsystem extends SubsystemBase {
      * @param rightSpeed
      */
     public void setMotorSpeeds(double leftSpeed, double rightSpeed) {
+
+        setIdleMode(IdleMode.kBrake);
 
         this.leftSpeed  = leftSpeed;
         this.rightSpeed = rightSpeed;
@@ -65,8 +71,31 @@ public class DriveSubsystem extends SubsystemBase {
         rightFollowerMotor.set(rightSpeed);
     }
 
+    /**
+     * Set the speed of each motor independently
+     *
+     * @param leftSpeed1
+     * @param leftSpeed2
+     * @param rightSpeed1
+     * @param rightSpeed2
+     */
+    public void setMotorSpeeds(double leftSpeed1, double leftSpeed2, double rightSpeed1, double rightSpeed2) {
+
+        // Set the idle mode to coast so that the idle motor on each
+        // side does not have the break set, which allows the other motors to
+        // be driven freely.
+        setIdleMode(IdleMode.kCoast);
+
+        leftPrimaryMotor.set(leftSpeed1);
+        leftFollowerMotor.set(leftSpeed2);
+
+        rightPrimaryMotor.set(rightSpeed1);
+        rightFollowerMotor.set(rightSpeed2);
+    }
+
     /** Safely stop the subsystem from moving */
     public void stop() {
+        setIdleMode(IdleMode.kBrake);
         setMotorSpeeds(0, 0);
     }
 
@@ -88,9 +117,19 @@ public class DriveSubsystem extends SubsystemBase {
 
         sb.append(this.getClass().getSimpleName())
             .append(" [").append(Math.round(leftSpeed * 100.0d) / 100.0d)
-            .append(',').append(Math.round(rightSpeed * 100.0d) / 100.0d).append(']');
+            .append(',').append(Math.round(rightSpeed * 100.0d) / 100.0d).append(']')
+            .append(", idle mode ").append(idleMode.toString());
 
         return sb.toString();
     }
 
+    private void setIdleMode(IdleMode idleMode) {
+
+        this.idleMode = idleMode;
+
+        leftPrimaryMotor.setIdleMode(idleMode);
+        leftFollowerMotor.setIdleMode(idleMode);
+        rightPrimaryMotor.setIdleMode(idleMode);
+        rightFollowerMotor.setIdleMode(idleMode);
+    }
 }

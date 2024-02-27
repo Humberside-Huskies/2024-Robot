@@ -1,5 +1,6 @@
 package frc.robot.operator;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -8,6 +9,7 @@ import frc.robot.Constants.AutoConstants.AutoPattern;
 import frc.robot.Constants.DriveConstants.DriveMode;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.CancelCommand;
+import frc.robot.commands.SystemTestCommand;
 import frc.robot.commands.shooter.ShootCommand;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
@@ -53,11 +55,34 @@ public class OperatorInput extends SubsystemBase {
      * from controller button to function is done in the following methods.
      */
 
-    // Cancel all commands when the driver presses the XBox controller three lines (aka. start)
-    // button
+    /*
+     * Cancel button
+     * Used to cancel any running commands
+     */
     public boolean isCancel() {
-        return driverController.getStartButton();
+        // Cancel all commands when the driver presses the
+        // XBox controller three lines (aka. start) button
+        return driverController.getStartButton() && !driverController.getBackButton();
     }
+
+    /*
+     * System Test
+     */
+    public GameController getDriverController() {
+        return driverController;
+    }
+
+    public boolean isSystemTest() {
+
+        // Hold the back button and press the start button to get into
+        // system test mode.
+        // System test cannot be enabled when attached to the field
+
+        return driverController.getStartButton()
+            && driverController.getBackButton()
+            && !DriverStation.isFMSAttached();
+    }
+
 
     /*
      * Selected Auto Pattern
@@ -121,7 +146,6 @@ public class OperatorInput extends SubsystemBase {
     }
 
 
-
     /**
      * Configure Button Bindings
      *
@@ -133,6 +157,9 @@ public class OperatorInput extends SubsystemBase {
 
         new Trigger(() -> isCancel())
             .onTrue(new CancelCommand(this, driveSubsystem, shooterSubsystem));
+
+        new Trigger(() -> isSystemTest())
+            .onTrue(new SystemTestCommand(this, driveSubsystem, shooterSubsystem));
 
         // Shooter button
         new Trigger(() -> isShoot())
