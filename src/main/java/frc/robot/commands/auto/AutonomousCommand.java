@@ -2,33 +2,25 @@ package frc.robot.commands.auto;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants.AutoConstants.AutoPattern;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.ShooterSubsystem;
 
 public class AutonomousCommand extends SequentialCommandGroup {
 
-    private AutoPattern          autoPattern = null;
+    Alliance alliance;
 
-    private final DriveSubsystem driveSubsystem;
-
-    private Alliance             alliance    = null;
-
-    public AutonomousCommand(DriveSubsystem driveSubsystem,
-        SendableChooser<AutoPattern> autoPatternChooser) {
-
-        this.driveSubsystem = driveSubsystem;
+    public AutonomousCommand(AutoPattern autoPattern, DriveSubsystem driveSubsystem,
+        ShooterSubsystem shooterSubsystem) {
 
         // Default is to do nothing.
         // If more commands are added, the instant command will end and
         // the next command will be executed.
         addCommands(new InstantCommand());
 
-        autoPattern = autoPatternChooser.getSelected();
-
-        alliance    = DriverStation.getAlliance().orElse(null);
+        alliance = DriverStation.getAlliance().orElse(null);
 
         StringBuilder sb = new StringBuilder();
         sb.append("Auto Selections");
@@ -57,10 +49,17 @@ public class AutonomousCommand extends SequentialCommandGroup {
         case DO_NOTHING:
             return;
 
-        case DRIVE_FORWARD:
+        case SHOOT_AND_LEAVE_STAGE:
             // What should we put here?
             // Drive forward for 1 second
             // addCommands(new DriveForwardCommand(1, driveSubsystem));
+            return;
+
+        case SHOOT_AND_LEAVE_AMP:
+            // What should we put here?
+            // Drive forward for 1 second
+            // addCommands(new DriveForwardCommand(1, driveSubsystem));
+            return;
         }
     }
 

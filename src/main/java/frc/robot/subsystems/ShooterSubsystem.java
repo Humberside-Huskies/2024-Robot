@@ -1,0 +1,76 @@
+package frc.robot.subsystems;
+
+import com.revrobotics.CANSparkLowLevel.MotorType;
+import com.revrobotics.CANSparkMax;
+
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.ShooterConstants;
+
+public class ShooterSubsystem extends SubsystemBase {
+
+    // Motors
+    private final CANSparkMax shooterMotor = new CANSparkMax(ShooterConstants.SHOOTER_MOTOR_PORT, MotorType.kBrushed);
+    private final CANSparkMax feederMotor  = new CANSparkMax(ShooterConstants.FEEDER_MOTOR_PORT, MotorType.kBrushed);
+
+    public double             shooterSpeed = 0;
+    public double             feederSpeed  = 0;
+
+    /** Creates a new ShooterSubsystem. */
+    public ShooterSubsystem() {
+    }
+
+    /**
+     * Set the speed of the shooter motor
+     *
+     * @param shooterSpeed
+     */
+    public void setShooterSpeed(double shooterSpeed) {
+
+        this.shooterSpeed = shooterSpeed;
+
+        shooterMotor.set(this.shooterSpeed);
+    }
+
+    /**
+     * Set the speed of the feeder motor
+     *
+     * @param feederSpeed
+     */
+    public void setFeederSpeed(double feederSpeed) {
+
+        this.feederSpeed = feederSpeed;
+
+        feederMotor.set(this.feederSpeed);
+    }
+
+    /** Safely stop the subsystem from moving */
+    public void stop() {
+        setShooterSpeed(0);
+        setFeederSpeed(0);
+    }
+
+    @Override
+    public void periodic() {
+
+        /*
+         * Update all dashboard values in the periodic routine
+         */
+        SmartDashboard.putNumber("Shooter Motor", this.shooterSpeed);
+        SmartDashboard.putNumber("Feeder Motor", this.feederSpeed);
+    }
+
+    @Override
+    public String toString() {
+
+        // Create an appropriate text readable string describing the state of the subsystem
+        StringBuilder sb = new StringBuilder();
+
+        sb.append(this.getClass().getSimpleName())
+            .append(" : shooter speed ").append(Math.round(shooterSpeed * 100.0d) / 100.0d)
+            .append(", feeder speed ").append(Math.round(feederSpeed * 100.0d) / 100.0d);
+
+
+        return sb.toString();
+    }
+}

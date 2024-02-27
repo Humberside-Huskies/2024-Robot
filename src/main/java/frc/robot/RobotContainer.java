@@ -4,17 +4,13 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Constants.AutoConstants.AutoPattern;
-import frc.robot.Constants.DriveConstants.DriveMode;
-import frc.robot.commands.arm.DefaultArmCommand;
 import frc.robot.commands.auto.AutonomousCommand;
 import frc.robot.commands.drive.DefaultDriveCommand;
+import frc.robot.commands.shooter.DefaultShooterCommand;
 import frc.robot.operator.OperatorInput;
-import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
 
 /**
@@ -27,16 +23,12 @@ import frc.robot.subsystems.VisionSubsystem;
 public class RobotContainer {
 
     // The operator input class
-    private final OperatorInput                operatorInput      = new OperatorInput();
+    private final OperatorInput    operatorInput    = new OperatorInput();
 
     // The robot's subsystems and commands are defined here...
-    private final DriveSubsystem               driveSubsystem     = new DriveSubsystem();
-    private final ArmSubsystem                 armSubsystem       = new ArmSubsystem();
-    private final VisionSubsystem              visionSubsystem    = new VisionSubsystem();
-
-    // All dashboard choosers are defined here...
-    private final SendableChooser<DriveMode>   driveModeChooser   = new SendableChooser<>();
-    private final SendableChooser<AutoPattern> autoPatternChooser = new SendableChooser<>();
+    private final DriveSubsystem   driveSubsystem   = new DriveSubsystem();
+    private final ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
+    private final VisionSubsystem  visionSubsystem  = new VisionSubsystem();
 
     /**
      * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -46,31 +38,16 @@ public class RobotContainer {
         // Initialize all Subsystem default commands.
         driveSubsystem.setDefaultCommand(
             new DefaultDriveCommand(
-                operatorInput.driverController, driveModeChooser,
+                operatorInput,
                 driveSubsystem, visionSubsystem));
 
-        armSubsystem.setDefaultCommand(
-            new DefaultArmCommand(
-                operatorInput.driverController,
-                armSubsystem));
-
-        // Initialize the dashboard choosers
-        initDashboardChoosers();
+        shooterSubsystem.setDefaultCommand(
+            new DefaultShooterCommand(
+                operatorInput,
+                shooterSubsystem));
 
         // Configure the button bindings
-        operatorInput.configureButtonBindings(driveSubsystem);
-    }
-
-    private void initDashboardChoosers() {
-
-        driveModeChooser.setDefaultOption("Dual Stick Arcade", DriveMode.DUAL_STICK_ARCADE);
-        SmartDashboard.putData("Drive Mode", driveModeChooser);
-        driveModeChooser.addOption("Single Stick Arcade", DriveMode.SINGLE_STICK_ARCADE);
-        driveModeChooser.addOption("Tank", DriveMode.TANK);
-
-        autoPatternChooser.setDefaultOption("Do Nothing", AutoPattern.DO_NOTHING);
-        SmartDashboard.putData("Auto Pattern", autoPatternChooser);
-        autoPatternChooser.addOption("Drive Forward", AutoPattern.DRIVE_FORWARD);
+        operatorInput.configureButtonBindings(driveSubsystem, shooterSubsystem);
     }
 
     /**
@@ -82,7 +59,7 @@ public class RobotContainer {
 
         // Pass in all of the subsystems and all of the choosers to the auto command.
         return new AutonomousCommand(
-            driveSubsystem,
-            autoPatternChooser);
+            operatorInput.getSelectedAutoPattern(),
+            driveSubsystem, shooterSubsystem);
     }
 }

@@ -1,32 +1,28 @@
 package frc.robot.commands.drive;
 
-import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import frc.robot.Constants.DriveConstants.DriveMode;
 import frc.robot.commands.LoggingCommand;
-import frc.robot.operator.GameController;
+import frc.robot.operator.OperatorInput;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
 
 public class DefaultDriveCommand extends LoggingCommand {
 
-    private final DriveSubsystem             driveSubsystem;
-    private final XboxController             driverController;
-    private final SendableChooser<DriveMode> driveModeChooser;
-    private final VisionSubsystem            visionSubsystem;
+    private final DriveSubsystem  driveSubsystem;
+    private final VisionSubsystem visionSubsystem;
+    private final OperatorInput   operatorInput;
 
     /**
      * Creates a new ExampleCommand.
      *
      * @param driveSubsystem The subsystem used by this command.
      */
-    public DefaultDriveCommand(GameController driverController, SendableChooser<DriveMode> driveModeChooser,
+    public DefaultDriveCommand(OperatorInput operatorInput,
         DriveSubsystem driveSubsystem, VisionSubsystem visionSubsystem) {
 
-        this.driverController = driverController;
-        this.driveModeChooser = driveModeChooser;
-        this.driveSubsystem   = driveSubsystem;
-        this.visionSubsystem  = visionSubsystem;
+        this.operatorInput   = operatorInput;
+        this.driveSubsystem  = driveSubsystem;
+        this.visionSubsystem = visionSubsystem;
 
         // Use addRequirements() here to declare subsystem dependencies.
         addRequirements(driveSubsystem);
@@ -42,38 +38,40 @@ public class DefaultDriveCommand extends LoggingCommand {
     @Override
     public void execute() {
 
-        DriveMode driveMode = driveModeChooser.getSelected();
+        DriveMode driveMode     = operatorInput.getSelectedDriveMode();
 
-        boolean   boost     = driverController.getRightBumper();
+        // Default scaling (when neither boost nor slow are pressed
+        double    scalingFactor = 0.6;
 
-        double    b         = 1.0;
+        if (operatorInput.getBoost()) {
+            scalingFactor = 1.0;
+        }
 
-        if (boost)
-            b = 10.0f;
+        if (operatorInput.getSlow()) {
+            scalingFactor = .3;
+        }
 
         switch (driveMode) {
 
         case DUAL_STICK_ARCADE:
-            setMotorSpeedsArcade(driverController.getLeftY() * 19, driverController.getRightX() * 19, boost);
-            break;
-
         case SINGLE_STICK_ARCADE:
-            setMotorSpeedsArcade(driverController.getLeftY() * b, driverController.getLeftX() * b, boost);
+            setMotorSpeedsArcade(operatorInput.getSpeed(), operatorInput.getTurn(), scalingFactor);
             break;
 
         case TANK:
         default:
 
-            if (boost) {
-                driveSubsystem.setMotorSpeeds(driverController.getLeftY() * b, driverController.getRightY() * b);
-            }
-            else {
-                // If not in boost mode, then divide the motors speeds in half
-                driveSubsystem.setMotorSpeeds(driverController.getLeftY() / 2.0, driverController.getRightY() / 2.0);
-            }
+            double leftSpeed = operatorInput.getLeftSpeed() * scalingFactor;
+            double rightSpeed = operatorInput.getRightSpeed() * scalingFactor;
+
+            driveSubsystem.setMotorSpeeds(leftSpeed, rightSpeed);
             break;
         }
 
+        /*
+         * FIXME: This should be a separate command.
+         * DriveToAprilTagCommand(driveSubsystem);
+         */
         double KpAim           = -0.1;                   // Propotional control constant
         double KpDistance      = -0.1;                   // Proportional control constant for
                                                          // distance
@@ -86,8 +84,8 @@ public class DefaultDriveCommand extends LoggingCommand {
         double tx              = visionSubsystem.getTX();
         double ty              = visionSubsystem.getTY();
 
+        if (operatorInput.getDriveToVisionTarget() > 0) {
 
-        if (driverController.getLeftTriggerAxis() > 0) {
             double heading_error   = -tx;
             double distance_error  = -ty;
             double steering_adjust = 0.0f;
@@ -107,8 +105,6 @@ public class DefaultDriveCommand extends LoggingCommand {
             driveSubsystem.setMotorSpeeds(left_command, right_command);
         }
 
-
-
     }
 
     // Returns true when the command should end.
@@ -124,15 +120,13 @@ public class DefaultDriveCommand extends LoggingCommand {
         logCommandEnd(interrupted);
     }
 
-    private void setMotorSpeedsArcade(double speed, double turn, boolean boost) {
+    private void setMotorSpeedsArcade(double speed, double turn, double scalingFactor) {
 
         double maxSpeed = 1.0;
 
-        if (!boost) {
-            speed    /= 2.0;
-            turn     /= 2.0;
-            maxSpeed /= 2.0;
-        }
+        speed    *= scalingFactor;
+        turn     *= scalingFactor;
+        maxSpeed *= scalingFactor;
 
         // The basic algorithm for arcade is to add the turn and the speed
 

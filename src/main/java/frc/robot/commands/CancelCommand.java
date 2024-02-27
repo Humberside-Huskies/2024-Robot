@@ -2,6 +2,7 @@ package frc.robot.commands;
 
 import frc.robot.operator.OperatorInput;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.ShooterSubsystem;
 
 /**
  * This command is used to safely stop the robot in its current position, and to cancel any running
@@ -9,8 +10,9 @@ import frc.robot.subsystems.DriveSubsystem;
  */
 public class CancelCommand extends LoggingCommand {
 
-    private final OperatorInput  operatorInput;
-    private final DriveSubsystem driveSubsystem;
+    private final OperatorInput    operatorInput;
+    private final ShooterSubsystem shooterSubsystem;
+    private final DriveSubsystem   driveSubsystem;
 
     /**
      * Cancel the commands running on all subsystems.
@@ -18,10 +20,11 @@ public class CancelCommand extends LoggingCommand {
      * All subsystems must be passed to this command, and each subsystem should have a stop command
      * that safely stops the robot from moving.
      */
-    public CancelCommand(OperatorInput operatorInput, DriveSubsystem driveSubsystem) {
+    public CancelCommand(OperatorInput operatorInput, DriveSubsystem driveSubsystem, ShooterSubsystem shooterSubsystem) {
 
-        this.operatorInput  = operatorInput;
-        this.driveSubsystem = driveSubsystem;
+        this.operatorInput    = operatorInput;
+        this.driveSubsystem   = driveSubsystem;
+        this.shooterSubsystem = shooterSubsystem;
 
         addRequirements(driveSubsystem);
     }
@@ -73,5 +76,6 @@ public class CancelCommand extends LoggingCommand {
 
         // Stop all of the robot movement
         driveSubsystem.stop();
+        shooterSubsystem.stop();
     }
 }

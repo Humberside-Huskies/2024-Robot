@@ -21,7 +21,7 @@ public final class Constants {
     public static final class AutoConstants {
 
         public static enum AutoPattern {
-            DO_NOTHING, DRIVE_FORWARD, LEFT_POSITION, CENTER_POSITION, RIGHT_POSITION
+            DO_NOTHING, SHOOT_AND_LEAVE_STAGE, SHOOT_AND_LEAVE_AMP
         };
     }
 
@@ -49,8 +49,9 @@ public final class Constants {
 
     }
 
-    public static final class ArmConstants {
-        public static final int ARM_MOTOR_PORT = 10;
+    public static final class ShooterConstants {
+        public static final int SHOOTER_MOTOR_PORT = 30;
+        public static final int FEEDER_MOTOR_PORT  = 31;
     }
 
     public static final class LEDConstants {

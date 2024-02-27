@@ -1,11 +1,15 @@
 package frc.robot.operator;
 
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.Constants.AutoConstants.AutoPattern;
+import frc.robot.Constants.DriveConstants.DriveMode;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.CancelCommand;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.ShooterSubsystem;
 
 /**
  * The Operator input class is used to map buttons to functions and functions to commands
@@ -15,9 +19,28 @@ import frc.robot.subsystems.DriveSubsystem;
  */
 public class OperatorInput extends SubsystemBase {
 
-    public final GameController driverController = new GameController(
+    public final GameController                driverController   = new GameController(
         OperatorConstants.DRIVER_CONTROLLER_PORT,
         OperatorConstants.GAME_CONTROLLER_STICK_DEADBAND);
+
+    // All dashboard choosers are defined here...
+    private final SendableChooser<DriveMode>   driveModeChooser   = new SendableChooser<>();
+    private final SendableChooser<AutoPattern> autoPatternChooser = new SendableChooser<>();
+
+
+    public OperatorInput() {
+
+        driveModeChooser.setDefaultOption("Dual Stick Arcade", DriveMode.DUAL_STICK_ARCADE);
+        SmartDashboard.putData("Drive Mode", driveModeChooser);
+        driveModeChooser.addOption("Single Stick Arcade", DriveMode.SINGLE_STICK_ARCADE);
+        driveModeChooser.addOption("Tank", DriveMode.TANK);
+
+        autoPatternChooser.setDefaultOption("Do Nothing", AutoPattern.DO_NOTHING);
+        SmartDashboard.putData("Auto Pattern", autoPatternChooser);
+        autoPatternChooser.addOption("Amp Start", AutoPattern.SHOOT_AND_LEAVE_AMP);
+        autoPatternChooser.addOption("Stage Start", AutoPattern.SHOOT_AND_LEAVE_STAGE);
+
+    }
 
     /*
      * Map all functions to buttons.
@@ -35,15 +58,73 @@ public class OperatorInput extends SubsystemBase {
         return driverController.getStartButton();
     }
 
+    /*
+     * Selected Auto Pattern
+     */
+    public AutoPattern getSelectedAutoPattern() {
+        return autoPatternChooser.getSelected();
+    }
+
+    /*
+     * Drive Mode and Speed Boost/Slow
+     */
+    public DriveMode getSelectedDriveMode() {
+        return driveModeChooser.getSelected();
+    }
+
+    public boolean getBoost() {
+        return driverController.getRightBumper();
+    }
+
+    public boolean getSlow() {
+        return driverController.getLeftBumper();
+    }
+
+    /*
+     * Arcade Drive Methods
+     */
+    public double getSpeed() {
+        return driverController.getLeftY();
+    }
+
+    public double getTurn() {
+        if (getSelectedDriveMode() == DriveMode.SINGLE_STICK_ARCADE) {
+            return driverController.getLeftX();
+        }
+        return driverController.getRightX();
+    }
+
+    /*
+     * Tank Drive Methods
+     */
+    public double getLeftSpeed() {
+        return driverController.getLeftY();
+    }
+
+    public double getRightSpeed() {
+        return driverController.getRightY();
+    }
+
+    /*
+     * Vision Drive Methods
+     */
+    public double getDriveToVisionTarget() {
+        return driverController.getLeftTriggerAxis();
+    }
+
+
+
     /**
+     * Configure Button Bindings
+     *
      * Use this method to define your robotFunction -> command mappings.
      *
      * NOTE: all subsystems should be passed into this method.
      */
-    public void configureButtonBindings(DriveSubsystem driveSubsystem) {
+    public void configureButtonBindings(DriveSubsystem driveSubsystem, ShooterSubsystem shooterSubsystem) {
 
         new Trigger(() -> isCancel())
-            .onTrue(new CancelCommand(this, driveSubsystem));
+            .onTrue(new CancelCommand(this, driveSubsystem, shooterSubsystem));
 
     }
 

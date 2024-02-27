@@ -1,26 +1,27 @@
-package frc.robot.commands.LED;
+package frc.robot.commands.shooter;
 
 import frc.robot.commands.LoggingCommand;
-import frc.robot.operator.GameController;
-import frc.robot.subsystems.LightsSubsystem;
+import frc.robot.operator.OperatorInput;
+import frc.robot.subsystems.ShooterSubsystem;
 
-public class DafaultLEDCommand extends LoggingCommand {
+public class DefaultShooterCommand extends LoggingCommand {
 
-    // private final LEDSubsystem ledSubsystem;
-    private final LightsSubsystem lightsSubsystem;
+    private final ShooterSubsystem shooterSubsystem;
+    private final OperatorInput    operatorInput;
 
     /**
      * Creates a new ExampleCommand.
      *
-     * @param LightsSubsystem The subsystem used by this command.
+     * @param shooterSubsystem The subsystem used by this command.
      */
-    public DafaultLEDCommand(GameController driverController,
-        LightsSubsystem lightsSubsystem) {
+    public DefaultShooterCommand(OperatorInput operatorInput,
+        ShooterSubsystem shooterSubsystem) {
 
-        this.lightsSubsystem = lightsSubsystem;
+        this.operatorInput    = operatorInput;
+        this.shooterSubsystem = shooterSubsystem;
 
         // Use addRequirements() here to declare subsystem dependencies.
-        addRequirements(lightsSubsystem);
+        addRequirements(shooterSubsystem);
     }
 
     // Called when the command is initially scheduled.
@@ -32,7 +33,6 @@ public class DafaultLEDCommand extends LoggingCommand {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-
     }
 
     // Returns true when the command should end.
