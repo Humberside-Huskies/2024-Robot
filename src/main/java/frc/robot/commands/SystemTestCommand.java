@@ -268,6 +268,8 @@ public class SystemTestCommand extends LoggingCommand {
         SmartDashboard.putString("Test Motor", selectedMotor.toString());
         SmartDashboard.putNumber("Test Motor Speed", 0);
 
+        clearMotorIndicators();
+
         logCommandEnd(interrupted);
     }
 
