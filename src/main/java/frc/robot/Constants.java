@@ -31,14 +31,14 @@ public final class Constants {
             TANK, SINGLE_STICK_ARCADE, DUAL_STICK_ARCADE;
         }
 
-        public static final int     LEFT_MOTOR_PORT               = 30;
-        public static final int     RIGHT_MOTOR_PORT              = 32;
+        public static final int     LEFT_MOTOR_PORT               = 10;
+        public static final int     RIGHT_MOTOR_PORT              = 20;
 
-        public static final boolean LEFT_MOTOR_REVERSED           = true;
-        public static final boolean RIGHT_MOTOR_REVERSED          = false;
+        public static final boolean LEFT_MOTOR_REVERSED           = false;
+        public static final boolean RIGHT_MOTOR_REVERSED          = true;
 
-        public static final boolean LEFT_ENCODER_REVERSED         = false;
-        public static final boolean RIGHT_ENCODER_REVERSED        = true;
+        public static final boolean LEFT_ENCODER_REVERSED         = true;
+        public static final boolean RIGHT_ENCODER_REVERSED        = false;
 
         public static final int     ENCODER_COUNTS_PER_REVOLUTION = 1024;
         public static final double  ROBOT_WHEEL_DIAMETER_CMS      = 6 * 2.54;
@@ -50,13 +50,11 @@ public final class Constants {
     }
 
     public static final class ShooterConstants {
-        public static final int    SHOOTER_MOTOR_PORT  = 30;
-        public static final int    FEEDER_MOTOR_PORT   = 31;
+        public static final int    SHOOTER_MOTOR_PORT  = 31;
+        public static final int    FEEDER_MOTOR_PORT   = 30;
 
-        /** FIXME: Speed to set the shooter motor when shooting */
-        public static final double SHOOTER_SHOOT_SPEED = 0;
-        /** FIXME: Speed to set the feeder motor when shooting */
-        public static final double FEEDER_SHOOT_SPEED  = 0;
+        public static final double SHOOTER_SHOOT_SPEED = -1;
+        public static final double FEEDER_SHOOT_SPEED  = -1;
     }
 
     public static final class LEDConstants {

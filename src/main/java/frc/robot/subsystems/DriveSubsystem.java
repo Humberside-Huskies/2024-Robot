@@ -10,12 +10,12 @@ import frc.robot.Constants.DriveConstants;
 public class DriveSubsystem extends SubsystemBase {
 
     // The motors on the left side of the drive.
-    private final CANSparkMax leftPrimaryMotor   = new CANSparkMax(DriveConstants.LEFT_MOTOR_PORT, MotorType.kBrushed);
-    private final CANSparkMax leftFollowerMotor  = new CANSparkMax(DriveConstants.LEFT_MOTOR_PORT + 1, MotorType.kBrushed);
+    private final CANSparkMax leftPrimaryMotor   = new CANSparkMax(DriveConstants.LEFT_MOTOR_PORT, MotorType.kBrushless);
+    private final CANSparkMax leftFollowerMotor  = new CANSparkMax(DriveConstants.LEFT_MOTOR_PORT + 1, MotorType.kBrushless);
 
     // The motors on the right side of the drive.
-    private final CANSparkMax rightPrimaryMotor  = new CANSparkMax(DriveConstants.RIGHT_MOTOR_PORT, MotorType.kBrushed);
-    private final CANSparkMax rightFollowerMotor = new CANSparkMax(DriveConstants.RIGHT_MOTOR_PORT + 1, MotorType.kBrushed);
+    private final CANSparkMax rightPrimaryMotor  = new CANSparkMax(DriveConstants.RIGHT_MOTOR_PORT, MotorType.kBrushless);
+    private final CANSparkMax rightFollowerMotor = new CANSparkMax(DriveConstants.RIGHT_MOTOR_PORT + 1, MotorType.kBrushless);
 
     // Motor speeds
     private double            leftSpeed          = 0;

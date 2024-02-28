@@ -45,7 +45,7 @@ public class ShootCommand extends LoggingCommand {
     public boolean isFinished() {
 
         // Stop this command after 4 seconds total
-        if (isTimeoutExceeded(2.0)) {
+        if (isTimeoutExceeded(4.0)) {
             setFinishReason("Shot fired");
             return true;
         }
