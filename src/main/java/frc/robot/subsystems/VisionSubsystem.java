@@ -1,22 +1,17 @@
 package frc.robot.subsystems;
 
-import java.util.ArrayList;
-
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class VisionSubsystem extends SubsystemBase {
 
-    private final NetworkTable m_limelightTable;
+    private final NetworkTable limelightTable;
     // Recieve the cordination of the target
     private double             tv, ty, tx, ta;
 
-    // Store avaiable targets for shooting
-    private ArrayList<Double>  m_targetList;
-
     public VisionSubsystem() {
-        m_limelightTable = NetworkTableInstance.getDefault().getTable("limelight");
+        limelightTable = NetworkTableInstance.getDefault().getTable("limelight");
 
     }
 
@@ -35,10 +30,10 @@ public class VisionSubsystem extends SubsystemBase {
     @Override
     public void periodic() {
         // This method will be called once per scheduler run
-        tv = m_limelightTable.getEntry("tv").getDouble(0);
-        tx = m_limelightTable.getEntry("tx").getDouble(0);
-        ty = m_limelightTable.getEntry("ty").getDouble(0);
-        ta = m_limelightTable.getEntry("ta").getDouble(0);
+        tv = limelightTable.getEntry("tv").getDouble(0);
+        tx = limelightTable.getEntry("tx").getDouble(0);
+        ty = limelightTable.getEntry("ty").getDouble(0);
+        ta = limelightTable.getEntry("ta").getDouble(0);
 
 
 

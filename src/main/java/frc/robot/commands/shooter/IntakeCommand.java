@@ -1,23 +1,20 @@
 package frc.robot.commands.shooter;
 
+import frc.robot.Constants.ShooterConstants;
 import frc.robot.commands.LoggingCommand;
-import frc.robot.operator.OperatorInput;
 import frc.robot.subsystems.ShooterSubsystem;
 
-public class DefaultShooterCommand extends LoggingCommand {
+public class IntakeCommand extends LoggingCommand {
 
     private final ShooterSubsystem shooterSubsystem;
-    private final OperatorInput    operatorInput;
 
     /**
      * Creates a new ExampleCommand.
      *
      * @param shooterSubsystem The subsystem used by this command.
      */
-    public DefaultShooterCommand(OperatorInput operatorInput,
-        ShooterSubsystem shooterSubsystem) {
+    public IntakeCommand(ShooterSubsystem shooterSubsystem) {
 
-        this.operatorInput    = operatorInput;
         this.shooterSubsystem = shooterSubsystem;
 
         // Use addRequirements() here to declare subsystem dependencies.
@@ -33,18 +30,31 @@ public class DefaultShooterCommand extends LoggingCommand {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
+        // Run the shooter wheel
+        shooterSubsystem.setFeederSpeed(-ShooterConstants.SHOOTER_SHOOT_SPEED);
 
+        // If this command has been running for 2 seconds, then start the feeder
+        if (isTimeoutExceeded(2.0)) {
+            shooterSubsystem.setShooterSpeed(-ShooterConstants.FEEDER_SHOOT_SPEED);
+        }
     }
-
     // Returns true when the command should end.
     @Override
     public boolean isFinished() {
+
+        // Stop this command after 4 seconds total
+        if (isTimeoutExceeded(4.0)) {
+            setFinishReason("Intake completed");
+            return true;
+        }
+
         return false;
     }
 
     // Called once the command ends or is interrupted.
     @Override
     public void end(boolean interrupted) {
+        shooterSubsystem.stop();
         logCommandEnd(interrupted);
     }
 }

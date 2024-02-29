@@ -39,7 +39,7 @@ public class RobotContainer {
         driveSubsystem.setDefaultCommand(
             new DefaultDriveCommand(
                 operatorInput,
-                driveSubsystem, visionSubsystem));
+                driveSubsystem));
 
         shooterSubsystem.setDefaultCommand(
             new DefaultShooterCommand(
@@ -47,7 +47,7 @@ public class RobotContainer {
                 shooterSubsystem));
 
         // Configure the button bindings
-        operatorInput.configureButtonBindings(driveSubsystem, shooterSubsystem);
+        operatorInput.configureButtonBindings(driveSubsystem, shooterSubsystem, visionSubsystem);
     }
 
     /**

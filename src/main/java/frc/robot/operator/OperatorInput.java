@@ -8,9 +8,12 @@ import frc.robot.Constants.AutoConstants.AutoPattern;
 import frc.robot.Constants.DriveConstants.DriveMode;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.CancelCommand;
+import frc.robot.commands.shooter.IntakeCommand;
 import frc.robot.commands.shooter.ShootCommand;
+import frc.robot.commands.vision.DriveToAprilTagCommand;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.subsystems.VisionSubsystem;
 
 /**
  * The Operator input class is used to map buttons to functions and functions to commands
@@ -114,10 +117,17 @@ public class OperatorInput extends SubsystemBase {
     }
 
     /*
-     * Shooter
+     * Shooter Trigger Boolean
      */
     public boolean isShoot() {
         return driverController.getBButton();
+    }
+
+    /*
+     * isIntake Trigger Boolean
+     */
+    public boolean isIntake() {
+        return driverController.getAButton();
     }
 
 
@@ -129,14 +139,24 @@ public class OperatorInput extends SubsystemBase {
      *
      * NOTE: all subsystems should be passed into this method.
      */
-    public void configureButtonBindings(DriveSubsystem driveSubsystem, ShooterSubsystem shooterSubsystem) {
+    public void configureButtonBindings(DriveSubsystem driveSubsystem, ShooterSubsystem shooterSubsystem,
+        VisionSubsystem visionSubsystem) {
 
         new Trigger(() -> isCancel())
             .onTrue(new CancelCommand(this, driveSubsystem, shooterSubsystem));
 
+        // Intake button
+        new Trigger(() -> isIntake())
+            .onTrue(new IntakeCommand(shooterSubsystem));
+
         // Shooter button
         new Trigger(() -> isShoot())
             .onTrue(new ShootCommand(shooterSubsystem));
+
+        // Detect April Tag
+        new Trigger(() -> getDriveToVisionTarget() > 0)
+            .onTrue(new DriveToAprilTagCommand(driveSubsystem, visionSubsystem));
+
     }
 
     @Override

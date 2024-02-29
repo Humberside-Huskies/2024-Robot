@@ -1,10 +1,10 @@
-package frc.robot.commands.LED;
+package frc.robot.commands.lights;
 
 import frc.robot.commands.LoggingCommand;
 import frc.robot.operator.GameController;
 import frc.robot.subsystems.LightsSubsystem;
 
-public class DefaultLEDCommand extends LoggingCommand {
+public class DefaultLightsCommand extends LoggingCommand {
 
     // private final LEDSubsystem ledSubsystem;
     private final LightsSubsystem lightsSubsystem;
@@ -14,7 +14,7 @@ public class DefaultLEDCommand extends LoggingCommand {
      *
      * @param LightsSubsystem The subsystem used by this command.
      */
-    public DefaultLEDCommand(GameController driverController,
+    public DefaultLightsCommand(GameController driverController,
         LightsSubsystem lightsSubsystem) {
 
         this.lightsSubsystem = lightsSubsystem;

@@ -4,13 +4,11 @@ import frc.robot.Constants.DriveConstants.DriveMode;
 import frc.robot.commands.LoggingCommand;
 import frc.robot.operator.OperatorInput;
 import frc.robot.subsystems.DriveSubsystem;
-import frc.robot.subsystems.VisionSubsystem;
 
 public class DefaultDriveCommand extends LoggingCommand {
 
-    private final DriveSubsystem  driveSubsystem;
-    private final VisionSubsystem visionSubsystem;
-    private final OperatorInput   operatorInput;
+    private final DriveSubsystem driveSubsystem;
+    private final OperatorInput  operatorInput;
 
     /**
      * Creates a new ExampleCommand.
@@ -18,11 +16,10 @@ public class DefaultDriveCommand extends LoggingCommand {
      * @param driveSubsystem The subsystem used by this command.
      */
     public DefaultDriveCommand(OperatorInput operatorInput,
-        DriveSubsystem driveSubsystem, VisionSubsystem visionSubsystem) {
+        DriveSubsystem driveSubsystem) {
 
-        this.operatorInput   = operatorInput;
-        this.driveSubsystem  = driveSubsystem;
-        this.visionSubsystem = visionSubsystem;
+        this.operatorInput  = operatorInput;
+        this.driveSubsystem = driveSubsystem;
 
         // Use addRequirements() here to declare subsystem dependencies.
         addRequirements(driveSubsystem);
@@ -68,42 +65,7 @@ public class DefaultDriveCommand extends LoggingCommand {
             break;
         }
 
-        /*
-         * FIXME: This should be a separate command.
-         * DriveToAprilTagCommand(driveSubsystem);
-         */
-        double KpAim           = -0.1;                   // Propotional control constant
-        double KpDistance      = -0.1;                   // Proportional control constant for
-                                                         // distance
 
-        double min_aim_command = 0.05;                   // Since it is impossible to perfectly
-                                                         // align the robot with the target. This
-                                                         // set minimum range in which the robot
-                                                         // needs to be aiming.
-
-        double tx              = visionSubsystem.getTX();
-        double ty              = visionSubsystem.getTY();
-
-        if (operatorInput.getDriveToVisionTarget() > 0) {
-
-            double heading_error   = -tx;
-            double distance_error  = -ty;
-            double steering_adjust = 0.0f;
-
-            if (tx > 1.0) {
-                steering_adjust = KpAim * heading_error - min_aim_command;
-            }
-            else if (tx < -1.0) {
-                steering_adjust = KpAim * heading_error + min_aim_command;
-            }
-
-            double distance_adjust = KpDistance * distance_error;
-
-            double left_command    = steering_adjust + distance_adjust;
-            double right_command   = (steering_adjust + distance_adjust) * -1;
-
-            driveSubsystem.setMotorSpeeds(left_command, right_command);
-        }
 
     }
 
