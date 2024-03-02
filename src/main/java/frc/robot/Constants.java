@@ -49,12 +49,27 @@ public final class Constants {
 
     }
 
-    public static final class ShooterConstants {
-        public static final int    SHOOTER_MOTOR_PORT  = 31;
-        public static final int    FEEDER_MOTOR_PORT   = 30;
+    public static final class ClimbConstants {
+        public static final int    RIGHT_MOTOR_PORT    = 41;
+        public static final int    LEFT_MOTOR_PORT     = 40;
 
-        public static final double SHOOTER_SHOOT_SPEED = -1;
-        public static final double FEEDER_SHOOT_SPEED  = -1;
+        public static final double CLIMBER_MOTOR_SPEED = 1;
+    }
+
+    public static final class ShooterConstants {
+        public static final int SHOOTER_MOTOR_PORT = 31;
+        public static final int FEEDER_MOTOR_PORT  = 30;
+
+        public static enum shooterType {
+            AMPShooter, SpeakerShooter
+        };
+
+        public static final double SHOOTER_SHOOT_SPEAKER_SPEED = -1;
+        public static final double FEEDER_SHOOT_SPEAKER_SPEED  = -1;
+
+        public static final double SHOOTER_SHOOT_AMP_SPEED     = -0.2;
+        public static final double FEEDER_SHOOT_AMP_SPEED      = -0.3;
+
     }
 
     public static final class LEDConstants {

@@ -7,10 +7,13 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.AutoConstants.AutoPattern;
 import frc.robot.Constants.DriveConstants.DriveMode;
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.Constants.ShooterConstants;
 import frc.robot.commands.CancelCommand;
+import frc.robot.commands.climb.DefaultClimbCommand;
 import frc.robot.commands.shooter.IntakeCommand;
 import frc.robot.commands.shooter.ShootCommand;
 import frc.robot.commands.vision.DriveToAprilTagCommand;
+import frc.robot.subsystems.ClimbSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
@@ -119,15 +122,26 @@ public class OperatorInput extends SubsystemBase {
     /*
      * Shooter Trigger Boolean
      */
-    public boolean isShoot() {
+    public boolean isShootSpeaker() {
         return driverController.getBButton();
     }
 
+    public boolean isShootAmp() {
+        return driverController.getXButton();
+    }
+
     /*
-     * isIntake Trigger Boolean
+     * is Intake Trigger Boolean
      */
     public boolean isIntake() {
         return driverController.getAButton();
+    }
+
+    /*
+     * Is Climber Trigger Button
+     */
+    public boolean isClimb() {
+        return driverController.getYButton();
     }
 
 
@@ -140,7 +154,7 @@ public class OperatorInput extends SubsystemBase {
      * NOTE: all subsystems should be passed into this method.
      */
     public void configureButtonBindings(DriveSubsystem driveSubsystem, ShooterSubsystem shooterSubsystem,
-        VisionSubsystem visionSubsystem) {
+        VisionSubsystem visionSubsystem, ClimbSubsystem climbSubsystem) {
 
         new Trigger(() -> isCancel())
             .onTrue(new CancelCommand(this, driveSubsystem, shooterSubsystem));
@@ -150,12 +164,18 @@ public class OperatorInput extends SubsystemBase {
             .onTrue(new IntakeCommand(shooterSubsystem));
 
         // Shooter button
-        new Trigger(() -> isShoot())
-            .onTrue(new ShootCommand(shooterSubsystem));
+        new Trigger(() -> isShootSpeaker())
+            .onTrue(new ShootCommand(shooterSubsystem, ShooterConstants.shooterType.SpeakerShooter));
+
+        new Trigger(() -> isShootAmp())
+            .onTrue(new ShootCommand(shooterSubsystem, ShooterConstants.shooterType.AMPShooter));
 
         // Detect April Tag
         new Trigger(() -> getDriveToVisionTarget() > 0)
             .onTrue(new DriveToAprilTagCommand(driveSubsystem, visionSubsystem));
+
+        new Trigger(() -> isClimb())
+            .onTrue(new DefaultClimbCommand(climbSubsystem));
 
     }
 

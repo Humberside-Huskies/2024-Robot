@@ -1,24 +1,23 @@
-package frc.robot.commands.shooter;
+package frc.robot.commands.climb;
 
-import frc.robot.Constants.ShooterConstants;
+import frc.robot.Constants.ClimbConstants;
 import frc.robot.commands.LoggingCommand;
-import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.subsystems.ClimbSubsystem;
 
-public class IntakeCommand extends LoggingCommand {
+public class DefaultClimbCommand extends LoggingCommand {
 
-    private final ShooterSubsystem shooterSubsystem;
+    private final ClimbSubsystem climbSubsystem;
 
     /**
      * Creates a new ExampleCommand.
      *
-     * @param shooterSubsystem The subsystem used by this command.
+     * @param climbSubsystem The subsystem used by this command.
      */
-    public IntakeCommand(ShooterSubsystem shooterSubsystem) {
-
-        this.shooterSubsystem = shooterSubsystem;
+    public DefaultClimbCommand(ClimbSubsystem climbSubsystem) {
+        this.climbSubsystem = climbSubsystem;
 
         // Use addRequirements() here to declare subsystem dependencies.
-        addRequirements(shooterSubsystem);
+        addRequirements(climbSubsystem);
     }
 
     // Called when the command is initially scheduled.
@@ -31,17 +30,15 @@ public class IntakeCommand extends LoggingCommand {
     @Override
     public void execute() {
         // Run the shooter wheel
-        shooterSubsystem.setFeederSpeed(-ShooterConstants.SHOOTER_SHOOT_SPEAKER_SPEED);
-        shooterSubsystem.setShooterSpeed(-ShooterConstants.FEEDER_SHOOT_SPEAKER_SPEED);
+        climbSubsystem.setMotorSpeeds(ClimbConstants.CLIMBER_MOTOR_SPEED);
     }
 
     // Returns true when the command should end.
     @Override
     public boolean isFinished() {
-
         // Stop this command after 4 seconds total
-        if (shooterSubsystem.isNoteLoaded()) {
-            setFinishReason("Intake completed");
+        if (isTimeoutExceeded(2.0)) {
+            setFinishReason("Climb finished");
             return true;
         }
 
@@ -51,7 +48,6 @@ public class IntakeCommand extends LoggingCommand {
     // Called once the command ends or is interrupted.
     @Override
     public void end(boolean interrupted) {
-        shooterSubsystem.stop();
         logCommandEnd(interrupted);
     }
 }

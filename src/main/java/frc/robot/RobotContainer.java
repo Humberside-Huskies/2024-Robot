@@ -9,6 +9,7 @@ import frc.robot.commands.auto.AutonomousCommand;
 import frc.robot.commands.drive.DefaultDriveCommand;
 import frc.robot.commands.shooter.DefaultShooterCommand;
 import frc.robot.operator.OperatorInput;
+import frc.robot.subsystems.ClimbSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
@@ -29,6 +30,7 @@ public class RobotContainer {
     private final DriveSubsystem   driveSubsystem   = new DriveSubsystem();
     private final ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
     private final VisionSubsystem  visionSubsystem  = new VisionSubsystem();
+    private final ClimbSubsystem   climpSubsystem   = new ClimbSubsystem();
 
     /**
      * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -47,7 +49,7 @@ public class RobotContainer {
                 shooterSubsystem));
 
         // Configure the button bindings
-        operatorInput.configureButtonBindings(driveSubsystem, shooterSubsystem, visionSubsystem);
+        operatorInput.configureButtonBindings(driveSubsystem, shooterSubsystem, visionSubsystem, climpSubsystem);
     }
 
     /**

@@ -60,16 +60,19 @@ public class DriveToAprilTagCommand extends LoggingCommand {
         double distance_adjust = KpDistance * distance_error;
 
         double left_command    = steering_adjust + distance_adjust;
-        double right_command   = (steering_adjust + distance_adjust) * -1;
+        double right_command   = -(steering_adjust + distance_adjust);
 
         driveSubsystem.setMotorSpeeds(left_command, right_command);
-
     }
 
     // Returns true when the command should end.
     @Override
     public boolean isFinished() {
-        // The default drive command never ends, but can be interrupted by other commands.
+        if (isTimeoutExceeded(2.0)) {
+            setFinishReason("tony was here");
+            return true;
+        }
+
         return false;
     }
 

@@ -50,6 +50,7 @@ public class AutonomousCommand extends SequentialCommandGroup {
             return;
 
         case SHOOT_AND_LEAVE_STAGE:
+            // addCommands(new Drive);
             // What should we put here?
             // Drive forward for 1 second
             // addCommands(new DriveForwardCommand(1, driveSubsystem));

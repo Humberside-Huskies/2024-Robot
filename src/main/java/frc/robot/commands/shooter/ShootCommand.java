@@ -6,16 +6,19 @@ import frc.robot.subsystems.ShooterSubsystem;
 
 public class ShootCommand extends LoggingCommand {
 
-    private final ShooterSubsystem shooterSubsystem;
+    private final ShooterSubsystem             shooterSubsystem;
+
+    private final ShooterConstants.shooterType shooterType;
 
     /**
      * Creates a new ExampleCommand.
      *
      * @param shooterSubsystem The subsystem used by this command.
      */
-    public ShootCommand(ShooterSubsystem shooterSubsystem) {
+    public ShootCommand(ShooterSubsystem shooterSubsystem, ShooterConstants.shooterType shooterType) {
 
         this.shooterSubsystem = shooterSubsystem;
+        this.shooterType      = shooterType;
 
         // Use addRequirements() here to declare subsystem dependencies.
         addRequirements(shooterSubsystem);
@@ -31,13 +34,29 @@ public class ShootCommand extends LoggingCommand {
     @Override
     public void execute() {
 
-        // Run the shooter wheel
-        shooterSubsystem.setShooterSpeed(ShooterConstants.SHOOTER_SHOOT_SPEED);
+        if (shooterType == ShooterConstants.shooterType.SpeakerShooter) {
 
-        // If this command has been running for 2 seconds, then start the feeder
-        if (isTimeoutExceeded(2.0)) {
-            shooterSubsystem.setFeederSpeed(ShooterConstants.FEEDER_SHOOT_SPEED);
+            // Run the shooter wheel
+            shooterSubsystem.setShooterSpeed(ShooterConstants.SHOOTER_SHOOT_SPEAKER_SPEED);
+
+            // If this command has been running for 2 seconds, then start the feeder
+            if (isTimeoutExceeded(0.5)) {
+                shooterSubsystem.setFeederSpeed(ShooterConstants.FEEDER_SHOOT_SPEAKER_SPEED);
+            }
         }
+        else if (shooterType == ShooterConstants.shooterType.AMPShooter) {
+
+
+            // Run the shooter wheel
+            shooterSubsystem.setShooterSpeed(ShooterConstants.SHOOTER_SHOOT_AMP_SPEED);
+
+            // If this command has been running for 2 seconds, then start the feeder
+            if (isTimeoutExceeded(0.5)) {
+                shooterSubsystem.setFeederSpeed(ShooterConstants.FEEDER_SHOOT_AMP_SPEED);
+            }
+
+        }
+
     }
 
     // Returns true when the command should end.
@@ -45,7 +64,7 @@ public class ShootCommand extends LoggingCommand {
     public boolean isFinished() {
 
         // Stop this command after 4 seconds total
-        if (isTimeoutExceeded(4.0)) {
+        if (isTimeoutExceeded(2.0)) {
             setFinishReason("Shot fired");
             return true;
         }

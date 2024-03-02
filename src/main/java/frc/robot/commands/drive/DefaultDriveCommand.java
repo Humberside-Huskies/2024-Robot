@@ -35,24 +35,27 @@ public class DefaultDriveCommand extends LoggingCommand {
     @Override
     public void execute() {
 
-        DriveMode driveMode     = operatorInput.getSelectedDriveMode();
+        DriveMode driveMode         = operatorInput.getSelectedDriveMode();
 
         // Default scaling (when neither boost nor slow are pressed
-        double    scalingFactor = 0.6;
+        double    scalingFactor     = 0.4;
+        double    scalingFactorTurn = 0.7;
 
         if (operatorInput.isBoost()) {
-            scalingFactor = 1.0;
+            scalingFactor     = 1.0;
+            scalingFactorTurn = 1.0;
         }
 
         if (operatorInput.isSlow()) {
-            scalingFactor = .3;
+            scalingFactor     = 0.15;
+            scalingFactorTurn = 0.5;
         }
 
         switch (driveMode) {
 
         case DUAL_STICK_ARCADE:
         case SINGLE_STICK_ARCADE:
-            setMotorSpeedsArcade(operatorInput.getSpeed(), operatorInput.getTurn(), scalingFactor);
+            setMotorSpeedsArcade(operatorInput.getSpeed(), operatorInput.getTurn() * scalingFactorTurn, scalingFactor);
             break;
 
         case TANK:

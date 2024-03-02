@@ -3,6 +3,7 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ShooterConstants;
@@ -10,11 +11,15 @@ import frc.robot.Constants.ShooterConstants;
 public class ShooterSubsystem extends SubsystemBase {
 
     // Motors
-    private final CANSparkMax shooterMotor = new CANSparkMax(ShooterConstants.SHOOTER_MOTOR_PORT, MotorType.kBrushed);
-    private final CANSparkMax feederMotor  = new CANSparkMax(ShooterConstants.FEEDER_MOTOR_PORT, MotorType.kBrushed);
+    private final CANSparkMax  shooterMotor = new CANSparkMax(ShooterConstants.SHOOTER_MOTOR_PORT, MotorType.kBrushed);
+    private final CANSparkMax  feederMotor  = new CANSparkMax(ShooterConstants.FEEDER_MOTOR_PORT, MotorType.kBrushed);
 
-    public double             shooterSpeed = 0;
-    public double             feederSpeed  = 0;
+    // sensor
+    private final DigitalInput input        = new DigitalInput(0);
+
+
+    public double              shooterSpeed = 0;
+    public double              feederSpeed  = 0;
 
     /** Creates a new ShooterSubsystem. */
     public ShooterSubsystem() {
@@ -44,6 +49,10 @@ public class ShooterSubsystem extends SubsystemBase {
         feederMotor.set(this.feederSpeed);
     }
 
+    public boolean isNoteLoaded() {
+        return this.input.get();
+    }
+
     /** Safely stop the subsystem from moving */
     public void stop() {
         setShooterSpeed(0);
@@ -58,6 +67,7 @@ public class ShooterSubsystem extends SubsystemBase {
          */
         SmartDashboard.putNumber("Shooter Motor", this.shooterSpeed);
         SmartDashboard.putNumber("Feeder Motor", this.feederSpeed);
+        SmartDashboard.putBoolean("Sensor", this.input.get());
     }
 
     @Override
