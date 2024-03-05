@@ -1,6 +1,5 @@
 package frc.robot.commands.climb;
 
-import frc.robot.Constants.ClimbConstants;
 import frc.robot.commands.LoggingCommand;
 import frc.robot.subsystems.ClimbSubsystem;
 
@@ -29,8 +28,11 @@ public class DefaultClimbCommand extends LoggingCommand {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
+
+        // FIXME: Use input from the Operator to run the climb, don't just turn on the climb motors
+
         // Run the shooter wheel
-        climbSubsystem.setMotorSpeeds(ClimbConstants.CLIMBER_MOTOR_SPEED);
+        // climbSubsystem.setMotorSpeeds(ClimbConstants.CLIMBER_MOTOR_SPEED);
     }
 
     // Returns true when the command should end.
