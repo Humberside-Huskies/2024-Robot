@@ -10,6 +10,8 @@ public class ShootCommand extends LoggingCommand {
 
     private final ShooterConstants.shooterType shooterType;
 
+    private boolean                            canItStop = false;
+
     /**
      * Creates a new ExampleCommand.
      *
@@ -51,11 +53,15 @@ public class ShootCommand extends LoggingCommand {
             shooterSubsystem.setShooterSpeed(ShooterConstants.SHOOTER_SHOOT_AMP_SPEED);
 
             // If this command has been running for 2 seconds, then start the feeder
-            if (isTimeoutExceeded(0.5)) {
+            if (isTimeoutExceeded(.5)) {
                 shooterSubsystem.setFeederSpeed(ShooterConstants.FEEDER_SHOOT_AMP_SPEED);
             }
 
         }
+        if (shooterSubsystem.isNoteLoaded())
+            canItStop = true;
+
+
 
     }
 
@@ -63,13 +69,13 @@ public class ShootCommand extends LoggingCommand {
     @Override
     public boolean isFinished() {
 
-        // Stop this command after 4 seconds total
-        if (isTimeoutExceeded(2.0)) {
+        // Stop this command after 2.5 seconds total
+        if (isTimeoutExceeded(2.5) && canItStop) {
             setFinishReason("Shot fired");
             return true;
         }
-
         return false;
+
     }
 
     // Called once the command ends or is interrupted.

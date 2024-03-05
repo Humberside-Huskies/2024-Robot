@@ -36,8 +36,8 @@ public class DefaultClimbCommand extends LoggingCommand {
     // Returns true when the command should end.
     @Override
     public boolean isFinished() {
-        // Stop this command after 4 seconds total
-        if (isTimeoutExceeded(2.0)) {
+        // Stop this command after 3 seconds total
+        if (isTimeoutExceeded(3.0)) {
             setFinishReason("Climb finished");
             return true;
         }

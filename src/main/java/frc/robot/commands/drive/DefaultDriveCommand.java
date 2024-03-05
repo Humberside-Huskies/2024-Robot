@@ -47,8 +47,7 @@ public class DefaultDriveCommand extends LoggingCommand {
         }
 
         if (operatorInput.isSlow()) {
-            scalingFactor     = 0.15;
-            scalingFactorTurn = 0.5;
+            scalingFactor = 0.15;
         }
 
         switch (driveMode) {
@@ -60,7 +59,7 @@ public class DefaultDriveCommand extends LoggingCommand {
 
         case TANK:
         default:
-
+            System.out.println("Default");
             double leftSpeed = operatorInput.getLeftSpeed() * scalingFactor;
             double rightSpeed = operatorInput.getRightSpeed() * scalingFactor;
 

@@ -3,23 +3,30 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
 
+import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveConstants;
 
 public class DriveSubsystem extends SubsystemBase {
+    private static final double   LIMIT              = 1.5;
+
+    private final SlewRateLimiter leftLimiter        = new SlewRateLimiter(LIMIT);
+
+    private final SlewRateLimiter rightLimiter       = new SlewRateLimiter(LIMIT);
+
 
     // The motors on the left side of the drive.
-    private final CANSparkMax leftPrimaryMotor   = new CANSparkMax(DriveConstants.LEFT_MOTOR_PORT, MotorType.kBrushless);
-    private final CANSparkMax leftFollowerMotor  = new CANSparkMax(DriveConstants.LEFT_MOTOR_PORT + 1, MotorType.kBrushless);
+    private final CANSparkMax     leftPrimaryMotor   = new CANSparkMax(DriveConstants.LEFT_MOTOR_PORT, MotorType.kBrushless);
+    private final CANSparkMax     leftFollowerMotor  = new CANSparkMax(DriveConstants.LEFT_MOTOR_PORT + 1, MotorType.kBrushless);
 
     // The motors on the right side of the drive.
-    private final CANSparkMax rightPrimaryMotor  = new CANSparkMax(DriveConstants.RIGHT_MOTOR_PORT, MotorType.kBrushless);
-    private final CANSparkMax rightFollowerMotor = new CANSparkMax(DriveConstants.RIGHT_MOTOR_PORT + 1, MotorType.kBrushless);
+    private final CANSparkMax     rightPrimaryMotor  = new CANSparkMax(DriveConstants.RIGHT_MOTOR_PORT, MotorType.kBrushless);
+    private final CANSparkMax     rightFollowerMotor = new CANSparkMax(DriveConstants.RIGHT_MOTOR_PORT + 1, MotorType.kBrushless);
 
     // Motor speeds
-    private double            leftSpeed          = 0;
-    private double            rightSpeed         = 0;
+    private double                leftSpeed          = 0;
+    private double                rightSpeed         = 0;
 
     /** Creates a new DriveSubsystem. */
     public DriveSubsystem() {
@@ -53,9 +60,8 @@ public class DriveSubsystem extends SubsystemBase {
      * @param rightSpeed
      */
     public void setMotorSpeeds(double leftSpeed, double rightSpeed) {
-
-        this.leftSpeed  = leftSpeed;
-        this.rightSpeed = rightSpeed;
+        leftSpeed  = leftLimiter.calculate(leftSpeed);
+        rightSpeed = rightLimiter.calculate(rightSpeed);
 
         leftPrimaryMotor.set(leftSpeed);
         rightPrimaryMotor.set(rightSpeed);
@@ -63,7 +69,13 @@ public class DriveSubsystem extends SubsystemBase {
         // NOTE: The follower motors are set to follow the primary motors
         leftFollowerMotor.set(leftSpeed);
         rightFollowerMotor.set(rightSpeed);
+
+        // save locally for periodic reporting to dashboard
+        this.leftSpeed  = leftSpeed;
+        this.rightSpeed = rightSpeed;
     }
+
+
 
     /** Safely stop the subsystem from moving */
     public void stop() {

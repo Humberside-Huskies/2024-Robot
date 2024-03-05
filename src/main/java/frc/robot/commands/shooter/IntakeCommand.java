@@ -7,15 +7,17 @@ import frc.robot.subsystems.ShooterSubsystem;
 public class IntakeCommand extends LoggingCommand {
 
     private final ShooterSubsystem shooterSubsystem;
+    private final boolean          emmergencyOverride;
 
     /**
      * Creates a new ExampleCommand.
      *
      * @param shooterSubsystem The subsystem used by this command.
      */
-    public IntakeCommand(ShooterSubsystem shooterSubsystem) {
+    public IntakeCommand(ShooterSubsystem shooterSubsystem, boolean emmergencyOverride) {
 
-        this.shooterSubsystem = shooterSubsystem;
+        this.shooterSubsystem   = shooterSubsystem;
+        this.emmergencyOverride = emmergencyOverride;
 
         // Use addRequirements() here to declare subsystem dependencies.
         addRequirements(shooterSubsystem);
@@ -24,6 +26,7 @@ public class IntakeCommand extends LoggingCommand {
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
+        System.out.println("Intake begin");
         logCommandStart();
     }
 
@@ -33,20 +36,27 @@ public class IntakeCommand extends LoggingCommand {
         // Run the shooter wheel
         shooterSubsystem.setFeederSpeed(-ShooterConstants.SHOOTER_SHOOT_SPEAKER_SPEED);
         shooterSubsystem.setShooterSpeed(-ShooterConstants.FEEDER_SHOOT_SPEAKER_SPEED);
+
+
     }
 
     // Returns true when the command should end.
     @Override
     public boolean isFinished() {
 
-        // Stop this command after 4 seconds total
-        if (shooterSubsystem.isNoteLoaded()) {
-            setFinishReason("Intake completed");
-            return true;
-        }
 
+        // Checks if the note has triggered the laser. If it hasn't runs Intake motors for 4 seconds
+        // and then stops
+        if (shooterSubsystem.isNoteLoaded() || isTimeoutExceeded(4)) {
+            System.out.println("Intake stop");
+            setFinishReason("Intake no more");
+            return true;
+
+        }
         return false;
+
     }
+
 
     // Called once the command ends or is interrupted.
     @Override

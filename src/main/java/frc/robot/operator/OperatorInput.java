@@ -144,6 +144,13 @@ public class OperatorInput extends SubsystemBase {
         return driverController.getYButton();
     }
 
+    /*
+     * Is emmergency Intake
+     */
+    public boolean isAltIntake() {
+        return driverController.getYButton();
+    }
+
 
 
     /**
@@ -161,7 +168,7 @@ public class OperatorInput extends SubsystemBase {
 
         // Intake button
         new Trigger(() -> isIntake())
-            .onTrue(new IntakeCommand(shooterSubsystem));
+            .onTrue(new IntakeCommand(shooterSubsystem, false));
 
         // Shooter button
         new Trigger(() -> isShootSpeaker())
@@ -176,6 +183,10 @@ public class OperatorInput extends SubsystemBase {
 
         new Trigger(() -> isClimb())
             .onTrue(new DefaultClimbCommand(climbSubsystem));
+
+        new Trigger(() -> isAltIntake())
+            .onTrue(new IntakeCommand(shooterSubsystem, true));
+
 
     }
 
