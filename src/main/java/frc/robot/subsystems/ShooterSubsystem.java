@@ -18,8 +18,8 @@ public class ShooterSubsystem extends SubsystemBase {
     private final DigitalInput input        = new DigitalInput(0);
 
 
-    public double              shooterSpeed = 0;
-    public double              feederSpeed  = 0;
+    private double             shooterSpeed = 0;
+    private double             feederSpeed  = 0;
 
     /** Creates a new ShooterSubsystem. */
     public ShooterSubsystem() {
@@ -67,7 +67,7 @@ public class ShooterSubsystem extends SubsystemBase {
          */
         SmartDashboard.putNumber("Shooter Motor", this.shooterSpeed);
         SmartDashboard.putNumber("Feeder Motor", this.feederSpeed);
-        SmartDashboard.putBoolean("Sensor", this.input.get());
+        SmartDashboard.putBoolean("Sensor", this.isNoteLoaded());
     }
 
     @Override

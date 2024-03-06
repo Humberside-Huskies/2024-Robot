@@ -21,7 +21,7 @@ public final class Constants {
     public static final class AutoConstants {
 
         public static enum AutoPattern {
-            DO_NOTHING, SHOOT_AND_LEAVE_STAGE, SHOOT_AND_LEAVE_AMP
+            DO_NOTHING, SHOOT_SPEAKER_AND_LEAVE,
         };
     }
 
@@ -31,6 +31,7 @@ public final class Constants {
             TANK, SINGLE_STICK_ARCADE, DUAL_STICK_ARCADE;
         }
 
+        public static final double  SLEW_LIMIT                    = 1.5;
         public static final int     LEFT_MOTOR_PORT               = 10;
         public static final int     RIGHT_MOTOR_PORT              = 20;
 
@@ -67,8 +68,8 @@ public final class Constants {
         public static final double SHOOTER_SHOOT_SPEAKER_SPEED = -1;
         public static final double FEEDER_SHOOT_SPEAKER_SPEED  = -1;
 
-        public static final double SHOOTER_SHOOT_AMP_SPEED     = -0.15;
-        public static final double FEEDER_SHOOT_AMP_SPEED      = -0.25;
+        public static final double SHOOTER_SHOOT_AMP_SPEED     = -0.22;
+        public static final double FEEDER_SHOOT_AMP_SPEED      = -0.35;
 
     }
 

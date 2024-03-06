@@ -2,22 +2,23 @@ package frc.robot.commands.shooter;
 
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.commands.LoggingCommand;
+import frc.robot.operator.OperatorInput;
 import frc.robot.subsystems.ShooterSubsystem;
 
 public class IntakeCommand extends LoggingCommand {
 
     private final ShooterSubsystem shooterSubsystem;
-    private final boolean          emmergencyOverride;
+    private final OperatorInput    operatorInput;
 
     /**
      * Creates a new ExampleCommand.
      *
      * @param shooterSubsystem The subsystem used by this command.
      */
-    public IntakeCommand(ShooterSubsystem shooterSubsystem, boolean emmergencyOverride) {
+    public IntakeCommand(ShooterSubsystem shooterSubsystem, OperatorInput operatorInput) {
 
-        this.shooterSubsystem   = shooterSubsystem;
-        this.emmergencyOverride = emmergencyOverride;
+        this.shooterSubsystem = shooterSubsystem;
+        this.operatorInput    = operatorInput;
 
         // Use addRequirements() here to declare subsystem dependencies.
         addRequirements(shooterSubsystem);
@@ -47,8 +48,12 @@ public class IntakeCommand extends LoggingCommand {
 
         // Checks if the note has triggered the laser. If it hasn't runs Intake motors for 4 seconds
         // and then stops
+        if (operatorInput.isAltIntake()) {
+            setFinishReason("Intake forcestop");
+
+            return true;
+        }
         if (shooterSubsystem.isNoteLoaded() || isTimeoutExceeded(4)) {
-            System.out.println("Intake stop");
             setFinishReason("Intake no more");
             return true;
 

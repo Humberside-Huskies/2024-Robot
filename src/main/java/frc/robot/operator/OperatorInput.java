@@ -44,8 +44,8 @@ public class OperatorInput extends SubsystemBase {
 
         autoPatternChooser.setDefaultOption("Do Nothing", AutoPattern.DO_NOTHING);
         SmartDashboard.putData("Auto Pattern", autoPatternChooser);
-        autoPatternChooser.addOption("Amp Start", AutoPattern.SHOOT_AND_LEAVE_AMP);
-        autoPatternChooser.addOption("Stage Start", AutoPattern.SHOOT_AND_LEAVE_STAGE);
+        // autoPatternChooser.addOption("Amp Start", AutoPattern.SHOOT_AMP_AND_LEAVE);
+        autoPatternChooser.addOption("Speaker Start", AutoPattern.SHOOT_SPEAKER_AND_LEAVE);
 
     }
 
@@ -168,7 +168,7 @@ public class OperatorInput extends SubsystemBase {
 
         // Intake button
         new Trigger(() -> isIntake())
-            .onTrue(new IntakeCommand(shooterSubsystem, false));
+            .onTrue(new IntakeCommand(shooterSubsystem, this));
 
         // Shooter button
         new Trigger(() -> isShootSpeaker())
@@ -184,8 +184,6 @@ public class OperatorInput extends SubsystemBase {
         new Trigger(() -> isClimb())
             .onTrue(new DefaultClimbCommand(climbSubsystem));
 
-        new Trigger(() -> isAltIntake())
-            .onTrue(new IntakeCommand(shooterSubsystem, true));
 
 
     }

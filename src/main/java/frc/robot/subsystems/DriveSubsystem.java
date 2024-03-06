@@ -9,11 +9,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveConstants;
 
 public class DriveSubsystem extends SubsystemBase {
-    private static final double   LIMIT              = 1.5;
-
-    private final SlewRateLimiter leftLimiter        = new SlewRateLimiter(LIMIT);
-
-    private final SlewRateLimiter rightLimiter       = new SlewRateLimiter(LIMIT);
+    private final SlewRateLimiter leftLimiter        = new SlewRateLimiter(DriveConstants.SLEW_LIMIT);
+    private final SlewRateLimiter rightLimiter       = new SlewRateLimiter(DriveConstants.SLEW_LIMIT);
 
 
     // The motors on the left side of the drive.
@@ -75,8 +72,6 @@ public class DriveSubsystem extends SubsystemBase {
         this.rightSpeed = rightSpeed;
     }
 
-
-
     /** Safely stop the subsystem from moving */
     public void stop() {
         setMotorSpeeds(0, 0);
@@ -104,5 +99,4 @@ public class DriveSubsystem extends SubsystemBase {
 
         return sb.toString();
     }
-
 }

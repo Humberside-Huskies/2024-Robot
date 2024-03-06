@@ -10,8 +10,6 @@ public class ShootCommand extends LoggingCommand {
 
     private final ShooterConstants.shooterType shooterType;
 
-    private boolean                            canItStop = false;
-
     /**
      * Creates a new ExampleCommand.
      *
@@ -41,7 +39,7 @@ public class ShootCommand extends LoggingCommand {
             // Run the shooter wheel
             shooterSubsystem.setShooterSpeed(ShooterConstants.SHOOTER_SHOOT_SPEAKER_SPEED);
 
-            // If this command has been running for 2 seconds, then start the feeder
+            // If this command has been running for 0.5 seconds, then start the feeder
             if (isTimeoutExceeded(0.5)) {
                 shooterSubsystem.setFeederSpeed(ShooterConstants.FEEDER_SHOOT_SPEAKER_SPEED);
             }
@@ -53,16 +51,11 @@ public class ShootCommand extends LoggingCommand {
             shooterSubsystem.setShooterSpeed(ShooterConstants.SHOOTER_SHOOT_AMP_SPEED);
 
             // If this command has been running for 2 seconds, then start the feeder
-            if (isTimeoutExceeded(.5)) {
+            if (isTimeoutExceeded(0.5)) {
                 shooterSubsystem.setFeederSpeed(ShooterConstants.FEEDER_SHOOT_AMP_SPEED);
             }
 
         }
-        if (shooterSubsystem.isNoteLoaded())
-            canItStop = true;
-
-
-
     }
 
     // Returns true when the command should end.
@@ -70,7 +63,8 @@ public class ShootCommand extends LoggingCommand {
     public boolean isFinished() {
 
         // Stop this command after 2.5 seconds total
-        if (isTimeoutExceeded(2.5) && canItStop) {
+        // FIX check if note is loaded if it isn't spin for 0.5 second more and then stop
+        if (isTimeoutExceeded(2.5) || (shooterSubsystem.isNoteLoaded() && isTimeoutExceeded(1))) {
             setFinishReason("Shot fired");
             return true;
         }
