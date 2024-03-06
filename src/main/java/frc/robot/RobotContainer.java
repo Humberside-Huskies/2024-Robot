@@ -6,8 +6,8 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.commands.auto.AutonomousCommand;
+import frc.robot.commands.climb.DefaultClimbCommand;
 import frc.robot.commands.drive.DefaultDriveCommand;
-import frc.robot.commands.shooter.DefaultShooterCommand;
 import frc.robot.operator.OperatorInput;
 import frc.robot.subsystems.ClimbSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
@@ -43,10 +43,11 @@ public class RobotContainer {
                 operatorInput,
                 driveSubsystem));
 
-        shooterSubsystem.setDefaultCommand(
-            new DefaultShooterCommand(
-                operatorInput,
-                shooterSubsystem));
+        driveSubsystem.setDefaultCommand(
+            new DefaultClimbCommand(
+                climpSubsystem,
+                operatorInput));
+
 
         // Configure the button bindings
         operatorInput.configureButtonBindings(driveSubsystem, shooterSubsystem, visionSubsystem, climpSubsystem);

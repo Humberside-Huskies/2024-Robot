@@ -9,9 +9,8 @@ import frc.robot.Constants.DriveConstants.DriveMode;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.commands.CancelCommand;
-import frc.robot.commands.climb.DefaultClimbCommand;
-import frc.robot.commands.shooter.IntakeCommand;
-import frc.robot.commands.shooter.ShootCommand;
+import frc.robot.commands.shooter.DefaultIntakeCommand;
+import frc.robot.commands.shooter.DefaultShooterCommand;
 import frc.robot.commands.vision.DriveToAprilTagCommand;
 import frc.robot.subsystems.ClimbSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
@@ -168,21 +167,18 @@ public class OperatorInput extends SubsystemBase {
 
         // Intake button
         new Trigger(() -> isIntake())
-            .onTrue(new IntakeCommand(shooterSubsystem, this));
+            .onTrue(new DefaultIntakeCommand(shooterSubsystem, this));
 
         // Shooter button
         new Trigger(() -> isShootSpeaker())
-            .onTrue(new ShootCommand(shooterSubsystem, ShooterConstants.shooterType.SpeakerShooter));
+            .onTrue(new DefaultShooterCommand(shooterSubsystem, ShooterConstants.shooterType.SpeakerShooter));
 
         new Trigger(() -> isShootAmp())
-            .onTrue(new ShootCommand(shooterSubsystem, ShooterConstants.shooterType.AMPShooter));
+            .onTrue(new DefaultShooterCommand(shooterSubsystem, ShooterConstants.shooterType.AMPShooter));
 
         // Detect April Tag
         new Trigger(() -> getDriveToVisionTarget() > 0)
             .onTrue(new DriveToAprilTagCommand(driveSubsystem, visionSubsystem));
-
-        new Trigger(() -> isClimb())
-            .onTrue(new DefaultClimbCommand(climbSubsystem));
 
 
 

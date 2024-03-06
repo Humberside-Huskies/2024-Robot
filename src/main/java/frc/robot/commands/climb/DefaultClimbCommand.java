@@ -1,19 +1,23 @@
 package frc.robot.commands.climb;
 
+import frc.robot.Constants.ClimbConstants;
 import frc.robot.commands.LoggingCommand;
+import frc.robot.operator.OperatorInput;
 import frc.robot.subsystems.ClimbSubsystem;
 
 public class DefaultClimbCommand extends LoggingCommand {
 
     private final ClimbSubsystem climbSubsystem;
+    private final OperatorInput  operatorInput;
 
     /**
      * Creates a new ExampleCommand.
      *
      * @param climbSubsystem The subsystem used by this command.
      */
-    public DefaultClimbCommand(ClimbSubsystem climbSubsystem) {
+    public DefaultClimbCommand(ClimbSubsystem climbSubsystem, OperatorInput operatorInput) {
         this.climbSubsystem = climbSubsystem;
+        this.operatorInput  = operatorInput;
 
         // Use addRequirements() here to declare subsystem dependencies.
         addRequirements(climbSubsystem);
@@ -30,20 +34,14 @@ public class DefaultClimbCommand extends LoggingCommand {
     public void execute() {
 
         // FIXME: Use input from the Operator to run the climb, don't just turn on the climb motors
-
-        // Run the shooter wheel
-        // climbSubsystem.setMotorSpeeds(ClimbConstants.CLIMBER_MOTOR_SPEED);
+        if (operatorInput.isClimb()) {
+            climbSubsystem.setMotorSpeeds(ClimbConstants.CLIMBER_MOTOR_SPEED, ClimbConstants.CLIMBER_MOTOR_SPEED);
+        }
     }
 
     // Returns true when the command should end.
     @Override
     public boolean isFinished() {
-        // Stop this command after 3 seconds total
-        if (isTimeoutExceeded(3.0)) {
-            setFinishReason("Climb finished");
-            return true;
-        }
-
         return false;
     }
 

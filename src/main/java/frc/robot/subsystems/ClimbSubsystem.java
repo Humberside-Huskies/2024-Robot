@@ -27,13 +27,14 @@ public class ClimbSubsystem extends SubsystemBase {
      * @param rightSpeed
      */
 
-    public void setMotorSpeeds(double climbSpeed) {
+    public void setMotorSpeeds(double leftSpeed, double rightSpeed) {
 
         // FIXME: the javadoc^^^ says there are two parameters, left and right.
-        // This makes a lot of sense as you may want to control the lift separately if you are on one
+        // This makes a lot of sense as you may want to control the lift separately if you are on
+        // one
         // side of the chain. Pass in two separate speeds.
-        this.leftSpeed  = climbSpeed;
-        this.rightSpeed = climbSpeed;
+        this.leftSpeed  = leftSpeed;
+        this.rightSpeed = rightSpeed;
 
         leftMotor.set(leftSpeed);
         rightMotor.set(rightSpeed);
@@ -41,7 +42,7 @@ public class ClimbSubsystem extends SubsystemBase {
 
     /** Safely stop the subsystem from moving */
     public void stop() {
-        setMotorSpeeds(0);
+        setMotorSpeeds(0, 0);
     }
 
     @Override
