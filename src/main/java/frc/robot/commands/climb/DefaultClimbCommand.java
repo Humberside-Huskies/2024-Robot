@@ -33,9 +33,14 @@ public class DefaultClimbCommand extends LoggingCommand {
     @Override
     public void execute() {
 
-        // FIXME: Use input from the Operator to run the climb, don't just turn on the climb motors
-        if (operatorInput.isClimb()) {
+        if (operatorInput.isClimb() > 0.4 && !(operatorInput.isRetract() > 0.4)) {
             climbSubsystem.setMotorSpeeds(ClimbConstants.CLIMBER_MOTOR_SPEED, ClimbConstants.CLIMBER_MOTOR_SPEED);
+        }
+        else if (operatorInput.isRetract() > 0.4 && !(operatorInput.isClimb() > 0.4)) {
+            climbSubsystem.setMotorSpeeds(ClimbConstants.RETRACT_MOTOR_SPEED, ClimbConstants.RETRACT_MOTOR_SPEED);
+        }
+        else {
+            climbSubsystem.stop();
         }
     }
 

@@ -10,15 +10,18 @@ public class DriveSpeakerCommand extends LoggingCommand {
     private final DriveSubsystem   driveSubsystem;
     private final ShooterSubsystem shooterSubsystem;
 
+    private double                 rotation = 0;
+
     /**
      * Creates a new ExampleCommand.
      *
      * @param driveSubsystem The subsystem used by this command.
      */
-    public DriveSpeakerCommand(DriveSubsystem driveSubsystem, ShooterSubsystem shooterSubsystem) {
+    public DriveSpeakerCommand(DriveSubsystem driveSubsystem, ShooterSubsystem shooterSubsystem, double rotation) {
 
         this.driveSubsystem   = driveSubsystem;
         this.shooterSubsystem = shooterSubsystem;
+        this.rotation         = rotation;
 
         // Use addRequirements() here to declare subsystem dependencies.
         addRequirements(driveSubsystem);
@@ -33,14 +36,17 @@ public class DriveSpeakerCommand extends LoggingCommand {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
+        if (isTimeoutExceeded(5)) {
+            driveSubsystem.setMotorSpeeds(0, 0);
+        }
         if (isTimeoutExceeded(4)) {
-            shooterSubsystem.setShooterSpeed(0);
-            shooterSubsystem.setFeederSpeed(0);
-            driveSubsystem.setMotorSpeeds(0.1, -0.1);
+            driveSubsystem.setMotorSpeeds(0.05, 0.05);
         }
         else if (isTimeoutExceeded(2)) {
+            shooterSubsystem.setShooterSpeed(0);
+            shooterSubsystem.setFeederSpeed(0);
 
-            driveSubsystem.setMotorSpeeds(0, 0);
+            driveSubsystem.setMotorSpeeds(rotation, -rotation);
             System.out.println("drive forward");
         }
         else {

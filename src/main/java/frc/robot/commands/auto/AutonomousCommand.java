@@ -49,12 +49,16 @@ public class AutonomousCommand extends SequentialCommandGroup {
         case DO_NOTHING:
             return;
 
+        case SHOOT_SPEAKER_AND_LEAVE1:
+            addCommands(new DriveSpeakerCommand(driveSubsystem, shooterSubsystem, 0.1));
+            return;
 
+        case SHOOT_SPEAKER_AND_LEAVE2:
+            addCommands(new DriveSpeakerCommand(driveSubsystem, shooterSubsystem, 0.01));
+            return;
 
-        case SHOOT_SPEAKER_AND_LEAVE:
-            // What should we put here?
-            // Drive forward for 1 second
-            addCommands(new DriveSpeakerCommand(driveSubsystem, shooterSubsystem));
+        case SHOOT_SPEAKER_AND_LEAVE3:
+            addCommands(new DriveSpeakerCommand(driveSubsystem, shooterSubsystem, -0.01));
             return;
         }
     }

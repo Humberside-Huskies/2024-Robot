@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
 
@@ -18,6 +19,11 @@ public class ClimbSubsystem extends SubsystemBase {
 
     /** Creates a new ClimbSubsystem. */
     public ClimbSubsystem() {
+        rightMotor.setIdleMode(IdleMode.kBrake);
+        leftMotor.setIdleMode(IdleMode.kBrake);
+
+        rightMotor.burnFlash();
+        leftMotor.burnFlash();
     }
 
     /**
@@ -40,6 +46,14 @@ public class ClimbSubsystem extends SubsystemBase {
         rightMotor.set(rightSpeed);
     }
 
+    public double getLeftEncoder() {
+        return leftMotor.getEncoder().getPosition();
+    }
+
+    public double getRightEncoder() {
+        return leftMotor.getEncoder().getPosition();
+    }
+
     /** Safely stop the subsystem from moving */
     public void stop() {
         setMotorSpeeds(0, 0);
@@ -53,6 +67,9 @@ public class ClimbSubsystem extends SubsystemBase {
          */
         SmartDashboard.putNumber("Right Motor", rightSpeed);
         SmartDashboard.putNumber("Left  Motor", leftSpeed);
+
+        SmartDashboard.putNumber("Right Climb Encoder", getRightEncoder());
+        SmartDashboard.putNumber("Left Climb Encoder", getLeftEncoder());
     }
 
     @Override

@@ -21,7 +21,7 @@ public final class Constants {
     public static final class AutoConstants {
 
         public static enum AutoPattern {
-            DO_NOTHING, SHOOT_SPEAKER_AND_LEAVE,
+            DO_NOTHING, SHOOT_SPEAKER_AND_LEAVE1, SHOOT_SPEAKER_AND_LEAVE2, SHOOT_SPEAKER_AND_LEAVE3
         };
     }
 
@@ -51,10 +51,11 @@ public final class Constants {
     }
 
     public static final class ClimbConstants {
-        public static final int    RIGHT_MOTOR_PORT    = 41;
-        public static final int    LEFT_MOTOR_PORT     = 40;
+        public static final int    RIGHT_MOTOR_PORT    = 40;
+        public static final int    LEFT_MOTOR_PORT     = 41;
 
-        public static final double CLIMBER_MOTOR_SPEED = 1;
+        public static final double CLIMBER_MOTOR_SPEED = 0.5;
+        public static final double RETRACT_MOTOR_SPEED = -0.65;
     }
 
     public static final class ShooterConstants {
@@ -73,10 +74,9 @@ public final class Constants {
 
     }
 
-    public static final class LEDConstants {
-        public static final int LED_PWM_PORT = 6;
-        public static final int NUM_LEDS     = 60;
-        public static final int LED_PWPORT   = 0;
+    public static final class LightsConstants {
+        public static final int LED_PORT = 6;
+        public static final int NUM_LEDS = 60;
     }
 
     public static final class OperatorConstants {

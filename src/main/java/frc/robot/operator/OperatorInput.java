@@ -43,8 +43,9 @@ public class OperatorInput extends SubsystemBase {
 
         autoPatternChooser.setDefaultOption("Do Nothing", AutoPattern.DO_NOTHING);
         SmartDashboard.putData("Auto Pattern", autoPatternChooser);
-        // autoPatternChooser.addOption("Amp Start", AutoPattern.SHOOT_AMP_AND_LEAVE);
-        autoPatternChooser.addOption("Speaker Start", AutoPattern.SHOOT_SPEAKER_AND_LEAVE);
+        autoPatternChooser.addOption("Speaker Start1", AutoPattern.SHOOT_SPEAKER_AND_LEAVE1);
+        autoPatternChooser.addOption("Speaker Start2", AutoPattern.SHOOT_SPEAKER_AND_LEAVE2);
+        autoPatternChooser.addOption("Speaker Start3", AutoPattern.SHOOT_SPEAKER_AND_LEAVE3);
 
     }
 
@@ -139,8 +140,12 @@ public class OperatorInput extends SubsystemBase {
     /*
      * Is Climber Trigger Button
      */
-    public boolean isClimb() {
-        return driverController.getYButton();
+    public double isClimb() {
+        return driverController.getLeftTriggerAxis();
+    }
+
+    public double isRetract() {
+        return driverController.getRightTriggerAxis();
     }
 
     /*

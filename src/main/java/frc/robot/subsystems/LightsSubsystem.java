@@ -1,13 +1,15 @@
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.motorcontrol.PWMSparkMax;
+import edu.wpi.first.wpilibj.AddressableLED;
+import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants.LEDConstants;
+import frc.robot.Constants.LightsConstants;
 
 public class LightsSubsystem extends SubsystemBase {
 
     // The motors on the left side of the drive.
-    private final PWMSparkMax LEDController = new PWMSparkMax(LEDConstants.LED_PWPORT);
+    private final AddressableLED       led       = new AddressableLED(LightsConstants.LED_PORT);
+    private final AddressableLEDBuffer ledBuffer = new AddressableLEDBuffer(LightsConstants.NUM_LEDS);
     // private final AddressablLedBuffer ledBuffer;
 
     /** Creates a new LedSubsystem. */
@@ -24,9 +26,15 @@ public class LightsSubsystem extends SubsystemBase {
      */
     public void setLEDColor(double red, double green, double blue) {
 
-        int pwmRed   = (int) (red * 255);
-        int pwdGreen = (int) (green * 255);
-        int pwdBlue  = (int) (blue * 255);
+        int r = (int) (red * 255);
+        int g = (int) (green * 255);
+        int b = (int) (blue * 255);
+
+        for (int i = 0; i < this.ledBuffer.getLength(); i++) {
+            this.ledBuffer.setRGB(i, r, g, b);
+        }
+
+        this.led.setData(ledBuffer);
     }
 
     /** Safely stop the subsystem from moving */

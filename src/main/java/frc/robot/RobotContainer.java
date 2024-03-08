@@ -43,7 +43,7 @@ public class RobotContainer {
                 operatorInput,
                 driveSubsystem));
 
-        driveSubsystem.setDefaultCommand(
+        climpSubsystem.setDefaultCommand(
             new DefaultClimbCommand(
                 climpSubsystem,
                 operatorInput));

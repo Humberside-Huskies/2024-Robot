@@ -32,7 +32,7 @@ public class DefaultLightsCommand extends LoggingCommand {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-
+        lightsSubsystem.setLEDColor(1, 0, 1);
     }
 
     // Returns true when the command should end.
