@@ -35,10 +35,6 @@ public class ClimbSubsystem extends SubsystemBase {
 
     public void setMotorSpeeds(double leftSpeed, double rightSpeed) {
 
-        // FIXME: the javadoc^^^ says there are two parameters, left and right.
-        // This makes a lot of sense as you may want to control the lift separately if you are on
-        // one
-        // side of the chain. Pass in two separate speeds.
         this.leftSpeed  = leftSpeed;
         this.rightSpeed = rightSpeed;
 

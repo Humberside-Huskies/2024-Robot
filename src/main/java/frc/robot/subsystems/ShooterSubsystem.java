@@ -11,18 +11,21 @@ import frc.robot.Constants.ShooterConstants;
 public class ShooterSubsystem extends SubsystemBase {
 
     // Motors
-    private final CANSparkMax  shooterMotor = new CANSparkMax(ShooterConstants.SHOOTER_MOTOR_PORT, MotorType.kBrushed);
-    private final CANSparkMax  feederMotor  = new CANSparkMax(ShooterConstants.FEEDER_MOTOR_PORT, MotorType.kBrushed);
+    private final CANSparkMax     shooterMotor = new CANSparkMax(ShooterConstants.SHOOTER_MOTOR_PORT, MotorType.kBrushed);
+    private final CANSparkMax     feederMotor  = new CANSparkMax(ShooterConstants.FEEDER_MOTOR_PORT, MotorType.kBrushed);
 
     // sensor
-    private final DigitalInput input        = new DigitalInput(0);
+    private final DigitalInput    input        = new DigitalInput(0);
 
+    // lights
+    private final LightsSubsystem lightsSubsystem;
 
-    private double             shooterSpeed = 0;
-    private double             feederSpeed  = 0;
+    private double                shooterSpeed = 0;
+    private double                feederSpeed  = 0;
 
     /** Creates a new ShooterSubsystem. */
-    public ShooterSubsystem() {
+    public ShooterSubsystem(LightsSubsystem lightsSubsystem) {
+        this.lightsSubsystem = lightsSubsystem;
     }
 
     /**
@@ -68,6 +71,9 @@ public class ShooterSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("Shooter Motor", this.shooterSpeed);
         SmartDashboard.putNumber("Feeder Motor", this.feederSpeed);
         SmartDashboard.putBoolean("Sensor", this.isNoteLoaded());
+
+        // Set the lights based on a note
+        lightsSubsystem.setNote(isNoteLoaded());
     }
 
     @Override

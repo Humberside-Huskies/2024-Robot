@@ -10,11 +10,23 @@ public class LightsSubsystem extends SubsystemBase {
     // The motors on the left side of the drive.
     private final AddressableLED       led       = new AddressableLED(LightsConstants.LED_PORT);
     private final AddressableLEDBuffer ledBuffer = new AddressableLEDBuffer(LightsConstants.NUM_LEDS);
-    // private final AddressablLedBuffer ledBuffer;
 
     /** Creates a new LedSubsystem. */
     public LightsSubsystem() {
-        // ledBuffer.setData(ledBuffer);
+
+        led.setData(ledBuffer);
+        led.start();
+    }
+
+    // Set the LEDs on or off when you have a note
+    public void setNote(boolean hasNote) {
+
+        if (hasNote) {
+            setLEDColor(255, 15, 0);
+        }
+        else {
+            setLEDColor(0, 0, 0);
+        }
     }
 
     /**
@@ -24,7 +36,7 @@ public class LightsSubsystem extends SubsystemBase {
      * @param green Green Component (0 to 1)
      * @param blue Blue Component (0 to 1)
      */
-    public void setLEDColor(double red, double green, double blue) {
+    private void setLEDColor(double red, double green, double blue) {
 
         int r = (int) (red * 255);
         int g = (int) (green * 255);
@@ -35,10 +47,6 @@ public class LightsSubsystem extends SubsystemBase {
         }
 
         this.led.setData(ledBuffer);
-    }
-
-    /** Safely stop the subsystem from moving */
-    public void stop() {
     }
 
     @Override
