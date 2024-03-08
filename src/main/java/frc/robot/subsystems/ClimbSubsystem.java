@@ -22,8 +22,18 @@ public class ClimbSubsystem extends SubsystemBase {
         rightMotor.setIdleMode(IdleMode.kBrake);
         leftMotor.setIdleMode(IdleMode.kBrake);
 
+        resetClimbEncoders();
+
+        // Burn the flash at the end to permanently write the settings
+        // so if the battery voltage causes a reset, the motors will
+        // come back in the right state.
         rightMotor.burnFlash();
         leftMotor.burnFlash();
+    }
+
+    public void resetClimbEncoders() {
+        rightMotor.getEncoder().setPosition(0);
+        leftMotor.getEncoder().setPosition(0);
     }
 
     /**
@@ -66,6 +76,13 @@ public class ClimbSubsystem extends SubsystemBase {
 
         SmartDashboard.putNumber("Right Climb Encoder", getRightEncoder());
         SmartDashboard.putNumber("Left Climb Encoder", getLeftEncoder());
+
+        // L and R encoders should run in the range 0-60
+        SmartDashboard.putBoolean("Climb L Bottom", getLeftEncoder() > -2);
+        SmartDashboard.putBoolean("Climb R Bottom", getRightEncoder() > -2);
+
+        SmartDashboard.putBoolean("Climb L Top", getLeftEncoder() < -58);
+        SmartDashboard.putBoolean("Climb R Top", getRightEncoder() < -58);
     }
 
     @Override
@@ -76,5 +93,6 @@ public class ClimbSubsystem extends SubsystemBase {
 
         return sb.toString();
     }
+
 
 }

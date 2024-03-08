@@ -33,6 +33,10 @@ public class DefaultClimbCommand extends LoggingCommand {
     @Override
     public void execute() {
 
+        if (operatorInput.isResetEncoders()) {
+            climbSubsystem.resetClimbEncoders();
+        }
+
         if (operatorInput.isClimb() > 0.4 && !(operatorInput.isRetract() > 0.4)) {
             climbSubsystem.setMotorSpeeds(ClimbConstants.CLIMBER_MOTOR_SPEED, ClimbConstants.CLIMBER_MOTOR_SPEED);
         }

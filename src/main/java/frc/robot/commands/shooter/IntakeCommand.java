@@ -5,7 +5,7 @@ import frc.robot.commands.LoggingCommand;
 import frc.robot.operator.OperatorInput;
 import frc.robot.subsystems.ShooterSubsystem;
 
-public class DefaultIntakeCommand extends LoggingCommand {
+public class IntakeCommand extends LoggingCommand {
 
     private final ShooterSubsystem shooterSubsystem;
     private final OperatorInput    operatorInput;
@@ -15,7 +15,7 @@ public class DefaultIntakeCommand extends LoggingCommand {
      *
      * @param shooterSubsystem The subsystem used by this command.
      */
-    public DefaultIntakeCommand(ShooterSubsystem shooterSubsystem, OperatorInput operatorInput) {
+    public IntakeCommand(ShooterSubsystem shooterSubsystem, OperatorInput operatorInput) {
 
         this.shooterSubsystem = shooterSubsystem;
         this.operatorInput    = operatorInput;

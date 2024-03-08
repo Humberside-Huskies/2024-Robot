@@ -9,7 +9,7 @@ import frc.robot.Constants.DriveConstants.DriveMode;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.commands.CancelCommand;
-import frc.robot.commands.shooter.DefaultIntakeCommand;
+import frc.robot.commands.shooter.IntakeCommand;
 import frc.robot.commands.shooter.DefaultShooterCommand;
 import frc.robot.commands.vision.DriveToAprilTagCommand;
 import frc.robot.subsystems.ClimbSubsystem;
@@ -63,6 +63,10 @@ public class OperatorInput extends SubsystemBase {
     // button
     public boolean isCancel() {
         return driverController.getStartButton();
+    }
+
+    public boolean isResetEncoders() {
+        return driverController.getBackButton();
     }
 
     /*
@@ -172,7 +176,7 @@ public class OperatorInput extends SubsystemBase {
 
         // Intake button
         new Trigger(() -> isIntake())
-            .onTrue(new DefaultIntakeCommand(shooterSubsystem, this));
+            .onTrue(new IntakeCommand(shooterSubsystem, this));
 
         // Shooter button
         new Trigger(() -> isShootSpeaker())
