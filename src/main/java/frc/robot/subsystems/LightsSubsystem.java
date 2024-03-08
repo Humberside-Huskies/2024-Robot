@@ -14,6 +14,8 @@ public class LightsSubsystem extends SubsystemBase {
     /** Creates a new LedSubsystem. */
     public LightsSubsystem() {
 
+        led.setLength(ledBuffer.getLength());
+
         led.setData(ledBuffer);
         led.start();
     }

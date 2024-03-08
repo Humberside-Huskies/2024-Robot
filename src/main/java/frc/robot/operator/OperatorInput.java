@@ -9,8 +9,8 @@ import frc.robot.Constants.DriveConstants.DriveMode;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.commands.CancelCommand;
-import frc.robot.commands.shooter.IntakeCommand;
 import frc.robot.commands.shooter.DefaultShooterCommand;
+import frc.robot.commands.shooter.IntakeCommand;
 import frc.robot.commands.vision.DriveToAprilTagCommand;
 import frc.robot.subsystems.ClimbSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
@@ -188,8 +188,6 @@ public class OperatorInput extends SubsystemBase {
         // Detect April Tag
         new Trigger(() -> getDriveToVisionTarget() > 0)
             .onTrue(new DriveToAprilTagCommand(driveSubsystem, visionSubsystem));
-
-
 
     }
 
