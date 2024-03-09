@@ -12,7 +12,6 @@ public class ClimbSubsystem extends SubsystemBase {
     private final CANSparkMax rightMotor = new CANSparkMax(ClimbConstants.RIGHT_MOTOR_PORT, MotorType.kBrushless);
     private final CANSparkMax leftMotor  = new CANSparkMax(ClimbConstants.LEFT_MOTOR_PORT, MotorType.kBrushless);
 
-
     // Motor speeds
     private double            leftSpeed  = 0;
     private double            rightSpeed = 0;

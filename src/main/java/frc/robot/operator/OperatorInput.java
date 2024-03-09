@@ -11,9 +11,9 @@ import frc.robot.Constants.ShooterConstants;
 import frc.robot.commands.CancelCommand;
 import frc.robot.commands.shooter.DefaultShooterCommand;
 import frc.robot.commands.shooter.IntakeCommand;
-import frc.robot.commands.vision.DriveToAprilTagCommand;
 import frc.robot.subsystems.ClimbSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.LightsSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
 
@@ -169,7 +169,7 @@ public class OperatorInput extends SubsystemBase {
      * NOTE: all subsystems should be passed into this method.
      */
     public void configureButtonBindings(DriveSubsystem driveSubsystem, ShooterSubsystem shooterSubsystem,
-        VisionSubsystem visionSubsystem, ClimbSubsystem climbSubsystem) {
+        VisionSubsystem visionSubsystem, ClimbSubsystem climbSubsystem, LightsSubsystem lightsSubsystem) {
 
         new Trigger(() -> isCancel())
             .onTrue(new CancelCommand(this, driveSubsystem, shooterSubsystem));
@@ -180,14 +180,14 @@ public class OperatorInput extends SubsystemBase {
 
         // Shooter button
         new Trigger(() -> isShootSpeaker())
-            .onTrue(new DefaultShooterCommand(shooterSubsystem, ShooterConstants.shooterType.SpeakerShooter));
+            .onTrue(new DefaultShooterCommand(shooterSubsystem, lightsSubsystem, ShooterConstants.shooterType.SpeakerShooter));
 
         new Trigger(() -> isShootAmp())
-            .onTrue(new DefaultShooterCommand(shooterSubsystem, ShooterConstants.shooterType.AMPShooter));
+            .onTrue(new DefaultShooterCommand(shooterSubsystem, lightsSubsystem, ShooterConstants.shooterType.AMPShooter));
 
         // Detect April Tag
-        new Trigger(() -> getDriveToVisionTarget() > 0)
-            .onTrue(new DriveToAprilTagCommand(driveSubsystem, visionSubsystem));
+        // new Trigger(() -> getDriveToVisionTarget() > 0)
+        // .onTrue(new DriveToAprilTagCommand(driveSubsystem, visionSubsystem));
 
     }
 

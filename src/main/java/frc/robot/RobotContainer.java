@@ -54,7 +54,7 @@ public class RobotContainer {
 
 
         // Configure the button bindings
-        operatorInput.configureButtonBindings(driveSubsystem, shooterSubsystem, visionSubsystem, climbSubsystem);
+        operatorInput.configureButtonBindings(driveSubsystem, shooterSubsystem, visionSubsystem, climbSubsystem, lightsSubsystem);
     }
 
     /**

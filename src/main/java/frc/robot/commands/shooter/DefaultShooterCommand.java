@@ -2,11 +2,13 @@ package frc.robot.commands.shooter;
 
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.commands.LoggingCommand;
+import frc.robot.subsystems.LightsSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 
 public class DefaultShooterCommand extends LoggingCommand {
 
     private final ShooterSubsystem             shooterSubsystem;
+    private final LightsSubsystem              lightsSubsystem;
 
     private final ShooterConstants.shooterType shooterType;
 
@@ -15,9 +17,11 @@ public class DefaultShooterCommand extends LoggingCommand {
      *
      * @param shooterSubsystem The subsystem used by this command.
      */
-    public DefaultShooterCommand(ShooterSubsystem shooterSubsystem, ShooterConstants.shooterType shooterType) {
+    public DefaultShooterCommand(ShooterSubsystem shooterSubsystem, LightsSubsystem lightsSubsystem,
+        ShooterConstants.shooterType shooterType) {
 
         this.shooterSubsystem = shooterSubsystem;
+        this.lightsSubsystem  = lightsSubsystem;
         this.shooterType      = shooterType;
 
         // Use addRequirements() here to declare subsystem dependencies.
@@ -56,6 +60,8 @@ public class DefaultShooterCommand extends LoggingCommand {
             }
 
         }
+
+        lightsSubsystem.setLEDRainbow();
     }
 
     // Returns true when the command should end.

@@ -36,6 +36,7 @@ public class DefaultClimbCommand extends LoggingCommand {
         if (operatorInput.isResetEncoders()) {
             climbSubsystem.resetClimbEncoders();
         }
+        System.out.println(climbSubsystem.getLeftEncoder());
 
         if (operatorInput.isClimb() > 0.4 && !(operatorInput.isRetract() > 0.4)) {
             climbSubsystem.setMotorSpeeds(ClimbConstants.CLIMBER_MOTOR_SPEED, ClimbConstants.CLIMBER_MOTOR_SPEED);

@@ -8,8 +8,10 @@ import frc.robot.Constants.LightsConstants;
 public class LightsSubsystem extends SubsystemBase {
 
     // The motors on the left side of the drive.
-    private final AddressableLED       led       = new AddressableLED(LightsConstants.LED_PORT);
-    private final AddressableLEDBuffer ledBuffer = new AddressableLEDBuffer(LightsConstants.NUM_LEDS);
+    private final AddressableLED       led                  = new AddressableLED(LightsConstants.LED_PORT);
+    private final AddressableLEDBuffer ledBuffer            = new AddressableLEDBuffer(LightsConstants.NUM_LEDS);
+
+    private int                        rainbowFirstPixelHue = 0;
 
     /** Creates a new LedSubsystem. */
     public LightsSubsystem() {
@@ -24,28 +26,35 @@ public class LightsSubsystem extends SubsystemBase {
     public void setNote(boolean hasNote) {
 
         if (hasNote) {
-            setLEDColor(255, 15, 0);
+            setLEDColor(0, 255, 0);
         }
         else {
-            setLEDColor(0, 0, 0);
+            setLEDColor(255, 0, 0);
         }
     }
 
     /**
      * Set the led color
-     *
-     * @param red Red component (0 to 1)
-     * @param green Green Component (0 to 1)
-     * @param blue Blue Component (0 to 1)
      */
-    private void setLEDColor(double red, double green, double blue) {
-
-        int r = (int) (red * 255);
-        int g = (int) (green * 255);
-        int b = (int) (blue * 255);
+    private void setLEDColor(int red, int green, int blue) {
 
         for (int i = 0; i < this.ledBuffer.getLength(); i++) {
-            this.ledBuffer.setRGB(i, r, g, b);
+            this.ledBuffer.setRGB(i, red, green, blue);
+        }
+
+        this.led.setData(ledBuffer);
+    }
+
+    public void setLEDRainbow() {
+        rainbowFirstPixelHue -= 5;
+
+        for (int i = 0; i < this.ledBuffer.getLength(); i++) {
+            int hue = (rainbowFirstPixelHue + (i * 180 / this.ledBuffer.getLength())) % 180;
+            this.ledBuffer.setHSV(i, hue, 255, 120);
+
+            rainbowFirstPixelHue += 3;
+            // Check bounds
+            rainbowFirstPixelHue %= 180;
         }
 
         this.led.setData(ledBuffer);

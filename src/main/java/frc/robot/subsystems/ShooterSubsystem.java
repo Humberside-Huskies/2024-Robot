@@ -73,7 +73,8 @@ public class ShooterSubsystem extends SubsystemBase {
         SmartDashboard.putBoolean("Sensor", this.isNoteLoaded());
 
         // Set the lights based on a note
-        lightsSubsystem.setNote(isNoteLoaded());
+        if (shooterSpeed == 0 && feederSpeed == 0)
+            lightsSubsystem.setNote(isNoteLoaded());
     }
 
     @Override
