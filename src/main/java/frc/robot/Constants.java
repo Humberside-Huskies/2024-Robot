@@ -21,7 +21,7 @@ public final class Constants {
     public static final class AutoConstants {
 
         public static enum AutoPattern {
-            DO_NOTHING, SHOOT_SPEAKER_AND_LEAVE1, SHOOT_SPEAKER_AND_LEAVE2, SHOOT_SPEAKER_AND_LEAVE3
+            DO_NOTHING, SHOOT_SPEAKER_AND_LEAVE1, SHOOT_SPEAKER_AND_LEAVE2, SHOOT_SPEAKER_AND_LEAVE3, DRIVE_FORWARD_AFTER_DELAY
         };
     }
 
@@ -31,7 +31,7 @@ public final class Constants {
             TANK, SINGLE_STICK_ARCADE, DUAL_STICK_ARCADE;
         }
 
-        public static final double  SLEW_LIMIT                    = 1.5;
+        public static final double  SLEW_LIMIT                    = 500;         // 1.5;
         public static final int     LEFT_MOTOR_PORT               = 10;
         public static final int     RIGHT_MOTOR_PORT              = 20;
 
@@ -70,19 +70,18 @@ public final class Constants {
         public static final double FEEDER_SHOOT_SPEAKER_SPEED  = -1;
 
         public static final double SHOOTER_SHOOT_AMP_SPEED     = -0.22;
-        public static final double FEEDER_SHOOT_AMP_SPEED      = -0.35;
-
-    }
-
-    public static final class LightsConstants {
-        public static final int LED_PORT = 9;
-        public static final int NUM_LEDS = 60;
+        public static final double FEEDER_SHOOT_AMP_SPEED      = -0.45;
     }
 
     public static final class OperatorConstants {
 
         public static final int    DRIVER_CONTROLLER_PORT         = 0;
         public static final double GAME_CONTROLLER_STICK_DEADBAND = 0.2;
+    }
+
+    public static final class LightsConstants {
+        public static final int LED_PORT = 9;
+        public static final int NUM_LEDS = 60;
     }
 
 }

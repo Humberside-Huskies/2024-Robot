@@ -43,7 +43,7 @@ public class DefaultDriveCommand extends LoggingCommand {
 
         if (operatorInput.isBoost()) {
             scalingFactor     = 1.0;
-            scalingFactorTurn = 1.0;
+            scalingFactorTurn = 0.9; // driver changed this dw
         }
 
         if (operatorInput.isSlow()) {

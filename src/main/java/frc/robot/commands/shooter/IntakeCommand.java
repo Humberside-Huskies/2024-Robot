@@ -53,7 +53,7 @@ public class IntakeCommand extends LoggingCommand {
 
             return true;
         }
-        if (shooterSubsystem.isNoteLoaded() || isTimeoutExceeded(4)) {
+        if (isTimeoutExceeded(4)) {
             setFinishReason("Intake no more");
             return true;
 

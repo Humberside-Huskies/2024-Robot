@@ -50,15 +50,20 @@ public class AutonomousCommand extends SequentialCommandGroup {
             return;
 
         case SHOOT_SPEAKER_AND_LEAVE1:
-            addCommands(new DriveSpeakerCommand(driveSubsystem, shooterSubsystem, 0.1));
+            addCommands(new DriveSpeakerCommand(driveSubsystem, shooterSubsystem, 0.15));
             return;
 
         case SHOOT_SPEAKER_AND_LEAVE2:
-            addCommands(new DriveSpeakerCommand(driveSubsystem, shooterSubsystem, 0.01));
+            // center
+            addCommands(new DriveSpeakerCommand(driveSubsystem, shooterSubsystem, 0.15));
             return;
 
         case SHOOT_SPEAKER_AND_LEAVE3:
-            addCommands(new DriveSpeakerCommand(driveSubsystem, shooterSubsystem, -0.01));
+            addCommands(new DriveSpeakerCommand(driveSubsystem, shooterSubsystem, -0.15));
+            return;
+
+        case DRIVE_FORWARD_AFTER_DELAY:
+            addCommands(new DriveForwardOnlyCommand(driveSubsystem, shooterSubsystem));
             return;
         }
     }

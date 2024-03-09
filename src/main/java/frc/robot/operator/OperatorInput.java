@@ -41,11 +41,15 @@ public class OperatorInput extends SubsystemBase {
         driveModeChooser.addOption("Single Stick Arcade", DriveMode.SINGLE_STICK_ARCADE);
         driveModeChooser.addOption("Tank", DriveMode.TANK);
 
-        autoPatternChooser.setDefaultOption("Do Nothing", AutoPattern.DO_NOTHING);
+        // Change Auto pattern here
+        autoPatternChooser.setDefaultOption("Default", AutoPattern.SHOOT_SPEAKER_AND_LEAVE2);
         SmartDashboard.putData("Auto Pattern", autoPatternChooser);
+
+        // Other option for Auto pattern
         autoPatternChooser.addOption("Speaker Start1", AutoPattern.SHOOT_SPEAKER_AND_LEAVE1);
         autoPatternChooser.addOption("Speaker Start2", AutoPattern.SHOOT_SPEAKER_AND_LEAVE2);
         autoPatternChooser.addOption("Speaker Start3", AutoPattern.SHOOT_SPEAKER_AND_LEAVE3);
+        autoPatternChooser.addOption("ForwardMove", AutoPattern.DRIVE_FORWARD_AFTER_DELAY);
 
     }
 

@@ -1,27 +1,24 @@
 package frc.robot.commands.auto;
 
-import frc.robot.Constants.ShooterConstants;
 import frc.robot.commands.LoggingCommand;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 
-public class DriveSpeakerCommand extends LoggingCommand {
+public class DriveForwardOnlyCommand extends LoggingCommand {
 
     private final DriveSubsystem   driveSubsystem;
     private final ShooterSubsystem shooterSubsystem;
 
-    private double                 rotation = 0;
 
     /**
      * Creates a new ExampleCommand.
      *
      * @param driveSubsystem The subsystem used by this command.
      */
-    public DriveSpeakerCommand(DriveSubsystem driveSubsystem, ShooterSubsystem shooterSubsystem, double rotation) {
+    public DriveForwardOnlyCommand(DriveSubsystem driveSubsystem, ShooterSubsystem shooterSubsystem) {
 
         this.driveSubsystem   = driveSubsystem;
         this.shooterSubsystem = shooterSubsystem;
-        this.rotation         = rotation;
 
         // Use addRequirements() here to declare subsystem dependencies.
         addRequirements(driveSubsystem);
@@ -36,27 +33,13 @@ public class DriveSpeakerCommand extends LoggingCommand {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        if (isTimeoutExceeded(5.3)) {
+        // wait 10 second to move forward
+        if (isTimeoutExceeded(12)) {
             driveSubsystem.setMotorSpeeds(0.0, 0.0);
         }
-        else if (isTimeoutExceeded(4.5)) {
-            driveSubsystem.setMotorSpeeds(0.1, 0.1);
-
-        }
-        else if (isTimeoutExceeded(2.5)) {
-            shooterSubsystem.setShooterSpeed(0);
-            shooterSubsystem.setFeederSpeed(0);
-
-            if (driveSubsystem.getGyroAngle() < 180)
-                driveSubsystem.setMotorSpeeds(rotation, -rotation);
-        }
-        else if (isTimeoutExceeded(2)) {
-            driveSubsystem.setMotorSpeeds(-0.2, -0.2);
-        }
-        else {
-            System.out.println("shooting in speaker");
-            shooterSubsystem.setShooterSpeed(ShooterConstants.SHOOTER_SHOOT_SPEAKER_SPEED);
-            shooterSubsystem.setFeederSpeed(ShooterConstants.FEEDER_SHOOT_SPEAKER_SPEED);
+        // stop
+        else if (isTimeoutExceeded(10)) {
+            driveSubsystem.setMotorSpeeds(0.5, 0.5);
         }
     }
 
@@ -65,7 +48,7 @@ public class DriveSpeakerCommand extends LoggingCommand {
     public boolean isFinished() {
         // The default drive command never ends, but can be interrupted by other commands.
 
-        if (isTimeoutExceeded(6))
+        if (isTimeoutExceeded(12))
             return true;
         return false;
     }
