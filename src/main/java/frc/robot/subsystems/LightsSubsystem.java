@@ -16,7 +16,10 @@ public class LightsSubsystem extends SubsystemBase {
     private final AddressableLEDBuffer ledBuffer            = new AddressableLEDBuffer(LightsConstants.NUM_LEDS);
 
     private int                        rainbowFirstPixelHue = 0;
-    private boolean                    firsTime             = true;
+    private boolean                    firstTime            = true;
+
+    private boolean                    hasNote;
+    private boolean                    isClimb;
 
     /** Creates a new LedSubsystem. */
     public LightsSubsystem() {
@@ -32,14 +35,22 @@ public class LightsSubsystem extends SubsystemBase {
     // Set the LEDs on or off when you have a note
     public void setNote(boolean hasNote) {
 
-        if (hasNote) {
-            // setLEDPhilip();
-            setLEDColor(0, 255, 0);
-            // setLEDTony2();
-        }
-        else {
-            setLEDColor(255, 0, 0);
-        }
+        this.hasNote = hasNote;
+        setLEDRainbow();
+
+        // if (hasNote) {
+        // // setLEDPhilip();
+        // // setLEDColor(0, 255, 0);
+        // // setLEDTony2();
+        // }
+        // else {
+        // // setLEDColor(255, 0, 0);
+        // setLEDRainbow();
+        // }
+    }
+
+    public void setClimb(boolean isClimb) {
+        this.isClimb = isClimb;
     }
 
     /**
@@ -100,11 +111,11 @@ public class LightsSubsystem extends SubsystemBase {
     }
 
     public void setLEDPhilip() {
-        if (firsTime) {
+        if (firstTime) {
             for (int index = 0; index < this.ledBuffer.getLength(); index++) {
                 this.ledBuffer.setLED(index, new Color(Math.random(), Math.random(), Math.random()));
             }
-            firsTime = false;
+            firstTime = false;
         }
         for (int index = 0; index < this.ledBuffer.getLength(); index++) {
             this.ledBuffer.setLED(index, randomColorShift(this.ledBuffer.getLED(index)));
@@ -133,8 +144,11 @@ public class LightsSubsystem extends SubsystemBase {
         /*
          * Update all dashboard values in the periodic routine
          */
-
-        // setLEDPhilip();
+        // if (isClimb)
+        // // setLEDPhilip();
+        // else {
+        // // setLEDColor(255, 0, 0);
+        // }
     }
 
     @Override

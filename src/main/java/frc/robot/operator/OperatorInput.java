@@ -42,7 +42,7 @@ public class OperatorInput extends SubsystemBase {
         driveModeChooser.addOption("Tank", DriveMode.TANK);
 
         // Change Auto pattern here
-        autoPatternChooser.setDefaultOption("Default", AutoPattern.SHOOT_SPEAKER_AND_LEAVE2);
+        autoPatternChooser.setDefaultOption("Default", AutoPattern.DRIVE_FORWARD_AFTER_DELAY);
         SmartDashboard.putData("Auto Pattern", autoPatternChooser);
 
         // Other option for Auto pattern

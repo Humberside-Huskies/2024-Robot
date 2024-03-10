@@ -5,7 +5,7 @@ import frc.robot.commands.LoggingCommand;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 
-public class DriveSpeakerCommand extends LoggingCommand {
+public class DriveAMPCommand extends LoggingCommand {
 
     private final DriveSubsystem   driveSubsystem;
     private final ShooterSubsystem shooterSubsystem;
@@ -17,7 +17,7 @@ public class DriveSpeakerCommand extends LoggingCommand {
      *
      * @param driveSubsystem The subsystem used by this command.
      */
-    public DriveSpeakerCommand(DriveSubsystem driveSubsystem, ShooterSubsystem shooterSubsystem, double rotation) {
+    public DriveAMPCommand(DriveSubsystem driveSubsystem, ShooterSubsystem shooterSubsystem, double rotation) {
 
         this.driveSubsystem   = driveSubsystem;
         this.shooterSubsystem = shooterSubsystem;
@@ -44,21 +44,24 @@ public class DriveSpeakerCommand extends LoggingCommand {
 
         }
         else if (isTimeoutExceeded(2.5)) {
+            if (driveSubsystem.getGyroAngle() < 180) {
+                driveSubsystem.setMotorSpeeds(-rotation, rotation);
+            }
+
+
+        }
+        else if (isTimeoutExceeded(1)) {
+            System.out.println("Stop shoot");
             shooterSubsystem.setShooterSpeed(0);
             shooterSubsystem.setFeederSpeed(0);
 
-            if (driveSubsystem.getGyroAngle() < 180)
-                driveSubsystem.setMotorSpeeds(rotation, -rotation);
-        }
-        else if (isTimeoutExceeded(0.15)) {
-            System.out.println("shooting in speaker");
-            driveSubsystem.setMotorSpeeds(0.0, 0.0);
-            shooterSubsystem.setShooterSpeed(ShooterConstants.SHOOTER_SHOOT_SPEAKER_SPEED);
-            shooterSubsystem.setFeederSpeed(ShooterConstants.FEEDER_SHOOT_SPEAKER_SPEED);
+            driveSubsystem.setMotorSpeeds(-0.15, -0.15);
+
 
         }
         else {
-            driveSubsystem.setMotorSpeeds(-0.15, -0.15);
+            shooterSubsystem.setShooterSpeed(ShooterConstants.SHOOTER_SHOOT_SPEAKER_SPEED);
+            shooterSubsystem.setFeederSpeed(ShooterConstants.FEEDER_SHOOT_SPEAKER_SPEED);
         }
     }
 

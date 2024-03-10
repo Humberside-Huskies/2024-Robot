@@ -50,7 +50,7 @@ public class RobotContainer {
         climbSubsystem.setDefaultCommand(
             new DefaultClimbCommand(
                 climbSubsystem,
-                operatorInput));
+                operatorInput, lightsSubsystem));
 
 
         // Configure the button bindings
