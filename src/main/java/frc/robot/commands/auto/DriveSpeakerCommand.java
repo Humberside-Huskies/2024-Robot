@@ -36,11 +36,36 @@ public class DriveSpeakerCommand extends LoggingCommand {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        if (isTimeoutExceeded(5.3)) {
+        /*
+         * if (isTimeoutExceeded(14.75)) {
+         * driveSubsystem.setMotorSpeeds(0.0, 0.0);
+         * }
+         * 
+         * else if (isTimeoutExceeded(14.5)) {
+         * driveSubsystem.setMotorSpeeds(0.35, 0.35);
+         * }
+         * else if (isTimeoutExceeded(13.5)) {
+         * driveSubsystem.setMotorSpeeds(0.0, 0.0);
+         * if (driveSubsystem.getGyroAngle() < 270) {
+         * driveSubsystem.setMotorSpeeds(-rotation, rotation);
+         * }
+         * }
+         * else if (isTimeoutExceeded(12)) {
+         * driveSubsystem.setMotorSpeeds(0.35, 0.35);
+         * }
+         * else if (isTimeoutExceeded(8)) {
+         * driveSubsystem.setMotorSpeeds(0.0, 0.0);
+         * 
+         * if (driveSubsystem.getGyroAngle() < 210) {
+         * driveSubsystem.setMotorSpeeds(-rotation, rotation);
+         * }
+         */
+        if (isTimeoutExceeded(5.5)) {
             driveSubsystem.setMotorSpeeds(0.0, 0.0);
         }
-        else if (isTimeoutExceeded(4.5)) {
-            driveSubsystem.setMotorSpeeds(0.2, 0.2);
+
+        else if (isTimeoutExceeded(4.3)) {
+            driveSubsystem.setMotorSpeeds(0.35, 0.35);
 
         }
         else if (isTimeoutExceeded(2.5)) {
@@ -49,6 +74,7 @@ public class DriveSpeakerCommand extends LoggingCommand {
 
             if (driveSubsystem.getGyroAngle() < 180)
                 driveSubsystem.setMotorSpeeds(rotation, -rotation);
+
         }
         else if (isTimeoutExceeded(0.15)) {
             System.out.println("shooting in speaker");

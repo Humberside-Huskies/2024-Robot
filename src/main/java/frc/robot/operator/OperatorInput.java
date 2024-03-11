@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.AutoConstants.AutoPattern;
+import frc.robot.Constants.AutoConstants.AutoPatternPos;
 import frc.robot.Constants.DriveConstants.DriveMode;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.Constants.ShooterConstants;
@@ -25,31 +26,46 @@ import frc.robot.subsystems.VisionSubsystem;
  */
 public class OperatorInput extends SubsystemBase {
 
-    public final GameController                driverController   = new GameController(
+    public final GameController                   driverController      = new GameController(
         OperatorConstants.DRIVER_CONTROLLER_PORT,
         OperatorConstants.GAME_CONTROLLER_STICK_DEADBAND);
 
     // All dashboard choosers are defined here...
-    private final SendableChooser<DriveMode>   driveModeChooser   = new SendableChooser<>();
-    private final SendableChooser<AutoPattern> autoPatternChooser = new SendableChooser<>();
+    private final SendableChooser<DriveMode>      driveModeChooser      = new SendableChooser<>();
+    private final SendableChooser<AutoPattern>    autoPatternChooser    = new SendableChooser<>();
+    private final SendableChooser<AutoPatternPos> autoPatternPosChooser = new SendableChooser<>();
 
 
     public OperatorInput() {
 
         driveModeChooser.setDefaultOption("Dual Stick Arcade", DriveMode.DUAL_STICK_ARCADE);
-        SmartDashboard.putData("Drive Mode", driveModeChooser);
         driveModeChooser.addOption("Single Stick Arcade", DriveMode.SINGLE_STICK_ARCADE);
         driveModeChooser.addOption("Tank", DriveMode.TANK);
 
-        // Change Auto pattern here
-        autoPatternChooser.setDefaultOption("Default", AutoPattern.DRIVE_FORWARD_AFTER_DELAY);
+        // Put the drive mode option to the SmartDashboard
+        SmartDashboard.putData("Drive Mode", driveModeChooser);
+
+        // Change Auto pattern Type
+        autoPatternChooser.setDefaultOption("MoveForwardDelay", AutoPattern.DRIVE_FORWARD_AFTER_DELAY);
+        // Other option for Auto pattern Type
+        autoPatternChooser.addOption("Nothing", AutoPattern.DO_NOTHING);
+        autoPatternChooser.addOption("ShootSpeaker", AutoPattern.SHOOT_SPEAKER);
+
+        // Put the auto pattern option to the SmartDashboard
         SmartDashboard.putData("Auto Pattern", autoPatternChooser);
 
-        // Other option for Auto pattern
-        autoPatternChooser.addOption("Speaker Start1", AutoPattern.SHOOT_SPEAKER_AND_LEAVE1);
-        autoPatternChooser.addOption("Speaker Start2", AutoPattern.SHOOT_SPEAKER_AND_LEAVE2);
-        autoPatternChooser.addOption("Speaker Start3", AutoPattern.SHOOT_SPEAKER_AND_LEAVE3);
-        autoPatternChooser.addOption("ForwardMove", AutoPattern.DRIVE_FORWARD_AFTER_DELAY);
+
+
+        // Change Auto pattern Pos
+        autoPatternPosChooser.setDefaultOption("RIGHT", AutoPatternPos.RIGHT);
+        // Other option for Auto pattern Pos
+        autoPatternPosChooser.addOption("CENTER", AutoPatternPos.CENTER);
+        autoPatternPosChooser.addOption("LEFT", AutoPatternPos.LEFT);
+
+        // Put the auto pattern initial start Position to the SmartDashboard
+        SmartDashboard.putData("Start Position", autoPatternPosChooser);
+
+
 
     }
 
@@ -78,6 +94,10 @@ public class OperatorInput extends SubsystemBase {
      */
     public AutoPattern getSelectedAutoPattern() {
         return autoPatternChooser.getSelected();
+    }
+
+    public AutoPatternPos getSelectedAutoPatternPos() {
+        return autoPatternPosChooser.getSelected();
     }
 
     /*

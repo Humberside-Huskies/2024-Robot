@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants.AutoConstants.AutoPattern;
+import frc.robot.Constants.AutoConstants.AutoPatternPos;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 
@@ -12,7 +13,7 @@ public class AutonomousCommand extends SequentialCommandGroup {
 
     Alliance alliance;
 
-    public AutonomousCommand(AutoPattern autoPattern, DriveSubsystem driveSubsystem,
+    public AutonomousCommand(AutoPattern autoPattern, AutoPatternPos autoPatternPos, DriveSubsystem driveSubsystem,
         ShooterSubsystem shooterSubsystem) {
 
         // Default is to do nothing.
@@ -44,27 +45,69 @@ public class AutonomousCommand extends SequentialCommandGroup {
         /*
          * Compose the appropriate auto commands
          */
-        switch (autoPattern) {
 
-        case DO_NOTHING:
-            return;
+        // Determine which autopattern we will use. We first determine the initial position and than
+        // later the type of shooting
+        switch (autoPatternPos) {
+            // This is for RIGHT AUTONOMOUS
+            case RIGHT:
+                switch (autoPattern) {
 
-        case SHOOT_SPEAKER_AND_LEAVE1:
-            addCommands(new DriveSpeakerCommand(driveSubsystem, shooterSubsystem, 0.15));
-            return;
+                    case DO_NOTHING:
+                        return;
 
-        case SHOOT_SPEAKER_AND_LEAVE2:
-            // center
-            addCommands(new DriveSpeakerCommand(driveSubsystem, shooterSubsystem, 0.15));
-            return;
+                    case SHOOT_SPEAKER:
+                        addCommands(new DriveSpeakerCommand(driveSubsystem, shooterSubsystem, 0.15));
+                        return;
 
-        case SHOOT_SPEAKER_AND_LEAVE3:
-            addCommands(new DriveSpeakerCommand(driveSubsystem, shooterSubsystem, -0.15));
-            return;
+                    case DRIVE_FORWARD_AFTER_DELAY:
+                        addCommands(new DriveForwardOnlyCommand(driveSubsystem, shooterSubsystem));
+                        return;
+                }
 
-        case DRIVE_FORWARD_AFTER_DELAY:
-            addCommands(new DriveForwardOnlyCommand(driveSubsystem, shooterSubsystem));
-            return;
+
+
+                return;
+            // This is for CENTER AUTONOMOUS
+            case CENTER:
+                switch (autoPattern) {
+
+                    case DO_NOTHING:
+                        return;
+
+                    case SHOOT_SPEAKER:
+                        addCommands(new DriveSpeakerCommand(driveSubsystem, shooterSubsystem, 0.15));
+                        return;
+
+
+                    case DRIVE_FORWARD_AFTER_DELAY:
+                        addCommands(new DriveForwardOnlyCommand(driveSubsystem, shooterSubsystem));
+                        return;
+                }
+
+
+                return;
+            // This is for LEFT AUTONOMOUS
+            case LEFT:
+
+                switch (autoPattern) {
+
+                    case DO_NOTHING:
+                        return;
+
+                    case SHOOT_SPEAKER:
+                        addCommands(new DriveSpeakerCommand(driveSubsystem, shooterSubsystem, -0.15));
+                        return;
+
+                    case DRIVE_FORWARD_AFTER_DELAY:
+                        addCommands(new DriveForwardOnlyCommand(driveSubsystem, shooterSubsystem));
+                        return;
+                }
+
+
+
+                return;
+
         }
     }
 

@@ -20,8 +20,17 @@ public final class Constants {
 
     public static final class AutoConstants {
 
+
+        public static enum AutoPatternPos {
+            RIGHT,
+            CENTER,
+            LEFT
+        }
+
         public static enum AutoPattern {
-            DO_NOTHING, SHOOT_SPEAKER_AND_LEAVE1, SHOOT_SPEAKER_AND_LEAVE2, SHOOT_SPEAKER_AND_LEAVE3, DRIVE_FORWARD_AFTER_DELAY
+            DO_NOTHING,
+            SHOOT_SPEAKER,
+            DRIVE_FORWARD_AFTER_DELAY
         };
     }
 

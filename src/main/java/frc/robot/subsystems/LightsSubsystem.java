@@ -36,7 +36,8 @@ public class LightsSubsystem extends SubsystemBase {
     public void setNote(boolean hasNote) {
 
         this.hasNote = hasNote;
-        setLEDRainbow();
+        // setLEDRainbow();
+        setLEDTony2();
 
         // if (hasNote) {
         // // setLEDPhilip();
@@ -155,7 +156,7 @@ public class LightsSubsystem extends SubsystemBase {
     public String toString() {
         // Create an appropriate text readable string describing the state of the subsystem
 
-        return "Tony was here... Shhhhhhh";
+        return "Ryder Changed Tony's Thing... Shhhhhhh";
     }
 
 }
