@@ -1,13 +1,15 @@
 package frc.robot.commands.auto;
 
+import frc.robot.Constants.ShooterConstants;
 import frc.robot.commands.LoggingCommand;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 
-public class DriveForwardOnlyCommand extends LoggingCommand {
+public class DriveAmpSide extends LoggingCommand {
 
     private final DriveSubsystem   driveSubsystem;
     private final ShooterSubsystem shooterSubsystem;
+    private double                 rotation = 0;
 
 
     /**
@@ -15,10 +17,11 @@ public class DriveForwardOnlyCommand extends LoggingCommand {
      *
      * @param driveSubsystem The subsystem used by this command.
      */
-    public DriveForwardOnlyCommand(DriveSubsystem driveSubsystem, ShooterSubsystem shooterSubsystem) {
+    public DriveAmpSide(DriveSubsystem driveSubsystem, ShooterSubsystem shooterSubsystem, double rotation) {
 
         this.driveSubsystem   = driveSubsystem;
         this.shooterSubsystem = shooterSubsystem;
+        this.rotation         = rotation;
 
         // Use addRequirements() here to declare subsystem dependencies.
         addRequirements(driveSubsystem);
@@ -33,13 +36,32 @@ public class DriveForwardOnlyCommand extends LoggingCommand {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        // wait 10 second to move forward
-        if (isTimeoutExceeded(12)) {
-            driveSubsystem.setMotorSpeeds(0.0, 0.0);
+        if (isTimeoutExceeded(8)) {
+            driveSubsystem.setMotorSpeeds(0, 0);
         }
-        // stop
-        else if (isTimeoutExceeded(10)) {
-            driveSubsystem.setMotorSpeeds(0.3, 0.3);
+        else if (isTimeoutExceeded(5)) {
+            shooterSubsystem.setShooterSpeed(0);
+            shooterSubsystem.setFeederSpeed(0);
+
+            if (driveSubsystem.getGyroAngle() < 180)
+                driveSubsystem.setMotorSpeeds(rotation, -rotation);
+
+        }
+        else if (isTimeoutExceeded(4)) {
+            driveSubsystem.setMotorSpeeds(0, 0);
+        }
+        else if (isTimeoutExceeded(1.5)) {
+            driveSubsystem.setMotorSpeeds(-0.2, -0.2);
+        }
+        else if (isTimeoutExceeded(0.5)) {
+            System.out.println("shooting in speaker");
+            driveSubsystem.setMotorSpeeds(0.0, 0.0);
+            shooterSubsystem.setShooterSpeed(ShooterConstants.SHOOTER_SHOOT_SPEAKER_SPEED);
+            shooterSubsystem.setFeederSpeed(ShooterConstants.FEEDER_SHOOT_SPEAKER_SPEED);
+
+        }
+        else {
+            driveSubsystem.setMotorSpeeds(0, 0);
         }
     }
 

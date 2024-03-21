@@ -50,6 +50,7 @@ public class OperatorInput extends SubsystemBase {
         // Other option for Auto pattern Type
         autoPatternChooser.addOption("Nothing", AutoPattern.DO_NOTHING);
         autoPatternChooser.addOption("ShootSpeaker", AutoPattern.SHOOT_SPEAKER);
+        autoPatternChooser.addOption("Drive to Source Side", AutoPattern.DRIVE_SOURCE_SIDE);
 
         // Put the auto pattern option to the SmartDashboard
         SmartDashboard.putData("Auto Pattern", autoPatternChooser);
@@ -182,6 +183,8 @@ public class OperatorInput extends SubsystemBase {
     public boolean isAltIntake() {
         return driverController.getYButton();
     }
+
+    // public boolean isAltIntake
 
 
 

@@ -30,7 +30,8 @@ public final class Constants {
         public static enum AutoPattern {
             DO_NOTHING,
             SHOOT_SPEAKER,
-            DRIVE_FORWARD_AFTER_DELAY
+            DRIVE_FORWARD_AFTER_DELAY,
+            DRIVE_SOURCE_SIDE
         };
     }
 
@@ -78,8 +79,10 @@ public final class Constants {
         public static final double SHOOTER_SHOOT_SPEAKER_SPEED = -1;
         public static final double FEEDER_SHOOT_SPEAKER_SPEED  = -1;
 
-        public static final double SHOOTER_SHOOT_AMP_SPEED     = -0.22;
-        public static final double FEEDER_SHOOT_AMP_SPEED      = -0.45;
+        public static final double SHOOTER_SHOOT_AMP_SPEED     = -0.15;
+        public static final double FEEDER_SHOOT_AMP_SPEED      = -0.35;
+
+        // public static final double SHOOTE =
     }
 
     public static final class OperatorConstants {

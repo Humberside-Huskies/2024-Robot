@@ -45,7 +45,10 @@ public class IntakeCommand extends LoggingCommand {
     @Override
     public boolean isFinished() {
 
+        if (shooterSubsystem.isNoteLoaded()) {
+            return true;
 
+        }
         // Checks if the note has triggered the laser. If it hasn't runs Intake motors for 4 seconds
         // and then stops
         if (operatorInput.isAltIntake()) {

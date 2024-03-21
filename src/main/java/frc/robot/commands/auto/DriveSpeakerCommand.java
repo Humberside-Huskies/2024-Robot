@@ -60,7 +60,7 @@ public class DriveSpeakerCommand extends LoggingCommand {
          * driveSubsystem.setMotorSpeeds(-rotation, rotation);
          * }
          */
-        if (isTimeoutExceeded(5.5)) {
+        if (isTimeoutExceeded(4.8)) {
             driveSubsystem.setMotorSpeeds(0.0, 0.0);
         }
 

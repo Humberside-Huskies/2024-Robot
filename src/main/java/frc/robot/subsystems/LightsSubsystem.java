@@ -18,7 +18,7 @@ public class LightsSubsystem extends SubsystemBase {
     private int                        rainbowFirstPixelHue = 0;
     private boolean                    firstTime            = true;
 
-    private boolean                    hasNote;
+    private boolean                    HasNote;
     private boolean                    isClimb;
 
     /** Creates a new LedSubsystem. */
@@ -35,28 +35,29 @@ public class LightsSubsystem extends SubsystemBase {
     // Set the LEDs on or off when you have a note
     public void setNote(boolean hasNote) {
 
-        this.hasNote = hasNote;
+        this.HasNote = hasNote;
         // setLEDRainbow();
-        setLEDTony2();
+        // setLEDTony2();
 
-        // if (hasNote) {
-        // // setLEDPhilip();
-        // // setLEDColor(0, 255, 0);
-        // // setLEDTony2();
-        // }
-        // else {
-        // // setLEDColor(255, 0, 0);
-        // setLEDRainbow();
-        // }
+        if (HasNote) {
+            // setLEDPhilip();
+            setLEDColor(0, 255, 0);
+            // setLEDTony2();
+        }
+        else {
+            setLEDRainbow();
+
+        }
     }
 
     public void setClimb(boolean isClimb) {
         this.isClimb = isClimb;
     }
 
-    /**
-     * Set the led color
-     */
+
+    // Set the led color
+
+
     private void setLEDColor(int red, int green, int blue) {
 
         for (int i = 0; i < this.ledBuffer.getLength(); i++) {

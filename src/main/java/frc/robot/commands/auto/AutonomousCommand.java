@@ -63,6 +63,10 @@ public class AutonomousCommand extends SequentialCommandGroup {
                     case DRIVE_FORWARD_AFTER_DELAY:
                         addCommands(new DriveForwardOnlyCommand(driveSubsystem, shooterSubsystem));
                         return;
+
+                    case DRIVE_SOURCE_SIDE:
+                        addCommands(new DriveSourceSideCommand(driveSubsystem, shooterSubsystem, -0.15));
+                        return;
                 }
 
 
@@ -101,6 +105,10 @@ public class AutonomousCommand extends SequentialCommandGroup {
 
                     case DRIVE_FORWARD_AFTER_DELAY:
                         addCommands(new DriveForwardOnlyCommand(driveSubsystem, shooterSubsystem));
+                        return;
+
+                    case DRIVE_SOURCE_SIDE:
+                        addCommands(new DriveSourceSideCommand(driveSubsystem, shooterSubsystem, 0.15));
                         return;
                 }
 
