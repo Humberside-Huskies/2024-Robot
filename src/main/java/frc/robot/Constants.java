@@ -21,8 +21,10 @@ public final class Constants {
     public static final class AutoConstants {
         public static enum AutoPattern {
             DO_NOTHING,
+            SHOOT_SPEAKER_AND_DRIVE,
+            SHOOT_AMP,
             SHOOT_SPEAKER,
-            SHOOT_AMP
+            DRIVE_OUT
         };
     }
 
@@ -74,6 +76,18 @@ public final class Constants {
         public static final double FEEDER_SHOOT_AMP_SPEED      = -0.35;
 
         // public static final double SHOOTE =
+    }
+
+    public static final class IntakeConstants {
+        public static final int    SHOOTER_MOTOR_PORT   = 51;
+        public static final int    FEEDER_MOTOR_PORT    = 50;
+
+        public static final int    GROUND_MOTOR_PORT    = 52;
+
+        public static final double SHOOTER_INTAKE_SPEED = -1;
+        public static final double FEEDER_INTAKE_SPEED  = -1;
+
+        public static final double GROUND_INTAKE_SPPED  = 1;
     }
 
     public static final class OperatorConstants {
