@@ -55,18 +55,29 @@ public class AutonomousCommand extends SequentialCommandGroup {
         // later the type of shooting
         switch (autoPattern) {
         case DO_NOTHING:
-            return;
+            break;
 
-        case SHOOT_SPEAKER:
+        case SHOOT_SPEAKER_AND_DRIVE:
             addCommands(new DefaultShooterCommand(shooterSubsystem, lightsSubsystem, shooterType.SpeakerShooter));
             addCommands(new DriveForwardCommand(driveSubsystem, 0.1, -0.1));
             addCommands(new DriveRotateCommand(driveSubsystem, 180, 0.1));
             addCommands(new DriveForwardCommand(driveSubsystem, 2, 0.1));
-            return;
+            break;
+
+        case DRIVE_OUT:
+            addCommands(new DriveForwardCommand(driveSubsystem, 0.1, -0.1));
+            addCommands(new DriveRotateCommand(driveSubsystem, 180, 0.1));
+            addCommands(new DriveForwardCommand(driveSubsystem, 2, 1));
+
+            break;
+
+        case SHOOT_SPEAKER:
+            addCommands(new x);
+            break;
 
         case SHOOT_AMP:
             // someone should do code this :/
-            return;
+            break;
         }
     }
 }
