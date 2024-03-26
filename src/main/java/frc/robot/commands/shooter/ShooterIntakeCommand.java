@@ -5,7 +5,7 @@ import frc.robot.commands.LoggingCommand;
 import frc.robot.operator.OperatorInput;
 import frc.robot.subsystems.ShooterSubsystem;
 
-public class IntakeCommand extends LoggingCommand {
+public class ShooterIntakeCommand extends LoggingCommand {
 
     private final ShooterSubsystem shooterSubsystem;
     private final OperatorInput    operatorInput;
@@ -15,7 +15,7 @@ public class IntakeCommand extends LoggingCommand {
      *
      * @param shooterSubsystem The subsystem used by this command.
      */
-    public IntakeCommand(ShooterSubsystem shooterSubsystem, OperatorInput operatorInput) {
+    public ShooterIntakeCommand(ShooterSubsystem shooterSubsystem, OperatorInput operatorInput) {
 
         this.shooterSubsystem = shooterSubsystem;
         this.operatorInput    = operatorInput;
@@ -37,8 +37,6 @@ public class IntakeCommand extends LoggingCommand {
         // Run the shooter wheel
         shooterSubsystem.setFeederSpeed(-ShooterConstants.SHOOTER_SHOOT_SPEAKER_SPEED);
         shooterSubsystem.setShooterSpeed(-ShooterConstants.FEEDER_SHOOT_SPEAKER_SPEED);
-
-
     }
 
     // Returns true when the command should end.
@@ -46,25 +44,20 @@ public class IntakeCommand extends LoggingCommand {
     public boolean isFinished() {
 
         if (shooterSubsystem.isNoteLoaded()) {
+            setFinishReason("Sensor Detected, Intake Stopped");
             return true;
-
         }
-        // Checks if the note has triggered the laser. If it hasn't runs Intake motors for 4 seconds
-        // and then stops
         if (operatorInput.isAltIntake()) {
             setFinishReason("Intake forcestop");
-
             return true;
         }
         if (isTimeoutExceeded(4)) {
-            setFinishReason("Intake no more");
+            setFinishReason("Intake timed out");
             return true;
-
         }
         return false;
 
     }
-
 
     // Called once the command ends or is interrupted.
     @Override

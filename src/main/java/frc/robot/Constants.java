@@ -19,19 +19,10 @@ public final class Constants {
     public static final double DEFAULT_COMMAND_TIMEOUT_SECONDS = 5;
 
     public static final class AutoConstants {
-
-
-        public static enum AutoPatternPos {
-            RIGHT,
-            CENTER,
-            LEFT
-        }
-
         public static enum AutoPattern {
             DO_NOTHING,
             SHOOT_SPEAKER,
-            DRIVE_FORWARD_AFTER_DELAY,
-            DRIVE_SOURCE_SIDE
+            SHOOT_AMP
         };
     }
 

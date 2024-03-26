@@ -5,16 +5,21 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants.AutoConstants.AutoPattern;
-import frc.robot.Constants.AutoConstants.AutoPatternPos;
+import frc.robot.Constants.ShooterConstants.shooterType;
+import frc.robot.commands.drive.DriveForwardCommand;
+import frc.robot.commands.drive.DriveRotateCommand;
+import frc.robot.commands.shooter.DefaultShooterCommand;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.LightsSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.subsystems.VisionSubsystem;
 
 public class AutonomousCommand extends SequentialCommandGroup {
 
     Alliance alliance;
 
-    public AutonomousCommand(AutoPattern autoPattern, AutoPatternPos autoPatternPos, DriveSubsystem driveSubsystem,
-        ShooterSubsystem shooterSubsystem) {
+    public AutonomousCommand(AutoPattern autoPattern, DriveSubsystem driveSubsystem,
+        ShooterSubsystem shooterSubsystem, VisionSubsystem visionSubsystem, LightsSubsystem lightsSubsystem) {
 
         // Default is to do nothing.
         // If more commands are added, the instant command will end and
@@ -48,76 +53,20 @@ public class AutonomousCommand extends SequentialCommandGroup {
 
         // Determine which autopattern we will use. We first determine the initial position and than
         // later the type of shooting
-        switch (autoPatternPos) {
-            // This is for RIGHT AUTONOMOUS
-            case RIGHT:
-                switch (autoPattern) {
+        switch (autoPattern) {
+        case DO_NOTHING:
+            return;
 
-                    case DO_NOTHING:
-                        return;
+        case SHOOT_SPEAKER:
+            addCommands(new DefaultShooterCommand(shooterSubsystem, lightsSubsystem, shooterType.SpeakerShooter));
+            addCommands(new DriveForwardCommand(driveSubsystem, 0.1, -0.1));
+            addCommands(new DriveRotateCommand(driveSubsystem, 180, 0.1));
+            addCommands(new DriveForwardCommand(driveSubsystem, 2, 0.1));
+            return;
 
-                    case SHOOT_SPEAKER:
-                        addCommands(new DriveSpeakerCommand(driveSubsystem, shooterSubsystem, 0.15));
-                        return;
-
-                    case DRIVE_FORWARD_AFTER_DELAY:
-                        addCommands(new DriveForwardOnlyCommand(driveSubsystem, shooterSubsystem));
-                        return;
-
-                    case DRIVE_SOURCE_SIDE:
-                        addCommands(new DriveSourceSideCommand(driveSubsystem, shooterSubsystem, -0.15));
-                        return;
-                }
-
-
-
-                return;
-            // This is for CENTER AUTONOMOUS
-            case CENTER:
-                switch (autoPattern) {
-
-                    case DO_NOTHING:
-                        return;
-
-                    case SHOOT_SPEAKER:
-                        addCommands(new DriveSpeakerCommand(driveSubsystem, shooterSubsystem, 0.15));
-                        return;
-
-
-                    case DRIVE_FORWARD_AFTER_DELAY:
-                        addCommands(new DriveForwardOnlyCommand(driveSubsystem, shooterSubsystem));
-                        return;
-                }
-
-
-                return;
-            // This is for LEFT AUTONOMOUS
-            case LEFT:
-
-                switch (autoPattern) {
-
-                    case DO_NOTHING:
-                        return;
-
-                    case SHOOT_SPEAKER:
-                        addCommands(new DriveSpeakerCommand(driveSubsystem, shooterSubsystem, -0.15));
-                        return;
-
-                    case DRIVE_FORWARD_AFTER_DELAY:
-                        addCommands(new DriveForwardOnlyCommand(driveSubsystem, shooterSubsystem));
-                        return;
-
-                    case DRIVE_SOURCE_SIDE:
-                        addCommands(new DriveSourceSideCommand(driveSubsystem, shooterSubsystem, 0.15));
-                        return;
-                }
-
-
-
-                return;
-
+        case SHOOT_AMP:
+            // someone should do code this :/
+            return;
         }
     }
-
 }
-

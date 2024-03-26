@@ -39,26 +39,20 @@ public class DefaultShooterCommand extends LoggingCommand {
     public void execute() {
 
         if (shooterType == ShooterConstants.shooterType.SpeakerShooter) {
-
             // Run the shooter wheel
             shooterSubsystem.setShooterSpeed(ShooterConstants.SHOOTER_SHOOT_SPEAKER_SPEED);
-
             // If this command has been running for 0.5 seconds, then start the feeder
             if (isTimeoutExceeded(0.5)) {
                 shooterSubsystem.setFeederSpeed(ShooterConstants.FEEDER_SHOOT_SPEAKER_SPEED);
             }
         }
         else if (shooterType == ShooterConstants.shooterType.AMPShooter) {
-
-
             // Run the shooter wheel
             shooterSubsystem.setShooterSpeed(ShooterConstants.SHOOTER_SHOOT_AMP_SPEED);
-
             // If this command has been running for 2 seconds, then start the feeder
             if (isTimeoutExceeded(0.5)) {
                 shooterSubsystem.setFeederSpeed(ShooterConstants.FEEDER_SHOOT_AMP_SPEED);
             }
-
         }
 
         lightsSubsystem.setLEDRainbow();
@@ -67,7 +61,6 @@ public class DefaultShooterCommand extends LoggingCommand {
     // Returns true when the command should end.
     @Override
     public boolean isFinished() {
-
         // Stop this command after 2.5 seconds total
         // FIX check if note is loaded if it isn't spin for 0.5 second more and then stop
         if (isTimeoutExceeded(2.5) || (shooterSubsystem.isNoteLoaded() && isTimeoutExceeded(1))) {
@@ -75,7 +68,6 @@ public class DefaultShooterCommand extends LoggingCommand {
             return true;
         }
         return false;
-
     }
 
     // Called once the command ends or is interrupted.

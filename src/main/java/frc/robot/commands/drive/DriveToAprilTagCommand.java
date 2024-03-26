@@ -1,4 +1,4 @@
-package frc.robot.commands.vision;
+package frc.robot.commands.drive;
 
 import frc.robot.commands.LoggingCommand;
 import frc.robot.subsystems.DriveSubsystem;
@@ -21,6 +21,7 @@ public class DriveToAprilTagCommand extends LoggingCommand {
 
         // Use addRequirements() here to declare subsystem dependencies.
         addRequirements(driveSubsystem);
+        addRequirements(visionSubsystem);
     }
 
     // Called when the command is initially scheduled.

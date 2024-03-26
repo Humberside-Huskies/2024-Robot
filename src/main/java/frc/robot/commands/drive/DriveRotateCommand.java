@@ -1,24 +1,24 @@
-package frc.robot.commands.auto;
+package frc.robot.commands.drive;
 
 import frc.robot.commands.LoggingCommand;
 import frc.robot.subsystems.DriveSubsystem;
-import frc.robot.subsystems.ShooterSubsystem;
 
-public class DriveForwardOnlyCommand extends LoggingCommand {
+public class DriveRotateCommand extends LoggingCommand {
 
-    private final DriveSubsystem   driveSubsystem;
-    private final ShooterSubsystem shooterSubsystem;
-
+    private final DriveSubsystem driveSubsystem;
+    private final double         gyroAngle;
+    private final double         driveSpeed;
 
     /**
      * Creates a new ExampleCommand.
      *
      * @param driveSubsystem The subsystem used by this command.
      */
-    public DriveForwardOnlyCommand(DriveSubsystem driveSubsystem, ShooterSubsystem shooterSubsystem) {
+    public DriveRotateCommand(DriveSubsystem driveSubsystem, double gyroAngle, double driveSpeed) {
 
-        this.driveSubsystem   = driveSubsystem;
-        this.shooterSubsystem = shooterSubsystem;
+        this.driveSubsystem = driveSubsystem;
+        this.gyroAngle      = gyroAngle;
+        this.driveSpeed     = driveSpeed;
 
         // Use addRequirements() here to declare subsystem dependencies.
         addRequirements(driveSubsystem);
@@ -33,22 +33,13 @@ public class DriveForwardOnlyCommand extends LoggingCommand {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        // wait 10 second to move forward
-        if (isTimeoutExceeded(12)) {
-            driveSubsystem.setMotorSpeeds(0.0, 0.0);
-        }
-        // stop
-        else if (isTimeoutExceeded(10)) {
-            driveSubsystem.setMotorSpeeds(0.3, 0.3);
-        }
+        driveSubsystem.setMotorSpeeds(this.driveSpeed, this.driveSpeed);
     }
 
     // Returns true when the command should end.
     @Override
     public boolean isFinished() {
-        // The default drive command never ends, but can be interrupted by other commands.
-
-        if (isTimeoutExceeded(12))
+        if (Math.abs(this.gyroAngle - driveSubsystem.getGyroAngle()) < 5)
             return true;
         return false;
     }
@@ -56,6 +47,7 @@ public class DriveForwardOnlyCommand extends LoggingCommand {
     // Called once the command ends or is interrupted.
     @Override
     public void end(boolean interrupted) {
+        driveSubsystem.stop();
         logCommandEnd(interrupted);
     }
 }

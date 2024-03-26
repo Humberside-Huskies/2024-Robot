@@ -5,13 +5,12 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.AutoConstants.AutoPattern;
-import frc.robot.Constants.AutoConstants.AutoPatternPos;
 import frc.robot.Constants.DriveConstants.DriveMode;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.commands.CancelCommand;
 import frc.robot.commands.shooter.DefaultShooterCommand;
-import frc.robot.commands.shooter.IntakeCommand;
+import frc.robot.commands.shooter.ShooterIntakeCommand;
 import frc.robot.subsystems.ClimbSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.LightsSubsystem;
@@ -26,15 +25,13 @@ import frc.robot.subsystems.VisionSubsystem;
  */
 public class OperatorInput extends SubsystemBase {
 
-    public final GameController                   driverController      = new GameController(
+    public final GameController                driverController   = new GameController(
         OperatorConstants.DRIVER_CONTROLLER_PORT,
         OperatorConstants.GAME_CONTROLLER_STICK_DEADBAND);
 
     // All dashboard choosers are defined here...
-    private final SendableChooser<DriveMode>      driveModeChooser      = new SendableChooser<>();
-    private final SendableChooser<AutoPattern>    autoPatternChooser    = new SendableChooser<>();
-    private final SendableChooser<AutoPatternPos> autoPatternPosChooser = new SendableChooser<>();
-
+    private final SendableChooser<DriveMode>   driveModeChooser   = new SendableChooser<>();
+    private final SendableChooser<AutoPattern> autoPatternChooser = new SendableChooser<>();
 
     public OperatorInput() {
 
@@ -46,28 +43,14 @@ public class OperatorInput extends SubsystemBase {
         SmartDashboard.putData("Drive Mode", driveModeChooser);
 
         // Change Auto pattern Type
-        autoPatternChooser.setDefaultOption("MoveForwardDelay", AutoPattern.DRIVE_FORWARD_AFTER_DELAY);
+        autoPatternChooser.setDefaultOption("MoveForwardDelay", AutoPattern.SHOOT_SPEAKER);
         // Other option for Auto pattern Type
         autoPatternChooser.addOption("Nothing", AutoPattern.DO_NOTHING);
         autoPatternChooser.addOption("ShootSpeaker", AutoPattern.SHOOT_SPEAKER);
-        autoPatternChooser.addOption("Drive to Source Side", AutoPattern.DRIVE_SOURCE_SIDE);
+        autoPatternChooser.addOption("ShootAmp", AutoPattern.SHOOT_AMP);
 
         // Put the auto pattern option to the SmartDashboard
         SmartDashboard.putData("Auto Pattern", autoPatternChooser);
-
-
-
-        // Change Auto pattern Pos
-        autoPatternPosChooser.setDefaultOption("RIGHT", AutoPatternPos.RIGHT);
-        // Other option for Auto pattern Pos
-        autoPatternPosChooser.addOption("CENTER", AutoPatternPos.CENTER);
-        autoPatternPosChooser.addOption("LEFT", AutoPatternPos.LEFT);
-
-        // Put the auto pattern initial start Position to the SmartDashboard
-        SmartDashboard.putData("Start Position", autoPatternPosChooser);
-
-
-
     }
 
     /*
@@ -95,10 +78,6 @@ public class OperatorInput extends SubsystemBase {
      */
     public AutoPattern getSelectedAutoPattern() {
         return autoPatternChooser.getSelected();
-    }
-
-    public AutoPatternPos getSelectedAutoPatternPos() {
-        return autoPatternPosChooser.getSelected();
     }
 
     /*
@@ -203,7 +182,7 @@ public class OperatorInput extends SubsystemBase {
 
         // Intake button
         new Trigger(() -> isIntake())
-            .onTrue(new IntakeCommand(shooterSubsystem, this));
+            .onTrue(new ShooterIntakeCommand(shooterSubsystem, this));
 
         // Shooter button
         new Trigger(() -> isShootSpeaker())

@@ -23,6 +23,10 @@ public class VisionSubsystem extends SubsystemBase {
         return ty;
     }
 
+    public double getTV() {
+        return tv;
+    }
+
     /** Safely stop the subsystem from moving */
     public void stop() {
     }
@@ -44,6 +48,6 @@ public class VisionSubsystem extends SubsystemBase {
         // Create an appropriate text readable string describing the state of the
         // subsystem
 
-        return "Tony was here... Shhhhhh, and Philip was too";
+        return "Tony was here... Shhhhhh, and Philip wasnt here";
     }
 }
