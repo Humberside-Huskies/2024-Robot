@@ -35,12 +35,8 @@ public class DefaultGroundIntakeCommand extends LoggingCommand {
 
 
         // Run the shooter wheel
-        intakeSubsystem.setGroundSpeed(IntakeConstants.GROUND_INTAKE_SPPED);
+        intakeSubsystem.setGroundSpeed(IntakeConstants.GROUND_INTAKE_SPEED);
         // If this command has been running for 0.5 seconds, then start the feeder
-        if (isTimeoutExceeded(1)) {
-            intakeSubsystem.setShooterSpeed(IntakeConstants.SHOOTER_INTAKE_SPEED);
-            intakeSubsystem.setFeederSpeed(IntakeConstants.FEEDER_INTAKE_SPEED);
-        }
 
         lightsSubsystem.setLEDRainbow();
     }

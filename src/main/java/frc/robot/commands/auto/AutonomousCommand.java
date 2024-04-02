@@ -72,7 +72,7 @@ public class AutonomousCommand extends SequentialCommandGroup {
             break;
 
         case SHOOT_SPEAKER:
-            addCommands(new x);
+            // addCommands(new x);
             break;
 
         case SHOOT_AMP:

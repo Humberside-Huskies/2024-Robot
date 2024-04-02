@@ -157,7 +157,7 @@ public class LightsSubsystem extends SubsystemBase {
     public String toString() {
         // Create an appropriate text readable string describing the state of the subsystem
 
-        return "Ryder Changed Tony's Thing... Shhhhhhh";
+        return "Vlad Changed Ryder's Thing... Shhhhhhh";
     }
 
 }

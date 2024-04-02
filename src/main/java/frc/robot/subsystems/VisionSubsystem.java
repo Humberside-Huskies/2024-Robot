@@ -27,6 +27,10 @@ public class VisionSubsystem extends SubsystemBase {
         return tv;
     }
 
+    public double getTA() {
+        return ta;
+    }
+
     /** Safely stop the subsystem from moving */
     public void stop() {
     }

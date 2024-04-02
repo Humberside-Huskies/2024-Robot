@@ -54,6 +54,14 @@ public class DefaultShooterCommand extends LoggingCommand {
                 shooterSubsystem.setFeederSpeed(ShooterConstants.FEEDER_SHOOT_AMP_SPEED);
             }
         }
+        else if (shooterType == ShooterConstants.shooterType.PassShooter) {
+            // Run the shooter wheel
+            shooterSubsystem.setShooterSpeed(ShooterConstants.SHOOTER_SHOOT_PASS_SPEED);
+            // If this command has been running for 2 seconds, then start the feeder
+            if (isTimeoutExceeded(0.5)) {
+                shooterSubsystem.setFeederSpeed(ShooterConstants.FEEDER_SHOOT_PASS_SPEED);
+            }
+        }
 
         lightsSubsystem.setLEDRainbow();
     }

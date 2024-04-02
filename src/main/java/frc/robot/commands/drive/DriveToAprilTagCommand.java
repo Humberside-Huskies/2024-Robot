@@ -1,87 +1,104 @@
+// Copyright (c) FIRST and other WPILib contributors.
+// Open Source Software; you can modify and/or share it under the terms of
+// the WPILib BSD license file in the root directory of this project.
+
 package frc.robot.commands.drive;
 
-import frc.robot.commands.LoggingCommand;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
 
-public class DriveToAprilTagCommand extends LoggingCommand {
 
+public class DriveToAprilTagCommand extends Command {
+
+    private final double          speed;
     private final DriveSubsystem  driveSubsystem;
+    private double                desiredHeadingDelta;
     private final VisionSubsystem visionSubsystem;
 
+    private double                targetOffsetAngle_Vertical;
+    // how many degrees back is your limelight rotated from perfectly vertical?
+    private double                limelightMountAngleDegrees = 27.0;
+    // distance from the center of the Limelight lens to the floor
+    private double                limelightLensHeightInches  = 22.0;
+    // distance from the target to the floor
+    private double                goalHeightInches           = 60.0;
+
     /**
-     * Creates a new ExampleCommand.
+     * DriveForTime command drives at the specified heading at the specified speed for the specified
+     * time.
      *
-     * @param driveSubsystem The subsystem used by this command.
+     * @param speed in the range -1.0 to +1.0
+     * @param driveSubsystem
      */
-    public DriveToAprilTagCommand(DriveSubsystem driveSubsystem, VisionSubsystem visionSubsystem) {
 
-        this.driveSubsystem  = driveSubsystem;
+    public DriveToAprilTagCommand(double speed, DriveSubsystem driveSubsystem,
+        VisionSubsystem visionSubsystem) {
+
         this.visionSubsystem = visionSubsystem;
+        this.speed           = speed;
+        this.driveSubsystem  = driveSubsystem;
 
-        // Use addRequirements() here to declare subsystem dependencies.
+
+        // Add required subsystems
         addRequirements(driveSubsystem);
-        addRequirements(visionSubsystem);
     }
 
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
-        logCommandStart();
+
+        // SmartDashboard.putNumber("heading", driveSubsystem.getHeading() +
+        // visionSubsystem.getTX());
+        System.out.println("Command initialized");
     }
 
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        double KpAim           = -0.1;                   // Propotional control constant
-        double KpDistance      = -0.1;                   // Proportional control constant for
-                                                         // distance
+        desiredHeadingDelta        = visionSubsystem.getTX();
+        targetOffsetAngle_Vertical = visionSubsystem.getTY();
+        double errorF = desiredHeadingDelta * 0.02;
+        driveSubsystem.setMotorSpeeds(speed + errorF, speed - errorF);
 
-        double min_aim_command = 0.05;                   // Since it is impossible to perfectly
-                                                         // align the robot with the target. This
-                                                         // set minimum range in which the robot
-                                                         // needs to be aiming.
-
-        double tx              = visionSubsystem.getTX();
-        double ty              = visionSubsystem.getTY();
+        SmartDashboard.putNumber("Delta", desiredHeadingDelta);
+        System.out.println("Command executed");
+        // Nothing to do here except wait for the end
+    }
 
 
 
-        double heading_error   = -tx;
-        double distance_error  = -ty;
-        double steering_adjust = 0.0f;
+    // Called once the command ends or is interrupted.
+    @Override
+    public void end(boolean interrupted) {
 
-        if (tx > 1.0) {
-            steering_adjust = KpAim * heading_error - min_aim_command;
-        }
-        else if (tx < -1.0) {
-            steering_adjust = KpAim * heading_error + min_aim_command;
-        }
-
-        double distance_adjust = KpDistance * distance_error;
-
-        double left_command    = steering_adjust + distance_adjust;
-        double right_command   = -(steering_adjust + distance_adjust);
-
-        driveSubsystem.setMotorSpeeds(left_command, right_command);
+        // When the command finishes, do nothing
+        // NOTE: control will return to the driver
     }
 
     // Returns true when the command should end.
     @Override
     public boolean isFinished() {
-        if (isTimeoutExceeded(2.0)) {
-            setFinishReason("tony was here");
+        if (visionSubsystem.getTV() < 1)
             return true;
-        }
+        if (visionSubsystem.getTA() > 5)
+            return true;
+
+
 
         return false;
     }
 
-    // Called once the command ends or is interrupted.
-    @Override
-    public void end(boolean interrupted) {
-        logCommandEnd(interrupted);
+    void EstimateDistance() {
+
+        // distance from the target to the floor
+        double goalHeightInches                  = 60.0;
+
+        double angleToGoalDegrees                = limelightMountAngleDegrees + targetOffsetAngle_Vertical;
+        double angleToGoalRadians                = angleToGoalDegrees * (3.14159 / 180.0);
+
+        // calculate distance
+        double distanceFromLimelightToGoalInches = (goalHeightInches - limelightLensHeightInches) / Math.tan(angleToGoalRadians);
     }
-
-
 }

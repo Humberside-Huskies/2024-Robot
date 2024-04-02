@@ -9,10 +9,13 @@ import frc.robot.Constants.DriveConstants.DriveMode;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.commands.CancelCommand;
+import frc.robot.commands.drive.DriveToAprilTagCommand;
+import frc.robot.commands.intake.DefaultGroundIntakeCommand;
 import frc.robot.commands.shooter.DefaultShooterCommand;
 import frc.robot.commands.shooter.ShooterIntakeCommand;
 import frc.robot.subsystems.ClimbSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LightsSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
@@ -135,7 +138,11 @@ public class OperatorInput extends SubsystemBase {
     }
 
     public boolean isShootAmp() {
-        return driverController.getXButton();
+        return driverController.getPOV() == 0;
+    }
+
+    public boolean isPassShot() {
+        return driverController.getYButton();
     }
 
     /*
@@ -144,6 +151,11 @@ public class OperatorInput extends SubsystemBase {
     public boolean isIntake() {
         return driverController.getAButton();
     }
+
+    public boolean isGroundIntake() {
+        return driverController.getXButton();
+    }
+
 
     /*
      * Is Climber Trigger Button
@@ -175,7 +187,8 @@ public class OperatorInput extends SubsystemBase {
      * NOTE: all subsystems should be passed into this method.
      */
     public void configureButtonBindings(DriveSubsystem driveSubsystem, ShooterSubsystem shooterSubsystem,
-        VisionSubsystem visionSubsystem, ClimbSubsystem climbSubsystem, LightsSubsystem lightsSubsystem) {
+        VisionSubsystem visionSubsystem, ClimbSubsystem climbSubsystem, LightsSubsystem lightsSubsystem,
+        IntakeSubsystem intakeSubsystem) {
 
         new Trigger(() -> isCancel())
             .onTrue(new CancelCommand(this, driveSubsystem, shooterSubsystem));
@@ -191,9 +204,13 @@ public class OperatorInput extends SubsystemBase {
         new Trigger(() -> isShootAmp())
             .onTrue(new DefaultShooterCommand(shooterSubsystem, lightsSubsystem, ShooterConstants.shooterType.AMPShooter));
 
+        new Trigger(() -> isGroundIntake())
+            .onTrue(new DefaultGroundIntakeCommand(intakeSubsystem, lightsSubsystem));
         // Detect April Tag
-        // new Trigger(() -> getDriveToVisionTarget() > 0)
-        // .onTrue(new DriveToAprilTagCommand(driveSubsystem, visionSubsystem));
+        new Trigger(() -> getDriveToVisionTarget() > 0)
+            .onTrue(new DriveToAprilTagCommand(0.5, driveSubsystem, visionSubsystem));
+        new Trigger(() -> isPassShot())
+            .onTrue(new DefaultShooterCommand(shooterSubsystem, lightsSubsystem, ShooterConstants.shooterType.PassShooter));
 
     }
 

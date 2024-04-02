@@ -66,7 +66,7 @@ public final class Constants {
         public static final int FEEDER_MOTOR_PORT  = 30;
 
         public static enum shooterType {
-            AMPShooter, SpeakerShooter
+            AMPShooter, SpeakerShooter, PassShooter
         };
 
         public static final double SHOOTER_SHOOT_SPEAKER_SPEED = -1;
@@ -75,19 +75,16 @@ public final class Constants {
         public static final double SHOOTER_SHOOT_AMP_SPEED     = -0.15;
         public static final double FEEDER_SHOOT_AMP_SPEED      = -0.35;
 
+        public static final double SHOOTER_SHOOT_PASS_SPEED    = -0.5;
+        public static final double FEEDER_SHOOT_PASS_SPEED     = -0.5;
+
         // public static final double SHOOTE =
     }
 
     public static final class IntakeConstants {
-        public static final int    SHOOTER_MOTOR_PORT   = 51;
-        public static final int    FEEDER_MOTOR_PORT    = 50;
+        public static final int    GROUND_MOTOR_PORT   = 51;
 
-        public static final int    GROUND_MOTOR_PORT    = 52;
-
-        public static final double SHOOTER_INTAKE_SPEED = -1;
-        public static final double FEEDER_INTAKE_SPEED  = -1;
-
-        public static final double GROUND_INTAKE_SPPED  = 1;
+        public static final double GROUND_INTAKE_SPEED = 1;
     }
 
     public static final class OperatorConstants {
