@@ -127,7 +127,8 @@ public class OperatorInput extends SubsystemBase {
      * Vision Drive Methods
      */
     public double getDriveToVisionTarget() {
-        return driverController.getLeftTriggerAxis();
+        // return driverController.getPOV() == 1;
+        return 0;
     }
 
     /*
