@@ -10,15 +10,14 @@ import frc.robot.Constants.IntakeConstants;
 public class IntakeSubsystem extends SubsystemBase {
 
     // Inake
-    private final CANSparkMax     groundMotor = new CANSparkMax(IntakeConstants.GROUND_MOTOR_PORT, MotorType.kBrushless);
-
+    private final CANSparkMax     groundMotor = new CANSparkMax(IntakeConstants.GROUND_MOTOR_PORT, MotorType.kBrushed);
     // lights
     private final LightsSubsystem lightsSubsystem;
 
     private double                groundSpeed = 0;
 
     /** Creates a new ShooterSubsystem. */
-    public IntakeSubsystem(LightsSubsystem lightsSubsystem) {
+    public IntakeSubsystem(LightsSubsystem lightsSubsystem, ShooterSubsystem shooterSubsystem) {
         this.lightsSubsystem = lightsSubsystem;
     }
 

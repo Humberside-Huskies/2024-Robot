@@ -52,8 +52,9 @@ public class ShooterSubsystem extends SubsystemBase {
         feederMotor.set(this.feederSpeed);
     }
 
+
     public boolean isNoteLoaded() {
-        return this.input.get();
+        return !this.input.get();
     }
 
     /** Safely stop the subsystem from moving */

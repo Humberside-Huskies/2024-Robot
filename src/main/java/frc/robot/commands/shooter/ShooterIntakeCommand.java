@@ -1,24 +1,28 @@
 package frc.robot.commands.shooter;
 
+import frc.robot.Constants.IntakeConstants;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.commands.LoggingCommand;
 import frc.robot.operator.OperatorInput;
+import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 
 public class ShooterIntakeCommand extends LoggingCommand {
 
     private final ShooterSubsystem shooterSubsystem;
     private final OperatorInput    operatorInput;
+    private final IntakeSubsystem  intakeSubsystem;
 
     /**
      * Creates a new ExampleCommand.
      *
      * @param shooterSubsystem The subsystem used by this command.
      */
-    public ShooterIntakeCommand(ShooterSubsystem shooterSubsystem, OperatorInput operatorInput) {
+    public ShooterIntakeCommand(ShooterSubsystem shooterSubsystem, OperatorInput operatorInput, IntakeSubsystem intakeSubsystem) {
 
         this.shooterSubsystem = shooterSubsystem;
         this.operatorInput    = operatorInput;
+        this.intakeSubsystem  = intakeSubsystem;
 
         // Use addRequirements() here to declare subsystem dependencies.
         addRequirements(shooterSubsystem);
@@ -27,7 +31,6 @@ public class ShooterIntakeCommand extends LoggingCommand {
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
-        System.out.println("Intake begin");
         logCommandStart();
     }
 
@@ -37,6 +40,7 @@ public class ShooterIntakeCommand extends LoggingCommand {
         // Run the shooter wheel
         shooterSubsystem.setFeederSpeed(-ShooterConstants.SHOOTER_SHOOT_SPEAKER_SPEED);
         shooterSubsystem.setShooterSpeed(-ShooterConstants.FEEDER_SHOOT_SPEAKER_SPEED);
+        intakeSubsystem.setGroundSpeed(-IntakeConstants.GROUND_INTAKE_SPEED);
     }
 
     // Returns true when the command should end.
@@ -63,6 +67,7 @@ public class ShooterIntakeCommand extends LoggingCommand {
     @Override
     public void end(boolean interrupted) {
         shooterSubsystem.stop();
+        intakeSubsystem.stop();
         logCommandEnd(interrupted);
     }
 }

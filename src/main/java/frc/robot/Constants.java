@@ -85,6 +85,7 @@ public final class Constants {
         public static final int    GROUND_MOTOR_PORT   = 51;
 
         public static final double GROUND_INTAKE_SPEED = 1;
+        public static final double FEEDER_INTAKE_SPEED = -0.5;
     }
 
     public static final class OperatorConstants {

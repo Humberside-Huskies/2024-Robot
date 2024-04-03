@@ -10,6 +10,7 @@ import frc.robot.commands.drive.DriveForwardCommand;
 import frc.robot.commands.drive.DriveRotateCommand;
 import frc.robot.commands.shooter.DefaultShooterCommand;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LightsSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
@@ -19,7 +20,8 @@ public class AutonomousCommand extends SequentialCommandGroup {
     Alliance alliance;
 
     public AutonomousCommand(AutoPattern autoPattern, DriveSubsystem driveSubsystem,
-        ShooterSubsystem shooterSubsystem, VisionSubsystem visionSubsystem, LightsSubsystem lightsSubsystem) {
+        ShooterSubsystem shooterSubsystem, VisionSubsystem visionSubsystem, LightsSubsystem lightsSubsystem,
+        IntakeSubsystem intakeSubsystem) {
 
         // Default is to do nothing.
         // If more commands are added, the instant command will end and
@@ -58,7 +60,8 @@ public class AutonomousCommand extends SequentialCommandGroup {
             break;
 
         case SHOOT_SPEAKER_AND_DRIVE:
-            addCommands(new DefaultShooterCommand(shooterSubsystem, lightsSubsystem, shooterType.SpeakerShooter));
+            addCommands(
+                new DefaultShooterCommand(shooterSubsystem, lightsSubsystem, intakeSubsystem, shooterType.SpeakerShooter));
             addCommands(new DriveForwardCommand(driveSubsystem, 0.1, -0.1));
             addCommands(new DriveRotateCommand(driveSubsystem, 180, 0.1));
             addCommands(new DriveForwardCommand(driveSubsystem, 2, 0.1));

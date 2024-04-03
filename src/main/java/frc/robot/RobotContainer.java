@@ -36,7 +36,7 @@ public class RobotContainer {
     private final ShooterSubsystem shooterSubsystem = new ShooterSubsystem(lightsSubsystem);
     private final VisionSubsystem  visionSubsystem  = new VisionSubsystem();
     private final ClimbSubsystem   climbSubsystem   = new ClimbSubsystem();
-    private final IntakeSubsystem  intakeSubsystem  = new IntakeSubsystem(lightsSubsystem);
+    private final IntakeSubsystem  intakeSubsystem  = new IntakeSubsystem(lightsSubsystem, shooterSubsystem);
 
     /**
      * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -70,6 +70,6 @@ public class RobotContainer {
         // Pass in all of the subsystems and all of the choosers to the auto command.
         return new AutonomousCommand(
             operatorInput.getSelectedAutoPattern(),
-            driveSubsystem, shooterSubsystem, visionSubsystem, lightsSubsystem);
+            driveSubsystem, shooterSubsystem, visionSubsystem, lightsSubsystem, intakeSubsystem);
     }
 }

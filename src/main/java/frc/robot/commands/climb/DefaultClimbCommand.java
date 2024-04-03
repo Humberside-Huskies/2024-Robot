@@ -39,7 +39,6 @@ public class DefaultClimbCommand extends LoggingCommand {
         if (operatorInput.isResetEncoders()) {
             climbSubsystem.resetClimbEncoders();
         }
-        System.out.println(climbSubsystem.getLeftEncoder());
 
         if (operatorInput.isClimb() > 0.4 && !(operatorInput.isRetract() > 0.4)) {
 

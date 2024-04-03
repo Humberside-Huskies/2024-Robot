@@ -9,10 +9,10 @@ import frc.robot.Constants.DriveConstants.DriveMode;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.commands.CancelCommand;
-import frc.robot.commands.drive.DriveToAprilTagCommand;
 import frc.robot.commands.intake.DefaultGroundIntakeCommand;
 import frc.robot.commands.shooter.DefaultShooterCommand;
 import frc.robot.commands.shooter.ShooterIntakeCommand;
+import frc.robot.commands.vision.DefaultVisionCommand;
 import frc.robot.subsystems.ClimbSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
@@ -191,26 +191,29 @@ public class OperatorInput extends SubsystemBase {
         IntakeSubsystem intakeSubsystem) {
 
         new Trigger(() -> isCancel())
-            .onTrue(new CancelCommand(this, driveSubsystem, shooterSubsystem));
+            .onTrue(new CancelCommand(this, driveSubsystem, shooterSubsystem, intakeSubsystem, visionSubsystem));
 
         // Intake button
         new Trigger(() -> isIntake())
-            .onTrue(new ShooterIntakeCommand(shooterSubsystem, this));
+            .onTrue(new ShooterIntakeCommand(shooterSubsystem, this, intakeSubsystem));
 
         // Shooter button
         new Trigger(() -> isShootSpeaker())
-            .onTrue(new DefaultShooterCommand(shooterSubsystem, lightsSubsystem, ShooterConstants.shooterType.SpeakerShooter));
+            .onTrue(new DefaultShooterCommand(shooterSubsystem, lightsSubsystem, intakeSubsystem,
+                ShooterConstants.shooterType.SpeakerShooter));
 
         new Trigger(() -> isShootAmp())
-            .onTrue(new DefaultShooterCommand(shooterSubsystem, lightsSubsystem, ShooterConstants.shooterType.AMPShooter));
+            .onTrue(new DefaultShooterCommand(shooterSubsystem, lightsSubsystem, intakeSubsystem,
+                ShooterConstants.shooterType.AMPShooter));
 
         new Trigger(() -> isGroundIntake())
-            .onTrue(new DefaultGroundIntakeCommand(intakeSubsystem, lightsSubsystem));
+            .onTrue(new DefaultGroundIntakeCommand(intakeSubsystem, lightsSubsystem, shooterSubsystem));
         // Detect April Tag
         new Trigger(() -> getDriveToVisionTarget() > 0)
-            .onTrue(new DriveToAprilTagCommand(0.5, driveSubsystem, visionSubsystem));
-        new Trigger(() -> isPassShot())
-            .onTrue(new DefaultShooterCommand(shooterSubsystem, lightsSubsystem, ShooterConstants.shooterType.PassShooter));
+            .onTrue(new DefaultVisionCommand(0.5, driveSubsystem, visionSubsystem));
+        // new Trigger(() -> isPassShot())
+        // .onTrue(new DefaultShooterCommand(shooterSubsystem, lightsSubsystem,
+        // ShooterConstants.shooterType.PassShooter));
 
     }
 

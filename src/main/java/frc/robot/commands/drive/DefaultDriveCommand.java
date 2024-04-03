@@ -59,7 +59,6 @@ public class DefaultDriveCommand extends LoggingCommand {
 
         case TANK:
         default:
-            System.out.println("Default");
             double leftSpeed = operatorInput.getLeftSpeed() * scalingFactor;
             double rightSpeed = operatorInput.getRightSpeed() * scalingFactor;
 
