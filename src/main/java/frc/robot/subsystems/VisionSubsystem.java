@@ -8,11 +8,10 @@ public class VisionSubsystem extends SubsystemBase {
 
     private final NetworkTable limelightTable;
     // Recieve the cordination of the target
-    private double             tv, ty, tx, ta;
+    private double             tv, ty, tx, ta, tid;
 
     public VisionSubsystem() {
         limelightTable = NetworkTableInstance.getDefault().getTable("limelight");
-
     }
 
     public double getTX() {
@@ -31,6 +30,11 @@ public class VisionSubsystem extends SubsystemBase {
         return ta;
     }
 
+    // id of apriltag
+    public double getTID() {
+        return tid;
+    }
+
     /** Safely stop the subsystem from moving */
     public void stop() {
     }
@@ -42,9 +46,6 @@ public class VisionSubsystem extends SubsystemBase {
         tx = limelightTable.getEntry("tx").getDouble(0);
         ty = limelightTable.getEntry("ty").getDouble(0);
         ta = limelightTable.getEntry("ta").getDouble(0);
-
-
-
     }
 
     @Override
@@ -52,6 +53,6 @@ public class VisionSubsystem extends SubsystemBase {
         // Create an appropriate text readable string describing the state of the
         // subsystem
 
-        return "Tony was here... Shhhhhh, and Philip wasnt here";
+        return "Tony was here... Shhhhhh, and Philip wasnt here, and Ryder was also here, but don't tell Tony ";
     }
 }

@@ -26,6 +26,10 @@ public final class Constants {
             SHOOT_SPEAKER,
             DRIVE_OUT
         };
+
+        public static enum AutoPosition {
+            LEFT, CENTER, RIGHT;
+        }
     }
 
     public static final class DriveConstants {
@@ -99,4 +103,12 @@ public final class Constants {
         public static final int NUM_LEDS = 60;
     }
 
+    public static final class VisionConstants {
+        // how many degrees back is your limelight rotated from perfectly vertical?
+        public static final double LIMELIGHT_MOUNT_ANGLE_DEG = 27.0;
+        // distance from the center of the Limelight lens to the floor
+        public static final double LIMELIGHT_LENS_HEIGHT_INCHES = 22.0;
+        // distance from the target to the floor
+        public static final double GOAL_HEIGHT_INCHES = 60.0;
+    }
 }

@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants.AutoConstants.AutoPattern;
+import frc.robot.Constants.AutoConstants.AutoPosition;
 import frc.robot.Constants.ShooterConstants.shooterType;
 import frc.robot.commands.drive.DriveForwardCommand;
 import frc.robot.commands.drive.DriveRotateCommand;
@@ -19,7 +20,7 @@ public class AutonomousCommand extends SequentialCommandGroup {
 
     Alliance alliance;
 
-    public AutonomousCommand(AutoPattern autoPattern, DriveSubsystem driveSubsystem,
+    public AutonomousCommand(AutoPattern autoPattern, AutoPosition autoPosition, DriveSubsystem driveSubsystem,
         ShooterSubsystem shooterSubsystem, VisionSubsystem visionSubsystem, LightsSubsystem lightsSubsystem,
         IntakeSubsystem intakeSubsystem) {
 
@@ -33,6 +34,7 @@ public class AutonomousCommand extends SequentialCommandGroup {
         StringBuilder sb = new StringBuilder();
         sb.append("Auto Selections");
         sb.append("\n   Auto Pattern  : ").append(autoPattern);
+        sb.append("\n   Auto Position  : ").append(autoPosition);
         sb.append("\n   Alliance      : ").append(alliance);
 
         System.out.println(sb.toString());
@@ -60,9 +62,11 @@ public class AutonomousCommand extends SequentialCommandGroup {
             break;
 
         case SHOOT_SPEAKER_AND_DRIVE:
+            addCommands(new DriveForwardCommand(driveSubsystem, 0.1, -0.1));
             addCommands(
                 new DefaultShooterCommand(shooterSubsystem, lightsSubsystem, intakeSubsystem, shooterType.SpeakerShooter));
-            addCommands(new DriveForwardCommand(driveSubsystem, 0.1, -0.1));
+
+            // if (alliance.equals(Alliance.Blue) && autoPosition.equals(AutoPosition.LEFT))
             addCommands(new DriveRotateCommand(driveSubsystem, 180, 0.1));
             addCommands(new DriveForwardCommand(driveSubsystem, 2, 0.1));
             break;
@@ -75,7 +79,8 @@ public class AutonomousCommand extends SequentialCommandGroup {
             break;
 
         case SHOOT_SPEAKER:
-            // addCommands(new x);
+            addCommands(
+                new DefaultShooterCommand(shooterSubsystem, lightsSubsystem, intakeSubsystem, shooterType.SpeakerShooter));
             break;
 
         case SHOOT_AMP:

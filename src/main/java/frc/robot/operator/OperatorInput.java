@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.AutoConstants.AutoPattern;
+import frc.robot.Constants.AutoConstants.AutoPosition;
 import frc.robot.Constants.DriveConstants.DriveMode;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.Constants.ShooterConstants;
@@ -28,13 +29,14 @@ import frc.robot.subsystems.VisionSubsystem;
  */
 public class OperatorInput extends SubsystemBase {
 
-    public final GameController                driverController   = new GameController(
+    public final GameController                 driverController    = new GameController(
         OperatorConstants.DRIVER_CONTROLLER_PORT,
         OperatorConstants.GAME_CONTROLLER_STICK_DEADBAND);
 
     // All dashboard choosers are defined here...
-    private final SendableChooser<DriveMode>   driveModeChooser   = new SendableChooser<>();
-    private final SendableChooser<AutoPattern> autoPatternChooser = new SendableChooser<>();
+    private final SendableChooser<DriveMode>    driveModeChooser    = new SendableChooser<>();
+    private final SendableChooser<AutoPattern>  autoPatternChooser  = new SendableChooser<>();
+    private final SendableChooser<AutoPosition> autoPositionChooser = new SendableChooser<>();
 
     public OperatorInput() {
 
@@ -46,14 +48,19 @@ public class OperatorInput extends SubsystemBase {
         SmartDashboard.putData("Drive Mode", driveModeChooser);
 
         // Change Auto pattern Type
-        autoPatternChooser.setDefaultOption("MoveForwardDelay", AutoPattern.SHOOT_SPEAKER);
+        autoPatternChooser.setDefaultOption("ShootSpeaker & DriveOut", AutoPattern.SHOOT_SPEAKER_AND_DRIVE);
         // Other option for Auto pattern Type
         autoPatternChooser.addOption("Nothing", AutoPattern.DO_NOTHING);
         autoPatternChooser.addOption("ShootSpeaker", AutoPattern.SHOOT_SPEAKER);
         autoPatternChooser.addOption("ShootAmp", AutoPattern.SHOOT_AMP);
+        autoPatternChooser.addOption("DriveOut", AutoPattern.DRIVE_OUT);
 
         // Put the auto pattern option to the SmartDashboard
         SmartDashboard.putData("Auto Pattern", autoPatternChooser);
+
+        autoPositionChooser.setDefaultOption("CENTER", AutoPosition.CENTER);
+        autoPositionChooser.addOption("RIGHT", AutoPosition.RIGHT);
+        autoPositionChooser.addOption("LEFT", AutoPosition.LEFT);
     }
 
     /*
@@ -81,6 +88,10 @@ public class OperatorInput extends SubsystemBase {
      */
     public AutoPattern getSelectedAutoPattern() {
         return autoPatternChooser.getSelected();
+    }
+
+    public AutoPosition getSelectedAutoPosition() {
+        return autoPositionChooser.getSelected();
     }
 
     /*
@@ -126,9 +137,8 @@ public class OperatorInput extends SubsystemBase {
     /*
      * Vision Drive Methods
      */
-    public double getDriveToVisionTarget() {
-        // return driverController.getPOV() == 1;
-        return 0;
+    public boolean isDriveToVisionTarget() {
+        return false; // driverController. == 1;
     }
 
     /*
@@ -209,9 +219,10 @@ public class OperatorInput extends SubsystemBase {
 
         new Trigger(() -> isGroundIntake())
             .onTrue(new DefaultGroundIntakeCommand(intakeSubsystem, lightsSubsystem, shooterSubsystem));
-        // Detect April Tag
-        new Trigger(() -> getDriveToVisionTarget() > 0)
+
+        new Trigger(() -> isDriveToVisionTarget())
             .onTrue(new DefaultVisionCommand(0.5, driveSubsystem, visionSubsystem));
+
         // new Trigger(() -> isPassShot())
         // .onTrue(new DefaultShooterCommand(shooterSubsystem, lightsSubsystem,
         // ShooterConstants.shooterType.PassShooter));

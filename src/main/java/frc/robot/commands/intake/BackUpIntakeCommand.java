@@ -29,9 +29,8 @@ public class BackUpIntakeCommand extends LoggingCommand {
     @Override
     public void execute() {
 
-
         // Run the shooter wheel
-        intakeSubsystem.setGroundSpeed(-.2);
+        intakeSubsystem.setGroundSpeed(-0.2);
         // IntakeSubsystem.setShooterSpeed(Inta)
         // If this command has been running for 0.5 seconds, then start the feeder
 
@@ -42,7 +41,7 @@ public class BackUpIntakeCommand extends LoggingCommand {
     public boolean isFinished() {
         // Stop this command after 2.5 seconds total
         // FIX check if note is loaded if it isn't spin for 0.5 second more and then stop
-        if (isTimeoutExceeded(.1)) {
+        if (isTimeoutExceeded(0.1)) {
             return true;
         }
         return false;

@@ -5,6 +5,7 @@
 package frc.robot.commands.vision;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Constants.VisionConstants;
 import frc.robot.commands.LoggingCommand;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
@@ -18,12 +19,6 @@ public class DefaultVisionCommand extends LoggingCommand {
     private final VisionSubsystem visionSubsystem;
 
     private double                targetOffsetAngle_Vertical;
-    // how many degrees back is your limelight rotated from perfectly vertical?
-    private double                limelightMountAngleDegrees = 27.0;
-    // distance from the center of the Limelight lens to the floor
-    private double                limelightLensHeightInches  = 22.0;
-    // distance from the target to the floor
-    private double                goalHeightInches           = 60.0;
 
     /**
      * DriveForTime command drives at the specified heading at the specified speed for the specified
@@ -50,24 +45,20 @@ public class DefaultVisionCommand extends LoggingCommand {
     public void initialize() {
 
         logCommandStart();
-
-        // SmartDashboard.putNumber("heading", driveSubsystem.getHeading() +
-        // visionSubsystem.getTX());
     }
 
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
+
         desiredHeadingDelta        = visionSubsystem.getTX();
         targetOffsetAngle_Vertical = visionSubsystem.getTY();
         double errorF = desiredHeadingDelta * 0.02;
-        driveSubsystem.setMotorSpeeds(speed + errorF, speed - errorF);
+        driveSubsystem.setMotorSpeeds(speed * errorF, -speed * errorF);
 
         SmartDashboard.putNumber("Delta", desiredHeadingDelta);
         // Nothing to do here except wait for the end
     }
-
-
 
     // Called once the command ends or is interrupted.
     @Override
@@ -80,7 +71,8 @@ public class DefaultVisionCommand extends LoggingCommand {
     // Returns true when the command should end.
     @Override
     public boolean isFinished() {
-        if (visionSubsystem.getTV() < 1)
+        // no targets found
+        if (visionSubsystem.getTV() == 0)
             return true;
         if (visionSubsystem.getTA() > 5)
             return true;
@@ -93,12 +85,12 @@ public class DefaultVisionCommand extends LoggingCommand {
     void EstimateDistance() {
 
         // distance from the target to the floor
-        double goalHeightInches                  = 60.0;
-
-        double angleToGoalDegrees                = limelightMountAngleDegrees + targetOffsetAngle_Vertical;
-        double angleToGoalRadians                = angleToGoalDegrees * (3.14159 / 180.0);
+        double angleToGoalDegrees                = VisionConstants.LIMELIGHT_MOUNT_ANGLE_DEG + targetOffsetAngle_Vertical;
+        double angleToGoalRadians                = Math.toRadians(angleToGoalDegrees);
 
         // calculate distance
-        double distanceFromLimelightToGoalInches = (goalHeightInches - limelightLensHeightInches) / Math.tan(angleToGoalRadians);
+        double distanceFromLimelightToGoalInches = (VisionConstants.GOAL_HEIGHT_INCHES
+            - VisionConstants.LIMELIGHT_LENS_HEIGHT_INCHES)
+            / Math.tan(angleToGoalRadians);
     }
 }
