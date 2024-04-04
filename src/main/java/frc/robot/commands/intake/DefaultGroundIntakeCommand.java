@@ -38,11 +38,7 @@ public class DefaultGroundIntakeCommand extends LoggingCommand {
     @Override
     public void execute() {
 
-        // Run the shooter wheel
         intakeSubsystem.setGroundSpeed(IntakeConstants.GROUND_INTAKE_SPEED);
-        // IntakeSubsystem.setShooterSpeed(Inta)
-        // If this command has been running for 0.5 seconds, then start the feeder
-
         lightsSubsystem.setLEDRainbow();
     }
 

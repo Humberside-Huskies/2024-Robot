@@ -76,8 +76,8 @@ public final class Constants {
         public static final double SHOOTER_SHOOT_SPEAKER_SPEED = -1;
         public static final double FEEDER_SHOOT_SPEAKER_SPEED  = -1;
 
-        public static final double SHOOTER_SHOOT_AMP_SPEED     = -0.15;
-        public static final double FEEDER_SHOOT_AMP_SPEED      = -0.35;
+        public static final double SHOOTER_SHOOT_AMP_SPEED     = -0.25;
+        public static final double FEEDER_SHOOT_AMP_SPEED      = -0.45;
 
         public static final double SHOOTER_SHOOT_PASS_SPEED    = -0.5;
         public static final double FEEDER_SHOOT_PASS_SPEED     = -0.5;

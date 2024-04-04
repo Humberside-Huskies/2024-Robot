@@ -54,9 +54,10 @@ public class DefaultVisionCommand extends LoggingCommand {
         desiredHeadingDelta        = visionSubsystem.getTX();
         targetOffsetAngle_Vertical = visionSubsystem.getTY();
         double errorF = desiredHeadingDelta * 0.02;
-        driveSubsystem.setMotorSpeeds(speed * errorF, -speed * errorF);
-
+        // driveSubsystem.setMotorSpeeds(speed + errorF, -speed + errorF);
+        System.out.println();
         SmartDashboard.putNumber("Delta", desiredHeadingDelta);
+        SmartDashboard.putNumber("Micheal", EstimateDistance());
         // Nothing to do here except wait for the end
     }
 
@@ -72,17 +73,14 @@ public class DefaultVisionCommand extends LoggingCommand {
     @Override
     public boolean isFinished() {
         // no targets found
-        if (visionSubsystem.getTV() == 0)
+        // if (visionSubsystem.getTV() == 0)
+        // return true;
+        if (isTimeoutExceeded(2.5))
             return true;
-        if (visionSubsystem.getTA() > 5)
-            return true;
-
-
-
         return false;
     }
 
-    void EstimateDistance() {
+    public double EstimateDistance() {
 
         // distance from the target to the floor
         double angleToGoalDegrees                = VisionConstants.LIMELIGHT_MOUNT_ANGLE_DEG + targetOffsetAngle_Vertical;
@@ -92,5 +90,7 @@ public class DefaultVisionCommand extends LoggingCommand {
         double distanceFromLimelightToGoalInches = (VisionConstants.GOAL_HEIGHT_INCHES
             - VisionConstants.LIMELIGHT_LENS_HEIGHT_INCHES)
             / Math.tan(angleToGoalRadians);
+
+        return distanceFromLimelightToGoalInches;
     }
 }

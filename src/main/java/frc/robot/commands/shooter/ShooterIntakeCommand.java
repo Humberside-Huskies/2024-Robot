@@ -51,10 +51,6 @@ public class ShooterIntakeCommand extends LoggingCommand {
             setFinishReason("Sensor Detected, Intake Stopped");
             return true;
         }
-        if (operatorInput.isAltIntake()) {
-            setFinishReason("Intake forcestop");
-            return true;
-        }
         if (isTimeoutExceeded(4)) {
             setFinishReason("Intake timed out");
             return true;

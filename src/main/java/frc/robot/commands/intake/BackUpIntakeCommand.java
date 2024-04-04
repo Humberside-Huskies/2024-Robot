@@ -29,11 +29,7 @@ public class BackUpIntakeCommand extends LoggingCommand {
     @Override
     public void execute() {
 
-        // Run the shooter wheel
         intakeSubsystem.setGroundSpeed(-0.2);
-        // IntakeSubsystem.setShooterSpeed(Inta)
-        // If this command has been running for 0.5 seconds, then start the feeder
-
     }
 
     // Returns true when the command should end.

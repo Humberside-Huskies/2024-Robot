@@ -45,31 +45,30 @@ public class DefaultShooterCommand extends LoggingCommand {
 
         if (isTimeoutExceeded(0.5)) {
             intakeSubsystem.setGroundSpeed(IntakeConstants.GROUND_INTAKE_SPEED);
-        }
 
+            if (shooterType == ShooterConstants.shooterType.SpeakerShooter) {
+                shooterSubsystem.setFeederSpeed(ShooterConstants.FEEDER_SHOOT_SPEAKER_SPEED);
+            }
+            else if (shooterType == ShooterConstants.shooterType.AMPShooter) {
+                shooterSubsystem.setFeederSpeed(ShooterConstants.FEEDER_SHOOT_AMP_SPEED);
+            }
+            else if (shooterType == ShooterConstants.shooterType.PassShooter) {
+                shooterSubsystem.setFeederSpeed(ShooterConstants.FEEDER_SHOOT_PASS_SPEED);
+
+            }
+        }
 
         if (shooterType == ShooterConstants.shooterType.SpeakerShooter) {
             // Run the shooter wheel
             shooterSubsystem.setShooterSpeed(ShooterConstants.SHOOTER_SHOOT_SPEAKER_SPEED);
-            // If this command has been running for 0.5 seconds, then start the feeder
-            shooterSubsystem.setFeederSpeed(ShooterConstants.FEEDER_SHOOT_SPEAKER_SPEED);
-
         }
         else if (shooterType == ShooterConstants.shooterType.AMPShooter) {
             // Run the shooter wheel
             shooterSubsystem.setShooterSpeed(ShooterConstants.SHOOTER_SHOOT_AMP_SPEED);
-            // If this command has been running for 2 seconds, then start the feeder
-
-            shooterSubsystem.setFeederSpeed(ShooterConstants.FEEDER_SHOOT_AMP_SPEED);
         }
-
         else if (shooterType == ShooterConstants.shooterType.PassShooter) {
             // Run the shooter wheel
             shooterSubsystem.setShooterSpeed(ShooterConstants.SHOOTER_SHOOT_PASS_SPEED);
-            // If this command has been running for 2 seconds, then start the feeder
-
-            shooterSubsystem.setFeederSpeed(ShooterConstants.FEEDER_SHOOT_PASS_SPEED);
-
         }
 
         lightsSubsystem.setLEDRainbow();

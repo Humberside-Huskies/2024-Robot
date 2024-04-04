@@ -73,7 +73,7 @@ public class AutonomousCommand extends SequentialCommandGroup {
 
         case DRIVE_OUT:
             addCommands(new DriveForwardCommand(driveSubsystem, 0.1, -0.1));
-            addCommands(new DriveRotateCommand(driveSubsystem, 180, 0.1));
+            addCommands(new DriveRotateCommand(driveSubsystem, 180, 0.02));
             addCommands(new DriveForwardCommand(driveSubsystem, 2, 1));
 
             break;

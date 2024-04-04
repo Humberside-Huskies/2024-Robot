@@ -33,7 +33,7 @@ public class DriveRotateCommand extends LoggingCommand {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        driveSubsystem.setMotorSpeeds(this.driveSpeed, this.driveSpeed);
+        driveSubsystem.setMotorSpeeds(this.driveSpeed, -this.driveSpeed);
     }
 
     // Returns true when the command should end.

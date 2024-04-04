@@ -69,7 +69,7 @@ public class RobotContainer {
 
         // Pass in all of the subsystems and all of the choosers to the auto command.
         return new AutonomousCommand(
-            operatorInput.getSelectedAutoPattern(),
+            operatorInput.getSelectedAutoPattern(), operatorInput.getSelectedAutoPosition(),
             driveSubsystem, shooterSubsystem, visionSubsystem, lightsSubsystem, intakeSubsystem);
     }
 }

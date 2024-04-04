@@ -9,6 +9,7 @@ import frc.robot.Constants.AutoConstants.AutoPosition;
 import frc.robot.Constants.DriveConstants.DriveMode;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.Constants.ShooterConstants;
+import frc.robot.Constants.ShooterConstants.shooterType;
 import frc.robot.commands.CancelCommand;
 import frc.robot.commands.intake.DefaultGroundIntakeCommand;
 import frc.robot.commands.shooter.DefaultShooterCommand;
@@ -61,6 +62,8 @@ public class OperatorInput extends SubsystemBase {
         autoPositionChooser.setDefaultOption("CENTER", AutoPosition.CENTER);
         autoPositionChooser.addOption("RIGHT", AutoPosition.RIGHT);
         autoPositionChooser.addOption("LEFT", AutoPosition.LEFT);
+
+        SmartDashboard.putData("Auto Position", autoPositionChooser);
     }
 
     /*
@@ -138,7 +141,7 @@ public class OperatorInput extends SubsystemBase {
      * Vision Drive Methods
      */
     public boolean isDriveToVisionTarget() {
-        return false; // driverController. == 1;
+        return driverController.getAButton();
     }
 
     /*
@@ -182,13 +185,6 @@ public class OperatorInput extends SubsystemBase {
     /*
      * Is emmergency Intake
      */
-    public boolean isAltIntake() {
-        return driverController.getYButton();
-    }
-
-    // public boolean isAltIntake
-
-
 
     /**
      * Configure Button Bindings
@@ -221,11 +217,10 @@ public class OperatorInput extends SubsystemBase {
             .onTrue(new DefaultGroundIntakeCommand(intakeSubsystem, lightsSubsystem, shooterSubsystem));
 
         new Trigger(() -> isDriveToVisionTarget())
-            .onTrue(new DefaultVisionCommand(0.5, driveSubsystem, visionSubsystem));
+            .onTrue(new DefaultVisionCommand(2, driveSubsystem, visionSubsystem));
 
-        // new Trigger(() -> isPassShot())
-        // .onTrue(new DefaultShooterCommand(shooterSubsystem, lightsSubsystem,
-        // ShooterConstants.shooterType.PassShooter));
+        new Trigger(() -> isPassShot())
+            .onTrue(new DefaultShooterCommand(shooterSubsystem, lightsSubsystem, intakeSubsystem, shooterType.PassShooter));
 
     }
 
