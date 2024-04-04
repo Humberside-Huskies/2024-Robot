@@ -19,6 +19,7 @@ public class IntakeSubsystem extends SubsystemBase {
     /** Creates a new ShooterSubsystem. */
     public IntakeSubsystem(LightsSubsystem lightsSubsystem, ShooterSubsystem shooterSubsystem) {
         this.lightsSubsystem = lightsSubsystem;
+        groundMotor.setSmartCurrentLimit(40);
     }
 
     /**
@@ -56,4 +57,6 @@ public class IntakeSubsystem extends SubsystemBase {
 
         return sb.toString();
     }
+
+
 }
