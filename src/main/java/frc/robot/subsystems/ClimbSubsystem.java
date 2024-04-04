@@ -56,7 +56,7 @@ public class ClimbSubsystem extends SubsystemBase {
     }
 
     public double getRightEncoder() {
-        return leftMotor.getEncoder().getPosition();
+        return rightMotor.getEncoder().getPosition();
     }
 
     /** Safely stop the subsystem from moving */

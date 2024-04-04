@@ -24,7 +24,8 @@ public final class Constants {
             SHOOT_SPEAKER_AND_DRIVE,
             SHOOT_AMP,
             SHOOT_SPEAKER,
-            DRIVE_OUT
+            DRIVE_OUT,
+            TEST
         };
 
         public static enum AutoPosition {
@@ -48,7 +49,7 @@ public final class Constants {
         public static final boolean LEFT_ENCODER_REVERSED         = true;
         public static final boolean RIGHT_ENCODER_REVERSED        = false;
 
-        public static final int     ENCODER_COUNTS_PER_REVOLUTION = 1024;
+        public static final double  ENCODER_COUNTS_PER_REVOLUTION = 16.8;
         public static final double  ROBOT_WHEEL_DIAMETER_CMS      = 6 * 2.54;
 
         public static final double  CMS_PER_ENCODER_COUNT         =

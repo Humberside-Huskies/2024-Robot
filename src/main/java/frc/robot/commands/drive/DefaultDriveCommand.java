@@ -29,6 +29,7 @@ public class DefaultDriveCommand extends LoggingCommand {
     @Override
     public void initialize() {
         logCommandStart();
+        driveSubsystem.setMotorsCoast();
     }
 
     // Called every time the scheduler runs while the command is scheduled.

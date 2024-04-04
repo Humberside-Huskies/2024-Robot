@@ -71,6 +71,6 @@ public class RobotContainer {
         return new AutonomousCommand(
             operatorInput.getSelectedAutoPattern(), operatorInput.getSelectedAutoPosition(),
             operatorInput.getSelectedAutoDelay(),
-            driveSubsystem, shooterSubsystem, visionSubsystem, lightsSubsystem, intakeSubsystem);
+            driveSubsystem, shooterSubsystem, climbSubsystem, visionSubsystem, lightsSubsystem, intakeSubsystem);
     }
 }

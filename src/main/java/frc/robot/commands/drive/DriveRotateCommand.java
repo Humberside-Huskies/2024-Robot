@@ -28,6 +28,7 @@ public class DriveRotateCommand extends LoggingCommand {
     @Override
     public void initialize() {
         logCommandStart();
+        driveSubsystem.setMotorsBreak();
     }
 
     // Called every time the scheduler runs while the command is scheduled.

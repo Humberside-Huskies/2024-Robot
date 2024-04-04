@@ -11,6 +11,7 @@ import frc.robot.Constants.ShooterConstants.shooterType;
 import frc.robot.commands.drive.DriveForwardCommand;
 import frc.robot.commands.drive.DriveRotateCommand;
 import frc.robot.commands.shooter.DefaultShooterCommand;
+import frc.robot.subsystems.ClimbSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LightsSubsystem;
@@ -22,7 +23,8 @@ public class AutonomousCommand extends SequentialCommandGroup {
     Alliance alliance;
 
     public AutonomousCommand(AutoPattern autoPattern, AutoPosition autoPosition, int autoDelay, DriveSubsystem driveSubsystem,
-        ShooterSubsystem shooterSubsystem, VisionSubsystem visionSubsystem, LightsSubsystem lightsSubsystem,
+        ShooterSubsystem shooterSubsystem, ClimbSubsystem climbSubsystem, VisionSubsystem visionSubsystem,
+        LightsSubsystem lightsSubsystem,
         IntakeSubsystem intakeSubsystem) {
 
         // Default is to do nothing.
@@ -57,6 +59,8 @@ public class AutonomousCommand extends SequentialCommandGroup {
          * Compose the appropriate auto commands
          */
 
+        // addCommands(new ClimbDownCommand(climbSubsystem));
+
         // Add a delay if required
         if (autoDelay > 0) {
             addCommands(new WaitCommand(autoDelay));
@@ -69,19 +73,20 @@ public class AutonomousCommand extends SequentialCommandGroup {
             break;
 
         case SHOOT_SPEAKER_AND_DRIVE:
-            addCommands(new DriveForwardCommand(driveSubsystem, 0.1, -0.1));
             addCommands(
-                new DefaultShooterCommand(shooterSubsystem, lightsSubsystem, intakeSubsystem, shooterType.SpeakerShooter));
+                new DefaultShooterCommand(shooterSubsystem, lightsSubsystem, intakeSubsystem,
+                    shooterType.SpeakerShooter));
 
+            addCommands(new DriveForwardCommand(driveSubsystem, 300, -0.15));
             // if (alliance.equals(Alliance.Blue) && autoPosition.equals(AutoPosition.LEFT))
             addCommands(new DriveRotateCommand(driveSubsystem, 180, 0.1));
-            addCommands(new DriveForwardCommand(driveSubsystem, 2, 0.1));
+            addCommands(new DriveForwardCommand(driveSubsystem, 350, 0.20));
             break;
 
         case DRIVE_OUT:
-            addCommands(new DriveForwardCommand(driveSubsystem, 0.1, -0.1));
+            addCommands(new DriveForwardCommand(driveSubsystem, 5, -0.1));
             addCommands(new DriveRotateCommand(driveSubsystem, 180, 0.02));
-            addCommands(new DriveForwardCommand(driveSubsystem, 2, 1));
+            addCommands(new DriveForwardCommand(driveSubsystem, 30, 1));
 
             break;
 
@@ -92,6 +97,9 @@ public class AutonomousCommand extends SequentialCommandGroup {
 
         case SHOOT_AMP:
             // someone should do code this :/
+            break;
+
+        case TEST:
             break;
         }
     }

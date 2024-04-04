@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import com.kauailabs.navx.frc.AHRS;
+import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
 
@@ -26,6 +27,8 @@ public class DriveSubsystem extends SubsystemBase {
     private double                leftSpeed          = 0;
     private double                rightSpeed         = 0;
 
+    private double                encoderOffset      = 0;
+
     /** Creates a new DriveSubsystem. */
     public DriveSubsystem() {
 
@@ -34,7 +37,6 @@ public class DriveSubsystem extends SubsystemBase {
         // gearbox is constructed, you might have to invert the left side instead.
         leftPrimaryMotor.setInverted(DriveConstants.LEFT_MOTOR_REVERSED);
         leftFollowerMotor.setInverted(DriveConstants.LEFT_MOTOR_REVERSED);
-
         // leftPrimaryMotor.setNeutralMode(NeutralMode.Brake);
         // leftFollowerMotor.setNeutralMode(NeutralMode.Brake);
 
@@ -49,6 +51,34 @@ public class DriveSubsystem extends SubsystemBase {
 
         // rightFollowerMotor.follow(rightPrimaryMotor);
 
+        // Reset the encoders on power up
+        rightPrimaryMotor.getEncoder().setPosition(0);
+        leftPrimaryMotor.getEncoder().setPosition(0);
+
+
+        rightPrimaryMotor.setSmartCurrentLimit(40);
+        rightFollowerMotor.setSmartCurrentLimit(40);
+        leftPrimaryMotor.setSmartCurrentLimit(40);
+        leftFollowerMotor.setSmartCurrentLimit(40);
+
+
+        setMotorsBreak();
+    }
+
+    public void setMotorsBreak() {
+        leftPrimaryMotor.setIdleMode(IdleMode.kBrake);
+        leftFollowerMotor.setIdleMode(IdleMode.kBrake);
+
+        rightPrimaryMotor.setIdleMode(IdleMode.kBrake);
+        rightFollowerMotor.setIdleMode(IdleMode.kBrake);
+    }
+
+    public void setMotorsCoast() {
+        leftPrimaryMotor.setIdleMode(IdleMode.kCoast);
+        leftFollowerMotor.setIdleMode(IdleMode.kCoast);
+
+        rightPrimaryMotor.setIdleMode(IdleMode.kCoast);
+        rightFollowerMotor.setIdleMode(IdleMode.kCoast);
     }
 
     /**
@@ -73,6 +103,23 @@ public class DriveSubsystem extends SubsystemBase {
         this.rightSpeed = rightSpeed;
     }
 
+    public void resetEncoderDistance() {
+        // clear the offset
+        encoderOffset = 0;
+        // get a new offset
+        encoderOffset = -getEncoderDistance();
+    }
+
+    public double getEncoderDistance() {
+        return leftPrimaryMotor.getEncoder().getPosition()
+            + rightPrimaryMotor.getEncoder().getPosition()
+            + encoderOffset;
+    }
+
+    public double getDistanceCm() {
+        return getEncoderDistance() * DriveConstants.CMS_PER_ENCODER_COUNT;
+    }
+
     public double getGyroAngle() {
         return this.gyro.getAngle();
     }
@@ -88,9 +135,12 @@ public class DriveSubsystem extends SubsystemBase {
         /*
          * Update all dashboard values in the periodic routine
          */
+
         SmartDashboard.putNumber("Right Motor", rightSpeed);
         SmartDashboard.putNumber("Left  Motor", leftSpeed);
         SmartDashboard.putNumber("Gyro angle", this.getGyroAngle());
+        SmartDashboard.putNumber("Encoder Distance", getEncoderDistance());
+        SmartDashboard.putNumber("Distance (cm)", getDistanceCm());
     }
 
     @Override

@@ -6,7 +6,7 @@ import frc.robot.subsystems.DriveSubsystem;
 public class DriveForwardCommand extends LoggingCommand {
 
     private final DriveSubsystem driveSubsystem;
-    private final double         executeTime;
+    private final double         distanceCm;
     private final double         driveSpeed;
 
     /**
@@ -14,10 +14,10 @@ public class DriveForwardCommand extends LoggingCommand {
      *
      * @param driveSubsystem The subsystem used by this command.
      */
-    public DriveForwardCommand(DriveSubsystem driveSubsystem, double executeTime, double driveSpeed) {
+    public DriveForwardCommand(DriveSubsystem driveSubsystem, double distanceCm, double driveSpeed) {
 
         this.driveSubsystem = driveSubsystem;
-        this.executeTime    = executeTime;
+        this.distanceCm     = distanceCm;
         this.driveSpeed     = driveSpeed;
 
         // Use addRequirements() here to declare subsystem dependencies.
@@ -28,6 +28,8 @@ public class DriveForwardCommand extends LoggingCommand {
     @Override
     public void initialize() {
         logCommandStart();
+        driveSubsystem.resetEncoderDistance();
+        driveSubsystem.setMotorsBreak();
     }
 
     // Called every time the scheduler runs while the command is scheduled.
@@ -39,8 +41,9 @@ public class DriveForwardCommand extends LoggingCommand {
     // Returns true when the command should end.
     @Override
     public boolean isFinished() {
-        if (isTimeoutExceeded(this.executeTime))
+        if (Math.abs(driveSubsystem.getDistanceCm()) >= distanceCm) {
             return true;
+        }
         return false;
     }
 
