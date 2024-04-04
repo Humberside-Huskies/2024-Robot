@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants.AutoConstants.AutoPattern;
 import frc.robot.Constants.AutoConstants.AutoPosition;
 import frc.robot.Constants.ShooterConstants.shooterType;
@@ -20,7 +21,7 @@ public class AutonomousCommand extends SequentialCommandGroup {
 
     Alliance alliance;
 
-    public AutonomousCommand(AutoPattern autoPattern, AutoPosition autoPosition, DriveSubsystem driveSubsystem,
+    public AutonomousCommand(AutoPattern autoPattern, AutoPosition autoPosition, int autoDelay, DriveSubsystem driveSubsystem,
         ShooterSubsystem shooterSubsystem, VisionSubsystem visionSubsystem, LightsSubsystem lightsSubsystem,
         IntakeSubsystem intakeSubsystem) {
 
@@ -33,8 +34,9 @@ public class AutonomousCommand extends SequentialCommandGroup {
 
         StringBuilder sb = new StringBuilder();
         sb.append("Auto Selections");
+        sb.append("\n   Delay (sec)   : ").append(autoDelay);
         sb.append("\n   Auto Pattern  : ").append(autoPattern);
-        sb.append("\n   Auto Position  : ").append(autoPosition);
+        sb.append("\n   Auto Position : ").append(autoPosition);
         sb.append("\n   Alliance      : ").append(alliance);
 
         System.out.println(sb.toString());
@@ -54,6 +56,11 @@ public class AutonomousCommand extends SequentialCommandGroup {
         /*
          * Compose the appropriate auto commands
          */
+
+        // Add a delay if required
+        if (autoDelay > 0) {
+            addCommands(new WaitCommand(autoDelay));
+        }
 
         // Determine which autopattern we will use. We first determine the initial position and than
         // later the type of shooting

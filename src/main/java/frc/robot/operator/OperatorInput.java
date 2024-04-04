@@ -38,6 +38,7 @@ public class OperatorInput extends SubsystemBase {
     private final SendableChooser<DriveMode>    driveModeChooser    = new SendableChooser<>();
     private final SendableChooser<AutoPattern>  autoPatternChooser  = new SendableChooser<>();
     private final SendableChooser<AutoPosition> autoPositionChooser = new SendableChooser<>();
+    private final SendableChooser<Integer>      autoDelayChooser    = new SendableChooser<>();
 
     public OperatorInput() {
 
@@ -56,7 +57,7 @@ public class OperatorInput extends SubsystemBase {
         autoPatternChooser.addOption("ShootAmp", AutoPattern.SHOOT_AMP);
         autoPatternChooser.addOption("DriveOut", AutoPattern.DRIVE_OUT);
 
-        // Put the auto pattern option to the SmartDashboard
+        // Change Auto Position
         SmartDashboard.putData("Auto Pattern", autoPatternChooser);
 
         autoPositionChooser.setDefaultOption("CENTER", AutoPosition.CENTER);
@@ -64,6 +65,15 @@ public class OperatorInput extends SubsystemBase {
         autoPositionChooser.addOption("LEFT", AutoPosition.LEFT);
 
         SmartDashboard.putData("Auto Position", autoPositionChooser);
+
+        // Change Auto Delay
+        SmartDashboard.putData("Auto Delay", autoDelayChooser);
+
+        autoDelayChooser.setDefaultOption("NONE", 0);
+        autoDelayChooser.addOption("3 sec", 3);
+        autoDelayChooser.addOption("5 sec", 5);
+
+        SmartDashboard.putData("Auto Delay", autoDelayChooser);
     }
 
     /*
@@ -95,6 +105,10 @@ public class OperatorInput extends SubsystemBase {
 
     public AutoPosition getSelectedAutoPosition() {
         return autoPositionChooser.getSelected();
+    }
+
+    public int getSelectedAutoDelay() {
+        return autoDelayChooser.getSelected();
     }
 
     /*
