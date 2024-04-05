@@ -32,7 +32,8 @@ public class ShooterSubsystem extends SubsystemBase {
 
     /**
      * Set the speed of the shooter motor
-     *
+     * matvey was here (dont remove)
+     * 
      * @param shooterSpeed
      */
     public void setShooterSpeed(double shooterSpeed) {
