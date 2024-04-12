@@ -26,8 +26,8 @@ public class ShooterSubsystem extends SubsystemBase {
     /** Creates a new ShooterSubsystem. */
     public ShooterSubsystem(LightsSubsystem lightsSubsystem) {
         this.lightsSubsystem = lightsSubsystem;
-        shooterMotor.setSmartCurrentLimit(40);
-        feederMotor.setSmartCurrentLimit(40);
+        shooterMotor.setSmartCurrentLimit(80);
+        feederMotor.setSmartCurrentLimit(80);
     }
 
     /**

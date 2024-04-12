@@ -1,5 +1,6 @@
 package frc.robot.commands.climb;
 
+import frc.robot.Constants.ClimbConstants;
 import frc.robot.commands.LoggingCommand;
 import frc.robot.subsystems.ClimbSubsystem;
 
@@ -28,7 +29,7 @@ public class ClimbUpCommand extends LoggingCommand {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        climbSubsystem.setMotorSpeeds(0.3, 0.3);
+        climbSubsystem.setMotorSpeeds(-ClimbConstants.RETRACT_MOTOR_SPEED, ClimbConstants.RETRACT_MOTOR_SPEED);
     }
 
     // Returns true when the command should end.

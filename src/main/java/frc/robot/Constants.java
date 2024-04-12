@@ -71,14 +71,17 @@ public final class Constants {
         public static final int FEEDER_MOTOR_PORT  = 30;
 
         public static enum shooterType {
-            AMPShooter, SpeakerShooter, PassShooter
+            AMPShooter, SpeakerShooter, PassShooter, TrapShooter
         };
 
         public static final double SHOOTER_SHOOT_SPEAKER_SPEED = -1;
         public static final double FEEDER_SHOOT_SPEAKER_SPEED  = -1;
 
-        public static final double SHOOTER_SHOOT_AMP_SPEED     = -0.25;
-        public static final double FEEDER_SHOOT_AMP_SPEED      = -0.45;
+        public static final double SHOOTER_SHOOT_AMP_SPEED     = -0.2;
+        public static final double FEEDER_SHOOT_AMP_SPEED      = -0.3;
+
+        public static final double SHOOTER_SHOOT_TRAP_SPEED    = -0.9;
+        public static final double FEEDER_SHOOT_TRAP_SPEED     = -0.9;
 
         public static final double SHOOTER_SHOOT_PASS_SPEED    = -0.5;
         public static final double FEEDER_SHOOT_PASS_SPEED     = -0.5;
@@ -100,8 +103,8 @@ public final class Constants {
     }
 
     public static final class LightsConstants {
-        public static final int LED_PORT = 9;
-        public static final int NUM_LEDS = 60;
+        public static final int LED_PORT = 0;
+        public static final int NUM_LEDS = 30;
     }
 
     public static final class VisionConstants {

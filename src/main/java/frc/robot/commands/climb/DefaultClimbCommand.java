@@ -1,5 +1,7 @@
 package frc.robot.commands.climb;
 
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.Constants.ClimbConstants;
 import frc.robot.commands.LoggingCommand;
 import frc.robot.operator.OperatorInput;
@@ -11,6 +13,7 @@ public class DefaultClimbCommand extends LoggingCommand {
     private final ClimbSubsystem  climbSubsystem;
     private final OperatorInput   operatorInput;
     private final LightsSubsystem lightsSubsystem;
+    private boolean               climberRaised = false;
 
     /**
      * Creates a new ExampleCommand.
@@ -52,7 +55,18 @@ public class DefaultClimbCommand extends LoggingCommand {
             lightsSubsystem.setClimb(false);
             climbSubsystem.stop();
         }
+
+        // put up the climbers 30 before end of the match
+        if (DriverStation.isTeleop() && DriverStation.getMatchTime() < 30) {
+            if (!climberRaised) {
+                CommandScheduler.getInstance().schedule(new ClimbUpCommand(climbSubsystem));
+                climberRaised = true;
+            }
+
+        }
     }
+
+
 
     // Returns true when the command should end.
     @Override

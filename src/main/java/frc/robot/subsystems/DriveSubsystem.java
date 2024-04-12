@@ -56,10 +56,10 @@ public class DriveSubsystem extends SubsystemBase {
         leftPrimaryMotor.getEncoder().setPosition(0);
 
 
-        rightPrimaryMotor.setSmartCurrentLimit(40);
-        rightFollowerMotor.setSmartCurrentLimit(40);
-        leftPrimaryMotor.setSmartCurrentLimit(40);
-        leftFollowerMotor.setSmartCurrentLimit(40);
+        rightPrimaryMotor.setSmartCurrentLimit(80);
+        rightFollowerMotor.setSmartCurrentLimit(80);
+        leftPrimaryMotor.setSmartCurrentLimit(80);
+        leftFollowerMotor.setSmartCurrentLimit(80);
 
 
 
@@ -122,7 +122,7 @@ public class DriveSubsystem extends SubsystemBase {
     }
 
     public double getGyroAngle() {
-        return this.gyro.getAngle();
+        return this.gyro.getAngle() % 360;
     }
 
     /** Safely stop the subsystem from moving */

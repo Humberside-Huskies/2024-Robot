@@ -1,13 +1,12 @@
 package frc.robot.commands.intake;
 
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.Constants.IntakeConstants;
 import frc.robot.commands.LoggingCommand;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LightsSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 
-public class DefaultGroundIntakeCommand extends LoggingCommand {
+public class GroundIntakeEjectCommand extends LoggingCommand {
 
     private final IntakeSubsystem  intakeSubsystem;
     private final LightsSubsystem  lightsSubsystem;
@@ -18,7 +17,7 @@ public class DefaultGroundIntakeCommand extends LoggingCommand {
      *
      * @param shooterSubsystem The subsystem used by this command.
      */
-    public DefaultGroundIntakeCommand(IntakeSubsystem intakeSubsystem, LightsSubsystem lightsSubsystem,
+    public GroundIntakeEjectCommand(IntakeSubsystem intakeSubsystem, LightsSubsystem lightsSubsystem,
         ShooterSubsystem shooterSubsystem) {
         this.intakeSubsystem  = intakeSubsystem;
         this.lightsSubsystem  = lightsSubsystem;
@@ -38,17 +37,13 @@ public class DefaultGroundIntakeCommand extends LoggingCommand {
     @Override
     public void execute() {
 
-        intakeSubsystem.setGroundSpeed(IntakeConstants.GROUND_INTAKE_SPEED);
+        intakeSubsystem.setGroundSpeed(-IntakeConstants.GROUND_INTAKE_SPEED);
     }
 
     // Returns true when the command should end.
     @Override
     public boolean isFinished() {
-        if (shooterSubsystem.isNoteLoaded()) {
-            return true;
-        }
-        else if (isTimeoutExceeded(10)) {
-            setFinishReason("G_Intake Time Out");
+        if (isTimeoutExceeded(1.5)) {
             return true;
         }
         return false;
@@ -59,6 +54,5 @@ public class DefaultGroundIntakeCommand extends LoggingCommand {
     public void end(boolean interrupted) {
         intakeSubsystem.stop();
         logCommandEnd(interrupted);
-        CommandScheduler.getInstance().schedule(new BackUpIntakeCommand(intakeSubsystem));
     }
 }

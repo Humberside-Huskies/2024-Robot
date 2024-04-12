@@ -8,8 +8,10 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants.AutoConstants.AutoPattern;
 import frc.robot.Constants.AutoConstants.AutoPosition;
 import frc.robot.Constants.ShooterConstants.shooterType;
+import frc.robot.commands.climb.ClimbDownCommand;
 import frc.robot.commands.drive.DriveForwardCommand;
 import frc.robot.commands.drive.DriveRotateCommand;
+import frc.robot.commands.intake.DefaultGroundIntakeCommand;
 import frc.robot.commands.shooter.DefaultShooterCommand;
 import frc.robot.subsystems.ClimbSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
@@ -59,7 +61,9 @@ public class AutonomousCommand extends SequentialCommandGroup {
          * Compose the appropriate auto commands
          */
 
-        // addCommands(new ClimbDownCommand(climbSubsystem));
+
+
+        addCommands(new ClimbDownCommand(climbSubsystem));
 
         // Add a delay if required
         if (autoDelay > 0) {
@@ -73,14 +77,16 @@ public class AutonomousCommand extends SequentialCommandGroup {
             break;
 
         case SHOOT_SPEAKER_AND_DRIVE:
+            System.out.println(1111);
             addCommands(
                 new DefaultShooterCommand(shooterSubsystem, lightsSubsystem, intakeSubsystem,
                     shooterType.SpeakerShooter));
 
-            addCommands(new DriveForwardCommand(driveSubsystem, 300, -0.15));
+            addCommands(new DriveForwardCommand(driveSubsystem, 450, -0.15));
             // if (alliance.equals(Alliance.Blue) && autoPosition.equals(AutoPosition.LEFT))
             addCommands(new DriveRotateCommand(driveSubsystem, 180, 0.1));
-            addCommands(new DriveForwardCommand(driveSubsystem, 350, 0.20));
+            addCommands(new DriveForwardCommand(driveSubsystem, 400, -0.20));
+            addCommands(new DefaultGroundIntakeCommand(intakeSubsystem, lightsSubsystem, shooterSubsystem));
             break;
 
         case DRIVE_OUT:

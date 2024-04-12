@@ -9,9 +9,9 @@ import frc.robot.Constants.AutoConstants.AutoPosition;
 import frc.robot.Constants.DriveConstants.DriveMode;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.Constants.ShooterConstants;
-import frc.robot.Constants.ShooterConstants.shooterType;
 import frc.robot.commands.CancelCommand;
 import frc.robot.commands.intake.DefaultGroundIntakeCommand;
+import frc.robot.commands.intake.GroundIntakeEjectCommand;
 import frc.robot.commands.shooter.DefaultShooterCommand;
 import frc.robot.commands.shooter.ShooterIntakeCommand;
 import frc.robot.commands.vision.DefaultVisionCommand;
@@ -184,6 +184,10 @@ public class OperatorInput extends SubsystemBase {
         return driverController.getXButton();
     }
 
+    public boolean isEjectGroundIntake() {
+        return driverController.getPOV() == 90;
+    }
+
 
     /*
      * Is Climber Trigger Button
@@ -192,8 +196,13 @@ public class OperatorInput extends SubsystemBase {
         return driverController.getLeftTriggerAxis();
     }
 
+    // cool function buddy climbing things
     public double isRetract() {
         return driverController.getRightTriggerAxis();
+    }
+
+    public boolean isShootTrap() {
+        return driverController.getPOV() == 180;
     }
 
     /*
@@ -227,15 +236,22 @@ public class OperatorInput extends SubsystemBase {
             .onTrue(new DefaultShooterCommand(shooterSubsystem, lightsSubsystem, intakeSubsystem,
                 ShooterConstants.shooterType.AMPShooter));
 
+        new Trigger(() -> isPassShot())
+            .onTrue(new DefaultShooterCommand(shooterSubsystem, lightsSubsystem, intakeSubsystem,
+                ShooterConstants.shooterType.PassShooter));
+
+        new Trigger(() -> isShootTrap())
+            .onTrue(new DefaultShooterCommand(shooterSubsystem, lightsSubsystem, intakeSubsystem,
+                ShooterConstants.shooterType.TrapShooter));
+
         new Trigger(() -> isGroundIntake())
             .onTrue(new DefaultGroundIntakeCommand(intakeSubsystem, lightsSubsystem, shooterSubsystem));
 
+        new Trigger(() -> isEjectGroundIntake())
+            .onTrue(new GroundIntakeEjectCommand(intakeSubsystem, lightsSubsystem, shooterSubsystem));
+
         new Trigger(() -> isDriveToVisionTarget())
             .onTrue(new DefaultVisionCommand(2, driveSubsystem, visionSubsystem));
-
-        new Trigger(() -> isPassShot())
-            .onTrue(new DefaultShooterCommand(shooterSubsystem, lightsSubsystem, intakeSubsystem, shooterType.PassShooter));
-
     }
 
     @Override

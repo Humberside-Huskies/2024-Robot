@@ -40,7 +40,7 @@ public class DriveRotateCommand extends LoggingCommand {
     // Returns true when the command should end.
     @Override
     public boolean isFinished() {
-        if (Math.abs(this.gyroAngle - driveSubsystem.getGyroAngle()) < 5)
+        if (Math.abs(180 - driveSubsystem.getGyroAngle()) < 5)
             return true;
         return false;
     }

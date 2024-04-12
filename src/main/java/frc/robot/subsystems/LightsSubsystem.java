@@ -5,6 +5,7 @@ import java.util.Random;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.LightsConstants;
@@ -20,6 +21,7 @@ public class LightsSubsystem extends SubsystemBase {
 
     private boolean                    HasNote;
     private boolean                    isClimb;
+
 
     /** Creates a new LedSubsystem. */
     public LightsSubsystem() {
@@ -39,12 +41,23 @@ public class LightsSubsystem extends SubsystemBase {
         // setLEDRainbow();
         // setLEDTony2();
 
+        if (DriverStation.isTeleop() && DriverStation.getMatchTime() < 30) {
+            if (this.HasNote = hasNote) {
+                setLEDTony3();
+            }
+            else {
+                setLEDTony2();
+            }
+            return;
+        }
+
         if (HasNote) {
             // setLEDPhilip();
             setLEDColor(0, 255, 0);
             // setLEDTony2();
         }
         else {
+            // setLEDColor(255, 0, 0);
             setLEDRainbow();
 
         }
@@ -67,17 +80,18 @@ public class LightsSubsystem extends SubsystemBase {
         this.led.setData(ledBuffer);
     }
 
+    // RGB transitioning
     public void setLEDRainbow() {
-        rainbowFirstPixelHue -= 5;
+        rainbowFirstPixelHue -= 1;
 
         for (int i = 0; i < this.ledBuffer.getLength(); i++) {
             int hue = (rainbowFirstPixelHue + (i * 180 / this.ledBuffer.getLength())) % 180;
             this.ledBuffer.setHSV(i, hue, 255, 120);
-
-            rainbowFirstPixelHue += 3;
             // Check bounds
-            rainbowFirstPixelHue %= 180;
+
         }
+        rainbowFirstPixelHue += 3;
+        rainbowFirstPixelHue %= 180;
 
         this.led.setData(ledBuffer);
     }
@@ -93,6 +107,7 @@ public class LightsSubsystem extends SubsystemBase {
 
     }
 
+    // random red lights
     public void setLEDTony2() {
         Random rand = new Random();
 
@@ -100,12 +115,52 @@ public class LightsSubsystem extends SubsystemBase {
             if (rand.nextDouble() < 0.1) {
                 Color color = this.ledBuffer.getLED(i);
 
-                if (color.red != 255)
+                if (color.red != 1)
                     this.ledBuffer.setRGB(i, 255, 0, 0);
                 else
                     this.ledBuffer.setRGB(i, 0, 0, 0);
 
             }
+        }
+
+        this.led.setData(this.ledBuffer);
+
+    }
+
+    // tony2 but green
+    public void setLEDTony3() {
+        Random rand = new Random();
+
+        for (int i = 0; i < this.ledBuffer.getLength(); i++) {
+            if (rand.nextDouble() < 0.1) {
+                Color color = this.ledBuffer.getLED(i);
+
+                if (color.green != 1)
+                    this.ledBuffer.setRGB(i, 0, 255, 0);
+                else
+                    this.ledBuffer.setRGB(i, 0, 0, 0);
+
+            }
+        }
+
+        this.led.setData(this.ledBuffer);
+
+    }
+
+    public void setLEDFlashGreen() {
+
+
+        for (int i = 0; i < this.ledBuffer.getLength(); i++) {
+
+
+            Color color = this.ledBuffer.getLED(i);
+
+            if (color.green != 1)
+                this.ledBuffer.setRGB(i, 0, 255, 0);
+            else
+                this.ledBuffer.setRGB(i, 0, 0, 0);
+
+
         }
 
         this.led.setData(this.ledBuffer);
@@ -147,9 +202,9 @@ public class LightsSubsystem extends SubsystemBase {
          * Update all dashboard values in the periodic routine
          */
         // if (isClimb)
-        // // setLEDPhilip();
+        // setLEDPhilip();
         // else {
-        // // setLEDColor(255, 0, 0);
+        // setLEDColor(255, 0, 0);
         // }
     }
 
@@ -157,7 +212,7 @@ public class LightsSubsystem extends SubsystemBase {
     public String toString() {
         // Create an appropriate text readable string describing the state of the subsystem
 
-        return "Vlad Changed Ryder's Thing... Shhhhhhh";
+        return "Ryder changed the thing Vlad changed which was belonged Ryder's... Shhhhhhh";
     }
 
 }

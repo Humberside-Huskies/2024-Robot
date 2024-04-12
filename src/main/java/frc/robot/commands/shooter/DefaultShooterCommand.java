@@ -54,7 +54,9 @@ public class DefaultShooterCommand extends LoggingCommand {
             }
             else if (shooterType == ShooterConstants.shooterType.PassShooter) {
                 shooterSubsystem.setFeederSpeed(ShooterConstants.FEEDER_SHOOT_PASS_SPEED);
-
+            }
+            else if (shooterType == ShooterConstants.shooterType.TrapShooter) {
+                shooterSubsystem.setFeederSpeed(ShooterConstants.FEEDER_SHOOT_TRAP_SPEED);
             }
         }
 
@@ -69,6 +71,10 @@ public class DefaultShooterCommand extends LoggingCommand {
         else if (shooterType == ShooterConstants.shooterType.PassShooter) {
             // Run the shooter wheel
             shooterSubsystem.setShooterSpeed(ShooterConstants.SHOOTER_SHOOT_PASS_SPEED);
+        }
+        else if (shooterType == ShooterConstants.shooterType.TrapShooter) {
+            // Run the shooter wheel
+            shooterSubsystem.setShooterSpeed(ShooterConstants.SHOOTER_SHOOT_TRAP_SPEED);
         }
 
         lightsSubsystem.setLEDRainbow();
