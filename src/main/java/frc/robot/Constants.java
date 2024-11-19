@@ -18,6 +18,11 @@ public final class Constants {
     // Global constants
     public static final double DEFAULT_COMMAND_TIMEOUT_SECONDS = 5;
 
+    public static final class SafetyConstants {
+        public static double DRIVE_SPEED_MULTIPLIER_SAFETY_ON = 0.5;
+        public static double DRIVE_SPEED_MULTIPLIER           = 1.0;
+    }
+
     public static final class AutoConstants {
         public static enum AutoPattern {
             DO_NOTHING,
@@ -115,4 +120,7 @@ public final class Constants {
         // distance from the target to the floor
         public static final double GOAL_HEIGHT_INCHES = 60.0;
     }
+
+
 }
+

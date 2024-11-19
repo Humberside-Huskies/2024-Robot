@@ -65,11 +65,6 @@ public class AutonomousCommand extends SequentialCommandGroup {
 
         addCommands(new ClimbDownCommand(climbSubsystem));
 
-        // Add a delay if required
-        if (autoDelay > 0) {
-            addCommands(new WaitCommand(autoDelay));
-        }
-
         // Determine which autopattern we will use. We first determine the initial position and than
         // later the type of shooting
         switch (autoPattern) {
@@ -77,17 +72,32 @@ public class AutonomousCommand extends SequentialCommandGroup {
             break;
 
         case SHOOT_SPEAKER_AND_DRIVE:
-            System.out.println(1111);
             addCommands(
                 new DefaultShooterCommand(shooterSubsystem, lightsSubsystem, intakeSubsystem,
                     shooterType.SpeakerShooter));
 
-            addCommands(new DriveForwardCommand(driveSubsystem, 450, -0.15));
+            // Add a delay if required
+            if (autoDelay > 0) {
+                addCommands(new WaitCommand(autoDelay));
+            }
+
+            addCommands(new DriveForwardCommand(driveSubsystem, 450, -0.35));
             // if (alliance.equals(Alliance.Blue) && autoPosition.equals(AutoPosition.LEFT))
-            addCommands(new DriveRotateCommand(driveSubsystem, 180, 0.1));
-            addCommands(new DriveForwardCommand(driveSubsystem, 400, -0.20));
-            addCommands(new DefaultGroundIntakeCommand(intakeSubsystem, lightsSubsystem, shooterSubsystem));
-            break;
+            addCommands(new DriveRotateCommand(driveSubsystem, 180, 0.3));
+            addCommands(new DriveForwardCommand(driveSubsystem, 400, -0.35));
+
+            addCommands(new DefaultGroundIntakeCommand(intakeSubsystem, lightsSubsystem,
+                shooterSubsystem));
+
+            // do all commands in reverse
+            // addCommands(new DriveRotateCommand(driveSubsystem, 180, 0.1));
+            // addCommands(new DriveForwardCommand(driveSubsystem, 400, -0.20));
+            // addCommands(new DriveRotateCommand(driveSubsystem, 45, 0.1));
+            // addCommands(new DriveForwardCommand(driveSubsystem, 450, -0.15));
+            // addCommands(
+            // new DefaultShooterCommand(shooterSubsystem, lightsSubsystem, intakeSubsystem,
+            // shooterType.SpeakerShooter));
+
 
         case DRIVE_OUT:
             addCommands(new DriveForwardCommand(driveSubsystem, 5, -0.1));
@@ -99,6 +109,15 @@ public class AutonomousCommand extends SequentialCommandGroup {
         case SHOOT_SPEAKER:
             addCommands(
                 new DefaultShooterCommand(shooterSubsystem, lightsSubsystem, intakeSubsystem, shooterType.SpeakerShooter));
+
+            // Add a delay if required
+            if (autoDelay > 0) {
+                addCommands(new WaitCommand(autoDelay));
+            }
+
+            addCommands(new DriveForwardCommand(driveSubsystem, 30, -0.2));
+            addCommands(new DriveRotateCommand(driveSubsystem, 0, 0.4));
+            addCommands(new DriveForwardCommand(driveSubsystem, 200, -0.1));
             break;
 
         case SHOOT_AMP:

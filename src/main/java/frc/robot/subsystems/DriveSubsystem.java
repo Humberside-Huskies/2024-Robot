@@ -9,6 +9,7 @@ import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveConstants;
+import frc.robot.Constants.SafetyConstants;
 
 public class DriveSubsystem extends SubsystemBase {
     private final SlewRateLimiter leftLimiter        = new SlewRateLimiter(DriveConstants.SLEW_LIMIT);
@@ -92,16 +93,16 @@ public class DriveSubsystem extends SubsystemBase {
         leftSpeed  = leftLimiter.calculate(leftSpeed);
         rightSpeed = rightLimiter.calculate(rightSpeed);
 
-        leftPrimaryMotor.set(leftSpeed);
-        rightPrimaryMotor.set(rightSpeed);
+        leftPrimaryMotor.set(leftSpeed * SafetyConstants.DRIVE_SPEED_MULTIPLIER);
+        rightPrimaryMotor.set(rightSpeed * SafetyConstants.DRIVE_SPEED_MULTIPLIER);
 
         // NOTE: The follower motors are set to follow the primary motors
-        leftFollowerMotor.set(leftSpeed);
-        rightFollowerMotor.set(rightSpeed);
+        leftFollowerMotor.set(leftSpeed * SafetyConstants.DRIVE_SPEED_MULTIPLIER);
+        rightFollowerMotor.set(rightSpeed * SafetyConstants.DRIVE_SPEED_MULTIPLIER);
 
         // save locally for periodic reporting to dashboard
-        this.leftSpeed  = leftSpeed;
-        this.rightSpeed = rightSpeed;
+        this.leftSpeed  = leftSpeed * SafetyConstants.DRIVE_SPEED_MULTIPLIER;
+        this.rightSpeed = rightSpeed * SafetyConstants.DRIVE_SPEED_MULTIPLIER;
     }
 
     public void resetEncoderDistance() {
@@ -122,7 +123,7 @@ public class DriveSubsystem extends SubsystemBase {
     }
 
     public double getGyroAngle() {
-        return this.gyro.getAngle() % 360;
+        return Math.floorMod((int) this.gyro.getAngle(), (int) 360);
     }
 
     /** Safely stop the subsystem from moving */

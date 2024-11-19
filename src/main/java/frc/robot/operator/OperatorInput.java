@@ -8,6 +8,7 @@ import frc.robot.Constants.AutoConstants.AutoPattern;
 import frc.robot.Constants.AutoConstants.AutoPosition;
 import frc.robot.Constants.DriveConstants.DriveMode;
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.Constants.SafetyConstants;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.commands.CancelCommand;
 import frc.robot.commands.intake.DefaultGroundIntakeCommand;
@@ -39,6 +40,7 @@ public class OperatorInput extends SubsystemBase {
     private final SendableChooser<AutoPattern>  autoPatternChooser  = new SendableChooser<>();
     private final SendableChooser<AutoPosition> autoPositionChooser = new SendableChooser<>();
     private final SendableChooser<Integer>      autoDelayChooser    = new SendableChooser<>();
+    private final SendableChooser<Boolean>      safetySwitchChooser = new SendableChooser<>();
 
     public OperatorInput() {
 
@@ -50,10 +52,10 @@ public class OperatorInput extends SubsystemBase {
         SmartDashboard.putData("Drive Mode", driveModeChooser);
 
         // Change Auto pattern Type
-        autoPatternChooser.setDefaultOption("ShootSpeaker & DriveOut", AutoPattern.SHOOT_SPEAKER_AND_DRIVE);
+        autoPatternChooser.setDefaultOption("ShootSpeaker", AutoPattern.SHOOT_SPEAKER);
         // Other option for Auto pattern Type
         autoPatternChooser.addOption("Nothing", AutoPattern.DO_NOTHING);
-        autoPatternChooser.addOption("ShootSpeaker", AutoPattern.SHOOT_SPEAKER);
+        autoPatternChooser.addOption("ShootSpeaker & DriveOut", AutoPattern.SHOOT_SPEAKER_AND_DRIVE);
         autoPatternChooser.addOption("ShootAmp", AutoPattern.SHOOT_AMP);
         autoPatternChooser.addOption("DriveOut", AutoPattern.DRIVE_OUT);
 
@@ -69,12 +71,18 @@ public class OperatorInput extends SubsystemBase {
         // Change Auto Delay
         SmartDashboard.putData("Auto Delay", autoDelayChooser);
 
-        autoDelayChooser.setDefaultOption("NONE", 0);
+        autoDelayChooser.setDefaultOption("7 sec", 7);
         autoDelayChooser.addOption("3 sec", 3);
         autoDelayChooser.addOption("5 sec", 5);
 
         SmartDashboard.putData("Auto Delay", autoDelayChooser);
+
+        SmartDashboard.putData("safety", safetySwitchChooser);
+        safetySwitchChooser.setDefaultOption("True", true);
+        safetySwitchChooser.addOption("False", false);
+
     }
+
 
     /*
      * Map all functions to buttons.
@@ -258,6 +266,10 @@ public class OperatorInput extends SubsystemBase {
     public void periodic() {
 
         // Display any operator input values on the smart dashboard.
+        if (safetySwitchChooser.getSelected())
+            SafetyConstants.DRIVE_SPEED_MULTIPLIER = SafetyConstants.DRIVE_SPEED_MULTIPLIER_SAFETY_ON;
+        else
+            SafetyConstants.DRIVE_SPEED_MULTIPLIER = 1;
 
         SmartDashboard.putString("Driver Controller", driverController.toString());
     }

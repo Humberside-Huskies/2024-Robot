@@ -40,13 +40,18 @@ public class LightsSubsystem extends SubsystemBase {
         this.HasNote = hasNote;
         // setLEDRainbow();
         // setLEDTony2();
+        // setLEDRainbow();
+        // return;
+        setLEDTony999();
+
 
         if (DriverStation.isTeleop() && DriverStation.getMatchTime() < 30) {
+            // setLEDTony4();
             if (this.HasNote = hasNote) {
                 setLEDTony3();
             }
             else {
-                setLEDTony2();
+                setLEDTony999();
             }
             return;
         }
@@ -112,19 +117,32 @@ public class LightsSubsystem extends SubsystemBase {
         Random rand = new Random();
 
         for (int i = 0; i < this.ledBuffer.getLength(); i++) {
-            if (rand.nextDouble() < 0.1) {
-                Color color = this.ledBuffer.getLED(i);
-
-                if (color.red != 1)
-                    this.ledBuffer.setRGB(i, 255, 0, 0);
-                else
+            Color color = this.ledBuffer.getLED(i);
+            if (color.red >= 1) {
+                if (rand.nextDouble() < 0.05)
                     this.ledBuffer.setRGB(i, 0, 0, 0);
+            }
+            else
+                this.ledBuffer.setRGB(i, (int) (color.red * 255) + 5, 0, 0);
+        }
 
+        this.led.setData(this.ledBuffer);
+    }
+
+    public void setLEDTony999() {
+        Random rand = new Random();
+
+        if (rand.nextDouble() < 0.01) {
+            int bufferIndex = rand.nextInt(this.ledBuffer.getLength());
+            int hue         = rand.nextInt(179);
+
+            for (int i = bufferIndex - 5; i < bufferIndex + 5; i++) {
+                this.ledBuffer.setHSV(Math.floorMod(i, this.ledBuffer.getLength()), hue, 255,
+                    Math.max(255 - 65 * Math.abs(bufferIndex - i), 0));
             }
         }
 
         this.led.setData(this.ledBuffer);
-
     }
 
     // tony2 but green
@@ -145,6 +163,48 @@ public class LightsSubsystem extends SubsystemBase {
 
         this.led.setData(this.ledBuffer);
 
+    }
+
+    public double[] rgb_to_hsv(double r, double g, double b) {
+
+        // R, G, B values are divided by 255
+        // to change the range from 0..255 to 0..1
+        r = r / 255.0;
+        g = g / 255.0;
+        b = b / 255.0;
+
+        // h, s, v = hue, saturation, value
+        double cmax = Math.max(r, Math.max(g, b)); // maximum of r, g, b
+        double cmin = Math.min(r, Math.min(g, b)); // minimum of r, g, b
+        double diff = cmax - cmin;                 // diff of cmax and cmin.
+        double h    = -1, s = -1;
+
+        // if cmax and cmax are equal then h = 0
+        if (cmax == cmin)
+            h = 0;
+
+        // if cmax equal r then compute h
+        else if (cmax == r)
+            h = (60 * ((g - b) / diff) + 360) % 360;
+
+        // if cmax equal g then compute h
+        else if (cmax == g)
+            h = (60 * ((b - r) / diff) + 120) % 360;
+
+        // if cmax equal b then compute h
+        else if (cmax == b)
+            h = (60 * ((r - g) / diff) + 240) % 360;
+
+        // if cmax equal zero
+        if (cmax == 0)
+            s = 0;
+        else
+            s = (diff / cmax) * 100;
+
+        // compute v
+        double v = cmax * 100;
+
+        return new double[] { h, s, v };
     }
 
     public void setLEDFlashGreen() {
