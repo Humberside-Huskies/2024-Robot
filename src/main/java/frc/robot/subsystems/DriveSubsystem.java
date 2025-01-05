@@ -1,9 +1,13 @@
 package frc.robot.subsystems;
 
-import com.kauailabs.navx.frc.AHRS;
-import com.revrobotics.CANSparkBase.IdleMode;
-import com.revrobotics.CANSparkLowLevel.MotorType;
-import com.revrobotics.CANSparkMax;
+import com.revrobotics.spark.SparkBase.PersistMode;
+import com.revrobotics.spark.SparkBase.ResetMode;
+import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.spark.SparkMax;
+import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
+import com.revrobotics.spark.config.SparkMaxConfig;
+import com.studica.frc.AHRS;
+import com.studica.frc.AHRS.NavXComType;
 
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -14,15 +18,18 @@ import frc.robot.Constants.SafetyConstants;
 public class DriveSubsystem extends SubsystemBase {
     private final SlewRateLimiter leftLimiter        = new SlewRateLimiter(DriveConstants.SLEW_LIMIT);
     private final SlewRateLimiter rightLimiter       = new SlewRateLimiter(DriveConstants.SLEW_LIMIT);
-    private final AHRS            gyro               = new AHRS();
+    private final AHRS            gyro               = new AHRS(NavXComType.kMXP_SPI);
 
     // The motors on the left side of the drive.
-    private final CANSparkMax     leftPrimaryMotor   = new CANSparkMax(DriveConstants.LEFT_MOTOR_PORT, MotorType.kBrushless);
-    private final CANSparkMax     leftFollowerMotor  = new CANSparkMax(DriveConstants.LEFT_MOTOR_PORT + 1, MotorType.kBrushless);
+    private final SparkMax        leftPrimaryMotor   = new SparkMax(DriveConstants.LEFT_MOTOR_PORT, MotorType.kBrushless);
+    private final SparkMax        leftFollowerMotor  = new SparkMax(DriveConstants.LEFT_MOTOR_PORT + 1, MotorType.kBrushless);
+
+    private SparkMaxConfig        leftMotorConfig    = new SparkMaxConfig();
+    private SparkMaxConfig        rightMotorConfig   = new SparkMaxConfig();
 
     // The motors on the right side of the drive.
-    private final CANSparkMax     rightPrimaryMotor  = new CANSparkMax(DriveConstants.RIGHT_MOTOR_PORT, MotorType.kBrushless);
-    private final CANSparkMax     rightFollowerMotor = new CANSparkMax(DriveConstants.RIGHT_MOTOR_PORT + 1, MotorType.kBrushless);
+    private final SparkMax        rightPrimaryMotor  = new SparkMax(DriveConstants.RIGHT_MOTOR_PORT, MotorType.kBrushless);
+    private final SparkMax        rightFollowerMotor = new SparkMax(DriveConstants.RIGHT_MOTOR_PORT + 1, MotorType.kBrushless);
 
     // Motor speeds
     private double                leftSpeed          = 0;
@@ -33,54 +40,54 @@ public class DriveSubsystem extends SubsystemBase {
     /** Creates a new DriveSubsystem. */
     public DriveSubsystem() {
 
-        // We need to invert one side of the drivetrain so that positive voltages
-        // result in both sides moving forward. Depending on how your robot's
-        // gearbox is constructed, you might have to invert the left side instead.
-        leftPrimaryMotor.setInverted(DriveConstants.LEFT_MOTOR_REVERSED);
-        leftFollowerMotor.setInverted(DriveConstants.LEFT_MOTOR_REVERSED);
-        // leftPrimaryMotor.setNeutralMode(NeutralMode.Brake);
-        // leftFollowerMotor.setNeutralMode(NeutralMode.Brake);
+        /*
+         * Configure the SparkMax controllers for the left and right.
+         */
+        leftMotorConfig.idleMode(IdleMode.kCoast)
+            .inverted(DriveConstants.LEFT_MOTOR_REVERSED)
+            .smartCurrentLimit(80)
+            .disableFollowerMode();
 
-        // leftFollowerMotor.follow(leftPrimaryMotor);
+        leftPrimaryMotor.configure(leftMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+        leftFollowerMotor.configure(leftMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
 
-        rightPrimaryMotor.setInverted(DriveConstants.RIGHT_MOTOR_REVERSED);
-        rightFollowerMotor.setInverted(DriveConstants.RIGHT_MOTOR_REVERSED);
+        /*
+         * Configure the SparkMax controllers for the left and right.
+         */
+        rightMotorConfig.idleMode(IdleMode.kCoast)
+            .inverted(DriveConstants.RIGHT_MOTOR_REVERSED)
+            .smartCurrentLimit(80)
+            .disableFollowerMode();
 
-        // rightPrimaryMotor.setNeutralMode(NeutralMode.Brake);
-        // rightFollowerMotor.setNeutralMode(NeutralMode.Brake);
-
-        // rightFollowerMotor.follow(rightPrimaryMotor);
-
-        // Reset the encoders on power up
         rightPrimaryMotor.getEncoder().setPosition(0);
         leftPrimaryMotor.getEncoder().setPosition(0);
-
-
-        rightPrimaryMotor.setSmartCurrentLimit(80);
-        rightFollowerMotor.setSmartCurrentLimit(80);
-        leftPrimaryMotor.setSmartCurrentLimit(80);
-        leftFollowerMotor.setSmartCurrentLimit(80);
-
-
 
         setMotorsBreak();
     }
 
     public void setMotorsBreak() {
-        leftPrimaryMotor.setIdleMode(IdleMode.kBrake);
-        leftFollowerMotor.setIdleMode(IdleMode.kBrake);
 
-        rightPrimaryMotor.setIdleMode(IdleMode.kBrake);
-        rightFollowerMotor.setIdleMode(IdleMode.kBrake);
+        // Temporarily set the idle mode to break, but do not burn the flash
+        leftMotorConfig.idleMode(IdleMode.kBrake);
+        leftPrimaryMotor.configure(leftMotorConfig, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
+        leftFollowerMotor.configure(leftMotorConfig, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
+
+        rightMotorConfig.idleMode(IdleMode.kBrake);
+        rightPrimaryMotor.configure(rightMotorConfig, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
+        rightFollowerMotor.configure(rightMotorConfig, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
     }
 
     public void setMotorsCoast() {
-        leftPrimaryMotor.setIdleMode(IdleMode.kCoast);
-        leftFollowerMotor.setIdleMode(IdleMode.kCoast);
 
-        rightPrimaryMotor.setIdleMode(IdleMode.kCoast);
-        rightFollowerMotor.setIdleMode(IdleMode.kCoast);
+        // Temporarily set the idle mode to coast, but do not burn the flash
+        leftMotorConfig.idleMode(IdleMode.kCoast);
+        leftPrimaryMotor.configure(leftMotorConfig, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
+        leftFollowerMotor.configure(leftMotorConfig, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
+
+        rightMotorConfig.idleMode(IdleMode.kCoast);
+        rightPrimaryMotor.configure(rightMotorConfig, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
+        rightFollowerMotor.configure(rightMotorConfig, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
     }
 
     /**
@@ -90,6 +97,7 @@ public class DriveSubsystem extends SubsystemBase {
      * @param rightSpeed
      */
     public void setMotorSpeeds(double leftSpeed, double rightSpeed) {
+
         leftSpeed  = leftLimiter.calculate(leftSpeed);
         rightSpeed = rightLimiter.calculate(rightSpeed);
 
@@ -123,7 +131,7 @@ public class DriveSubsystem extends SubsystemBase {
     }
 
     public double getGyroAngle() {
-        return Math.floorMod((int) this.gyro.getAngle(), (int) 360);
+        return Math.floorMod((int) this.gyro.getAngle(), 360);
     }
 
     /** Safely stop the subsystem from moving */

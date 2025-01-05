@@ -1,33 +1,38 @@
 package frc.robot.subsystems;
 
-import com.revrobotics.CANSparkBase.IdleMode;
-import com.revrobotics.CANSparkLowLevel.MotorType;
-import com.revrobotics.CANSparkMax;
+import com.revrobotics.spark.SparkBase.PersistMode;
+import com.revrobotics.spark.SparkBase.ResetMode;
+import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.spark.SparkMax;
+import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
+import com.revrobotics.spark.config.SparkMaxConfig;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ClimbConstants;
 
 public class ClimbSubsystem extends SubsystemBase {
-    private final CANSparkMax rightMotor = new CANSparkMax(ClimbConstants.RIGHT_MOTOR_PORT, MotorType.kBrushless);
-    private final CANSparkMax leftMotor  = new CANSparkMax(ClimbConstants.LEFT_MOTOR_PORT, MotorType.kBrushless);
+    private final SparkMax rightMotor = new SparkMax(ClimbConstants.RIGHT_MOTOR_PORT, MotorType.kBrushless);
+    private final SparkMax leftMotor  = new SparkMax(ClimbConstants.LEFT_MOTOR_PORT, MotorType.kBrushless);
 
     // Motor speeds
-    private double            leftSpeed  = 0;
-    private double            rightSpeed = 0;
+    private double         leftSpeed  = 0;
+    private double         rightSpeed = 0;
 
     /** Creates a new ClimbSubsystem. */
     public ClimbSubsystem() {
-        rightMotor.setIdleMode(IdleMode.kBrake);
-        leftMotor.setIdleMode(IdleMode.kBrake);
+
+        // Configure the SparkMax
+        // Left and right climb are configured the same
+        SparkMaxConfig config = new SparkMaxConfig();
+
+        config.idleMode(IdleMode.kBrake)
+            .disableFollowerMode();
+
+        leftMotor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+        rightMotor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
         resetClimbEncoders();
-
-        // Burn the flash at the end to permanently write the settings
-        // so if the battery voltage causes a reset, the motors will
-        // come back in the right state.
-        rightMotor.burnFlash();
-        leftMotor.burnFlash();
     }
 
     public void resetClimbEncoders() {

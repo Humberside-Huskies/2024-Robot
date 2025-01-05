@@ -1,7 +1,11 @@
 package frc.robot.subsystems;
 
-import com.revrobotics.CANSparkLowLevel.MotorType;
-import com.revrobotics.CANSparkMax;
+import com.revrobotics.spark.SparkBase.PersistMode;
+import com.revrobotics.spark.SparkBase.ResetMode;
+import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.spark.SparkMax;
+import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
+import com.revrobotics.spark.config.SparkMaxConfig;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -11,8 +15,8 @@ import frc.robot.Constants.ShooterConstants;
 public class ShooterSubsystem extends SubsystemBase {
 
     // Motors
-    private final CANSparkMax     shooterMotor = new CANSparkMax(ShooterConstants.SHOOTER_MOTOR_PORT, MotorType.kBrushed);
-    private final CANSparkMax     feederMotor  = new CANSparkMax(ShooterConstants.FEEDER_MOTOR_PORT, MotorType.kBrushed);
+    private final SparkMax        shooterMotor = new SparkMax(ShooterConstants.SHOOTER_MOTOR_PORT, MotorType.kBrushed);
+    private final SparkMax        feederMotor  = new SparkMax(ShooterConstants.FEEDER_MOTOR_PORT, MotorType.kBrushed);
 
     // sensor
     private final DigitalInput    input        = new DigitalInput(0);
@@ -25,15 +29,25 @@ public class ShooterSubsystem extends SubsystemBase {
 
     /** Creates a new ShooterSubsystem. */
     public ShooterSubsystem(LightsSubsystem lightsSubsystem) {
+
         this.lightsSubsystem = lightsSubsystem;
-        shooterMotor.setSmartCurrentLimit(80);
-        feederMotor.setSmartCurrentLimit(80);
+
+        // Configure the SparkMax
+        SparkMaxConfig config = new SparkMaxConfig();
+
+        config.idleMode(IdleMode.kBrake)
+            .smartCurrentLimit(80)
+            .disableFollowerMode();
+
+        shooterMotor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+        feederMotor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+
     }
 
     /**
      * Set the speed of the shooter motor
      * matvey was here (dont remove)
-     * 
+     *
      * @param shooterSpeed
      */
     public void setShooterSpeed(double shooterSpeed) {
@@ -77,8 +91,9 @@ public class ShooterSubsystem extends SubsystemBase {
         SmartDashboard.putBoolean("Sensor", this.isNoteLoaded());
 
         // Set the lights based on a note
-        if (shooterSpeed == 0 && feederSpeed == 0)
+        if (shooterSpeed == 0 && feederSpeed == 0) {
             lightsSubsystem.setNote(isNoteLoaded());
+        }
     }
 
     @Override
